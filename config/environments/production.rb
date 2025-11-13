@@ -5,6 +5,9 @@ Rails.application.configure do
 
   # Solid Cable
   config.action_cable.adapter = :solid_cable
+  config.solid_cable.connects_to = { database: { writing: :cable } }
+  config.solid_cable.polling_interval = 0.1.seconds
+  config.solid_cable.message_retention = 1.day
 
   # Code is not reloaded between requests.
   config.enable_reloading = false

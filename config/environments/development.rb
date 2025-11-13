@@ -3,9 +3,9 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.cache_store = :solid_cache_store
-  config.active_job.queue_adapter = :solid_queue
-  config.action_cable.adapter = :solid_cable
+  # config.cache_store = :solid_cache_store
+  # config.active_job.queue_adapter = :solid_queue
+  # config.action_cable.adapter = :solid_cable
 
   # Make code changes take effect immediately without server restart.
   config.enable_reloading = true
@@ -30,7 +30,7 @@ Rails.application.configure do
   end
 
   # Change to :null_store to avoid any caching.
-  # config.cache_store = :memory_store
+  config.cache_store = :memory_store
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
