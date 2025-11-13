@@ -13,10 +13,10 @@ servers:
     proxy: true
     options:
       add-host: "host.docker.internal:host-gateway"
-  worker:
-    hosts:
-      - mypc
-    cmd: bin/jobs             # chạy Solid Queue supervisor (Rails 8 tạo bin/jobs)  [oai_citation:5‡GitHub](https://github.com/rails/solid_queue?utm_source=chatgpt.com)
+  # worker:                   # DISABLED (temporarily) - Solid Queue worker
+  #   hosts:
+  #     - mypc
+  #   cmd: bin/jobs             # chạy Solid Queue supervisor (Rails 8 tạo bin/jobs)  [oai_citation:5‡GitHub](https://github.com/rails/solid_queue?utm_source=chatgpt.com)
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -55,8 +55,6 @@ env:
     - POSTGRES_PASSWORD
     - SSH_USER_PASSWORD
     - DATABASE_URL
-    - BASIC_AUTH_USER
-    - BASIC_AUTH_PASSWORD
     - BUKMEUP_DATABASE_PASSWORD
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
