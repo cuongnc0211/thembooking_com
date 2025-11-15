@@ -2,12 +2,21 @@
 service: bukmeup
 
 # Name of the container image (use your-user/app-name on external registries).
-image: bukmeup
+image: cuongnguyenfu/bukmeup
 
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1
+    hosts:
+      - mypc       # or an SSH-able hostname
+    # keep the proxy on; CF Tunnel will hit port 80 on localhost
+    proxy: true
+    options:
+      add-host: "host.docker.internal:host-gateway"
+  # worker:                   # DISABLED (temporarily) - Solid Queue worker
+  #   hosts:
+  #     - mypc
+  #   cmd: bin/jobs             # chạy Solid Queue supervisor (Rails 8 tạo bin/jobs)  [oai_citation:5‡GitHub](https://github.com/rails/solid_queue?utm_source=chatgpt.com)
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -20,30 +29,37 @@ servers:
 #
 # Don't use this when deploying to multiple web servers (then you have to terminate SSL at your load balancer).
 #
-# proxy:
-#   ssl: true
-#   host: app.example.com
+proxy:
+  host: bukmeup.cuongnguyenfu.com
+  app_port: 3000
+  # Optional healthcheck via proxy:
+  healthcheck:
+    path: /healthcheck
 
 # Where you keep your container images.
 registry:
   # Alternatives: hub.docker.com / registry.digitalocean.com / ghcr.io / ...
-  server: localhost:5555
+  # server: cuongnguyenfu
 
   # Needed for authenticated registries.
-  # username: your-user
+  username: cuongnguyenfu
 
   # Always use an access token rather than real password when possible.
-  # password:
-  #   - KAMAL_REGISTRY_PASSWORD
+  password:
+    - KAMAL_REGISTRY_PASSWORD
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
   secret:
     - RAILS_MASTER_KEY
+    - POSTGRES_PASSWORD
+    - SSH_USER_PASSWORD
+    - DATABASE_URL
+    - BUKMEUP_DATABASE_PASSWORD
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
-    SOLID_QUEUE_IN_PUMA: true
+    # SOLID_QUEUE_IN_PUMA: true
 
     # Set number of processes dedicated to Solid Queue (default: 1)
     # JOB_CONCURRENCY: 3
@@ -57,6 +73,10 @@ env:
 
     # Log everything from Rails
     # RAILS_LOG_LEVEL: debug
+    RAILS_ENV: production
+    PORT: 3000
+    RAILS_LOG_TO_STDOUT: "1"
+    RAILS_SERVE_STATIC_FILES: "true"
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal logs -r job" will tail logs from the first server in the job section.
@@ -92,8 +112,8 @@ builder:
   #   - RAILS_MASTER_KEY
 
 # Use a different ssh user than root
-# ssh:
-#   user: app
+ssh:
+  user: cuong-nguyen
 
 # Use accessory services (secrets come from .kamal/secrets).
 # accessories:
