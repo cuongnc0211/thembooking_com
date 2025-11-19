@@ -82,9 +82,13 @@ class User < ApplicationRecord
 
       if matched_zone
         self.time_zone = matched_zone.name
+      else
+        # If no match found, set to nil instead of keeping invalid value
+        self.time_zone = nil
       end
     rescue TZInfo::InvalidTimezoneIdentifier
-      # Invalid timezone, validation will catch this
+      # Invalid timezone identifier, set to nil to avoid validation error
+      self.time_zone = nil
     end
   end
 
