@@ -6,6 +6,13 @@ Rails.application.routes.draw do
   # Registration
   resource :registration, only: [:new, :create]
 
+  # Email Confirmation
+  get '/confirm_email/:token', to: 'email_confirmations#show', as: :confirm_email
+  post '/resend_confirmation', to: 'email_confirmations#resend', as: :resend_confirmation
+
+  # User Profile
+  resource :profile, only: [:edit, :update]
+
   # Home
   get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

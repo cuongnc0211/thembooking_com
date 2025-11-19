@@ -5,4 +5,13 @@ class ApplicationController < ActionController::Base
 
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
+
+  # Set timezone for all requests
+  around_action :set_time_zone, if: :authenticated?
+
+  private
+
+  def set_time_zone(&block)
+    Time.use_zone(Current.user.time_zone, &block)
+  end
 end

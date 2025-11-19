@@ -1,7 +1,7 @@
 <div class="max-w-md mx-auto mt-8 px-4">
   <h1 class="text-2xl font-bold mb-6">Sign Up for Bukmeup</h1>
 
-  <%= form_with model: @user, url: registration_path, class: "space-y-4" do |form| %>
+  <%= form_with model: @user, url: registration_path, data: { controller: "timezone" }, class: "space-y-4" do |form| %>
     <% if @user.errors.any? %>
       <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
         <ul class="list-disc list-inside">
@@ -11,6 +11,8 @@
         </ul>
       </div>
     <% end %>
+
+    <%= hidden_field_tag :detected_timezone, '', id: 'detected_timezone' %>
 
     <div>
       <%= form.label :email_address, "Email", class: "block text-sm font-medium text-gray-700" %>

@@ -8,8 +8,10 @@ class RegistrationsController < ApplicationController
   def create
     @user = User.new(registration_params)
 
+    # Set timezone from browser detection or cookie
+    @user.time_zone = params[:detected_timezone].presence || cookies[:browser_timezone] || 'UTC'
+
     if @user.save
-      # Send confirmation email (will implement in Phase 3)
       redirect_to root_path, notice: "Please check your email to confirm your account."
     else
       render :new, status: :unprocessable_entity
