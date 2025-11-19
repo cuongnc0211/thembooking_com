@@ -2,7 +2,7 @@
 service: bukmeup
 
 # Name of the container image (use your-user/app-name on external registries).
-image: cuongnguyenfu/bukmeup
+image: ghcr.io/cuongnc0211/bukmeup
 
 # Deploy to these servers.
 servers:
@@ -38,13 +38,13 @@ proxy:
 
 # Where you keep your container images.
 registry:
-  # Alternatives: hub.docker.com / registry.digitalocean.com / ghcr.io / ...
-  # server: cuongnguyenfu
-
-  # Needed for authenticated registries.
-  username: cuongnguyenfu
+  # Using GitHub Container Registry (more reliable than Docker Hub)
+  server: ghcr.io
+  username: cuongnc0211
 
   # Always use an access token rather than real password when possible.
+  # For GitHub: Create a Personal Access Token with write:packages scope
+  # at https://github.com/settings/tokens
   password:
     - KAMAL_REGISTRY_PASSWORD
 
