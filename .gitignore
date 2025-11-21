@@ -38,6 +38,7 @@
 !/app/assets/builds/.keep
 
 claude.md
+/.claude_plan/*.md
 /.claude_plan/features.md
 /.claude_plan/user_authentication_and_profile.md
 
