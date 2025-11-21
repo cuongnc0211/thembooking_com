@@ -72,7 +72,7 @@ Rails.application.configure do
 
   # Set host to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = {
-    host: "bukmeup.cuongnguyenfu.com",
+    host: "thembooking.cuongnguyenfu.com",
     protocol: "https"
   }
 
