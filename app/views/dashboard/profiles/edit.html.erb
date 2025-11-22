@@ -1,7 +1,7 @@
 <div class="max-w-2xl mx-auto mt-8 px-4">
   <h1 class="text-3xl font-bold mb-6">Account Settings</h1>
 
-  <%= form_with model: @user, url: profile_path, method: :patch, class: "space-y-6" do |form| %>
+  <%= form_with model: @user, url: dashboard_profile_path, method: :patch, class: "space-y-6" do |form| %>
     <% if @user.errors.any? %>
       <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
         <ul class="list-disc list-inside">

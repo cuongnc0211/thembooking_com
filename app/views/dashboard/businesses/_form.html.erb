@@ -1,0 +1,75 @@
+<%= form_with model: business, url: dashboard_business_path, method: (business.persisted? ? :patch : :post), class: "space-y-6" do |form| %>
+  <% if business.errors.any? %>
+    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+      <ul class="list-disc list-inside">
+        <% business.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Business Name -->
+  <div>
+    <%= form.label :name, "Business Name", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500", placeholder: "e.g., John's Barbershop" %>
+  </div>
+
+  <!-- Business Type -->
+  <div>
+    <%= form.label :business_type, "Business Type", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.select :business_type, Business.business_types.keys.map { |t| [t.titleize, t] }, { prompt: "Select business type" }, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+  </div>
+
+  <!-- Booking URL (Slug) -->
+  <div>
+    <%= form.label :slug, "Booking URL", class: "block text-sm font-medium text-gray-700" %>
+    <div class="mt-1 flex rounded-md shadow-sm">
+      <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+        thembooking.com/
+      </span>
+      <%= form.text_field :slug, class: "flex-1 block w-full rounded-none rounded-r-md border-gray-300 focus:border-blue-500 focus:ring-blue-500", placeholder: "your-shop-name" %>
+    </div>
+    <p class="mt-1 text-sm text-gray-500">Only lowercase letters, numbers, and hyphens. This will be your public booking URL.</p>
+  </div>
+
+  <!-- Description -->
+  <div>
+    <%= form.label :description, "Description", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :description, rows: 4, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500", placeholder: "Tell customers about your business..." %>
+  </div>
+
+  <!-- Address -->
+  <div>
+    <%= form.label :address, "Address", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :address, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500", placeholder: "123 Main St, Ho Chi Minh City" %>
+  </div>
+
+  <!-- Phone -->
+  <div>
+    <%= form.label :phone, "Phone Number", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.telephone_field :phone, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500", placeholder: "+84 123 456 789" %>
+  </div>
+
+  <!-- Logo Upload -->
+  <div>
+    <%= form.label :logo, "Business Logo", class: "block text-sm font-medium text-gray-700" %>
+    <% if business.logo.attached? %>
+      <div class="mt-2 flex items-center space-x-4">
+        <%= image_tag business.logo.variant(resize_to_limit: [100, 100]), class: "h-16 w-16 rounded object-cover" %>
+        <%= form.file_field :logo, class: "hidden", id: "logo-upload" %>
+        <label for="logo-upload" class="cursor-pointer bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+          Change Logo
+        </label>
+      </div>
+    <% else %>
+      <%= form.file_field :logo, class: "mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" %>
+    <% end %>
+    <p class="mt-1 text-sm text-gray-500">JPEG, PNG, GIF, or WebP. Max 5MB.</p>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="flex justify-end">
+    <%= form.submit business.persisted? ? "Save Changes" : "Create Business", class: "bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer" %>
+  </div>
+<% end %>

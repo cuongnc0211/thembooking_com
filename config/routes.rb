@@ -10,8 +10,11 @@ Rails.application.routes.draw do
   get '/confirm_email/:token', to: 'email_confirmations#show', as: :confirm_email
   post '/resend_confirmation', to: 'email_confirmations#resend', as: :resend_confirmation
 
-  # User Profile
-  resource :profile, only: [:edit, :update]
+  # Dashboard namespace (requires authentication)
+  namespace :dashboard do
+    resource :profile, only: [:edit, :update]
+    resource :business, only: [:new, :create, :show, :edit, :update]
+  end
 
   # Home
   get "home/index"
