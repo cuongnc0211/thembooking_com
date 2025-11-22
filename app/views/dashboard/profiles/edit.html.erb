@@ -1,7 +1,7 @@
 <div class="max-w-2xl mx-auto mt-8 px-4">
   <h1 class="text-3xl font-bold mb-6">Account Settings</h1>
 
-  <%= form_with model: @user, url: profile_path, method: :patch, class: "space-y-6" do |form| %>
+  <%= form_with model: @user, url: dashboard_profile_path, method: :patch, class: "space-y-6" do |form| %>
     <% if @user.errors.any? %>
       <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
         <ul class="list-disc list-inside">
@@ -70,13 +70,6 @@
             { default: @user.time_zone || "Hanoi" },
             class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
       <p class="mt-1 text-sm text-gray-500">Used to display booking times in your local timezone</p>
-    </div>
-
-    <!-- Bio -->
-    <div>
-      <%= form.label :bio, "About Me", class: "block text-sm font-medium text-gray-700" %>
-      <%= form.text_area :bio, rows: 4, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
-      <p class="mt-1 text-sm text-gray-500">Optional. This will be shown on your public profile page.</p>
     </div>
 
     <!-- Submit Button -->

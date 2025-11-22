@@ -1,12 +1,12 @@
-<% if authenticated? && !Current.user.profile_completed %>
+<% if authenticated? && Current.user.business.nil? %>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
     <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
-      <h3 class="text-lg font-semibold text-blue-900 mb-2">Complete Your Profile</h3>
+      <h3 class="text-lg font-semibold text-blue-900 mb-2">Set Up Your Business</h3>
       <p class="text-blue-700 mb-4">
-        Get the most out of ThemBooking by completing your profile. Add your name, timezone, and photo.
+        Get started with ThemBooking by creating your business profile. Add your business name, services, and start accepting bookings.
       </p>
-      <%= link_to "Complete Profile →", edit_profile_path,
-          class: "inline-block bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" %>
+      <%# TODO: Link to business setup when implemented %>
+      <span class="inline-block bg-gray-400 text-white px-4 py-2 rounded-md">Coming Soon</span>
     </div>
   </div>
 <% end %>

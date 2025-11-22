@@ -35,7 +35,7 @@
           <div class="flex items-center space-x-4">
             <% if authenticated? %>
               <span class="text-gray-700">Hello, <%= Current.user.email_address %></span>
-              <%= link_to "Settings", edit_profile_path, class: "text-gray-600 hover:text-gray-900" %>
+              <%= link_to "Settings", edit_dashboard_profile_path, class: "text-gray-600 hover:text-gray-900" %>
               <%= button_to "Log out", session_path, method: :delete, class: "text-gray-600 hover:text-gray-900" %>
             <% else %>
               <%= link_to "Log in", new_session_path, class: "text-gray-600 hover:text-gray-900" %>

@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
+  has_one :business, dependent: :destroy
   has_one_attached :avatar
 
   # Validations
@@ -37,15 +38,6 @@ class User < ApplicationRecord
   def confirmation_token_expired?
     return false if email_confirmation_sent_at.nil?
     email_confirmation_sent_at < 24.hours.ago
-  end
-
-  # Profile completion methods
-  def profile_complete?
-    name.present? && time_zone.present? && avatar.attached?
-  end
-
-  def update_profile_completion!
-    update!(profile_completed: profile_complete?)
   end
 
   private
