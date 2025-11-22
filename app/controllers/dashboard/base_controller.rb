@@ -3,6 +3,8 @@ module Dashboard
     # All controllers in Dashboard namespace require authentication
     # (inherited from ApplicationController's require_authentication before_action)
 
+    layout "dashboard"
+
     # Require business setup before accessing other dashboard pages
     before_action :require_business_setup
 
