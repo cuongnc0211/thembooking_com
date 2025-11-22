@@ -28,7 +28,7 @@ class Business < ApplicationRecord
   normalizes :slug, with: ->(slug) { slug.strip.downcase }
 
   def booking_url
-    "thembooking.com/#{slug}"
+    "#{slug}.thembooking.com"
   end
 
   private
