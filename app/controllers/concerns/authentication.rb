@@ -10,6 +10,10 @@ module Authentication
     def allow_unauthenticated_access(**options)
       skip_before_action :require_authentication, **options
     end
+
+    def redirect_authenticated_user(**options)
+      before_action :redirect_if_authenticated, **options
+    end
   end
 
   private
@@ -48,5 +52,11 @@ module Authentication
     def terminate_session
       Current.session.destroy
       cookies.delete(:session_id)
+    end
+
+    def redirect_if_authenticated
+      if authenticated?
+        redirect_to root_path, notice: "You are already logged in."
+      end
     end
 end

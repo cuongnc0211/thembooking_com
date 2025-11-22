@@ -6,7 +6,6 @@ class ProfilesController < ApplicationController
 
   def update
     if @user.update(profile_params)
-      @user.update_profile_completion!
       redirect_to edit_profile_path, notice: "Profile updated successfully."
     else
       render :edit, status: :unprocessable_entity
@@ -20,6 +19,6 @@ class ProfilesController < ApplicationController
   end
 
   def profile_params
-    params.require(:user).permit(:name, :email_address, :phone, :bio, :time_zone, :avatar)
+    params.require(:user).permit(:name, :email_address, :phone, :time_zone, :avatar)
   end
 end
