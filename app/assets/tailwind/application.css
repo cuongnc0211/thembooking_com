@@ -21,4 +21,37 @@
   .btn-primary {
     @apply bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600;
   }
+
+  /* Form Input Controls */
+  .form-input {
+    @apply px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
+  }
+
+  .form-label {
+    @apply px-3 py-2 block text-sm font-medium text-gray-700;
+  }
+
+  .form-helper-text {
+    @apply px-3 py-2 mt-1 text-sm text-gray-500;
+  }
+
+  .form-error {
+    @apply px-3 py-2 mt-1 text-sm text-red-600;
+  }
+
+  .form-select {
+    @apply px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
+  }
+
+  .form-textarea {
+    @apply px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
+  }
+
+  .form-checkbox {
+    @apply px-3 py-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500;
+  }
+
+  .form-radio {
+    @apply px-3 py-2 border-gray-300 text-blue-600 focus:ring-blue-500;
+  }
 }

@@ -45,14 +45,14 @@
 
     <!-- Name -->
     <div>
-      <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
-      <%= form.text_field :name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+      <%= form.label :name, class: "form-label" %>
+      <%= form.text_field :name, class: "form-input" %>
     </div>
 
     <!-- Email -->
     <div>
-      <%= form.label :email_address, "Email", class: "block text-sm font-medium text-gray-700" %>
-      <%= form.email_field :email_address, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+      <%= form.label :email_address, "Email", class: "form-label" %>
+      <%= form.email_field :email_address, class: "form-input" %>
       <% if @user.confirmed? %>
         <p class="mt-1 text-sm text-green-600">✓ Verified</p>
       <% else %>
@@ -62,19 +62,19 @@
 
     <!-- Phone -->
     <div>
-      <%= form.label :phone, class: "block text-sm font-medium text-gray-700" %>
-      <%= form.telephone_field :phone, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
-      <p class="mt-1 text-sm text-gray-500">Optional. Include country code (e.g., +84 for Vietnam)</p>
+      <%= form.label :phone, class: "form-label" %>
+      <%= form.telephone_field :phone, class: "form-input" %>
+      <p class="form-helper-text">Optional. Include country code (e.g., +84 for Vietnam)</p>
     </div>
 
     <!-- Time Zone -->
     <div>
-      <%= form.label :time_zone, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.label :time_zone, class: "form-label" %>
       <%= form.time_zone_select :time_zone,
             ActiveSupport::TimeZone.all,
             { default: @user.time_zone || "Hanoi" },
-            class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
-      <p class="mt-1 text-sm text-gray-500">Used to display booking times in your local timezone</p>
+            class: "form-select" %>
+      <p class="form-helper-text">Used to display booking times in your local timezone</p>
     </div>
 
     <!-- Submit Button -->
