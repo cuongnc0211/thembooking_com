@@ -1,0 +1,21 @@
+<!-- Navigation -->
+<nav class="bg-white shadow-sm fixed top-0 left-0 right-0 z-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      <div class="flex items-center">
+        <%= link_to "ThemBooking", root_path, class: "text-xl font-bold text-blue-600" %>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <% if authenticated? %>
+          <span class="text-gray-700 hidden sm:inline">Hello, <%= Current.user.email_address %></span>
+          <%= link_to "Settings", edit_dashboard_profile_path, class: "text-gray-600 hover:text-gray-900" %>
+          <%= button_to "Log out", session_path, method: :delete, class: "text-gray-600 hover:text-gray-900" %>
+        <% else %>
+          <%= link_to "Log in", new_session_path, class: "text-gray-600 hover:text-gray-900" %>
+          <%= link_to "Sign up", new_registration_path, class: "bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>
