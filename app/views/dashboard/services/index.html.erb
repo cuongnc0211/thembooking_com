@@ -13,6 +13,8 @@
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Position</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
@@ -38,11 +40,16 @@
                   <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Inactive</span>
                 <% end %>
               </td>
+              <td class="px-6 py-4 whitespace-nowrap text-center">
+                <%= service.position %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <%= button_to "↑", move_up_dashboard_service_path(service), method: :post, class: "inline-flex items-center px-2 py-1 border border-gray-300 rounded text-gray-700 hover:bg-gray-50 cursor-pointer mb-1", disabled: service == @services.first %>
+                <%= button_to "↓", move_down_dashboard_service_path(service), method: :post, class: "inline-flex items-center px-2 py-1 border border-gray-300 rounded text-gray-700 hover:bg-gray-50 cursor-pointer", disabled: service == @services.last %>
+              </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                <%= button_to "↑", move_up_dashboard_service_path(service), method: :post, class: "inline-flex items-center px-2 py-1 border border-gray-300 rounded text-gray-700 hover:bg-gray-50", disabled: service == @services.first %>
-                <%= button_to "↓", move_down_dashboard_service_path(service), method: :post, class: "inline-flex items-center px-2 py-1 border border-gray-300 rounded text-gray-700 hover:bg-gray-50", disabled: service == @services.last %>
-                <%= link_to "Edit", edit_dashboard_service_path(service), class: "text-blue-600 hover:text-blue-900" %>
-                <%= button_to "Delete", dashboard_service_path(service), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "text-red-600 hover:text-red-900" %>
+                <%= link_to "Edit", edit_dashboard_service_path(service), class: "text-blue-600 hover:text-blue-900 cursor-pointer" %>
+                <%= button_to "Delete", dashboard_service_path(service), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "text-red-600 hover:text-red-900 cursor-pointer" %>
               </td>
             </tr>
           <% end %>
