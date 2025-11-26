@@ -1,27 +1,33 @@
 <!-- Navigation -->
-<nav class="bg-white shadow-sm fixed top-0 left-0 right-0 z-10">
+<nav class="fixed top-0 w-full z-50 glass border-b border-white/20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between h-16">
+    <div class="flex justify-between h-20">
       <div class="flex items-center">
-        <%= link_to "ThemBooking", root_path, class: "text-xl font-bold text-blue-600" %>
+        <%= link_to root_path, class: "flex items-center gap-2 group" do %>
+          <span class="text-2xl font-display font-bold text-gradient">ThemBooking</span>
+        <% end %>
       </div>
 
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-6">
         <% if authenticated? %>
-          <% if Current.user.avatar.attached? %>
-            <%= image_tag Current.user.avatar, class: "h-10 w-10 rounded-full object-cover" %>
-          <% else %>
-            <div class="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center">
-              <span class="text-white font-semibold text-sm">
-                <%= Current.user.email_address.first.upcase %>
-              </span>
-            </div>
-          <% end %>
-          <%= link_to "Settings", edit_dashboard_profile_path, class: "text-gray-600 hover:text-gray-900" %>
-          <%= button_to "Log out", session_path, method: :delete, class: "text-gray-600 hover:text-gray-900" %>
+          <div class="flex items-center gap-4">
+            <% if Current.user.avatar.attached? %>
+              <%= image_tag Current.user.avatar, class: "h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" %>
+            <% else %>
+              <div class="h-10 w-10 rounded-full bg-primary-600 flex items-center justify-center border-2 border-white shadow-sm">
+                <span class="text-white font-semibold text-sm">
+                  <%= Current.user.email_address.first.upcase %>
+                </span>
+              </div>
+            <% end %>
+            <%= link_to "Settings", edit_dashboard_profile_path, class: "text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors" %>
+            <%= button_to "Log out", session_path, method: :delete, class: "btn-secondary text-sm py-2 px-4 rounded-lg" %>
+          </div>
         <% else %>
-          <%= link_to "Log in", new_session_path, class: "text-gray-600 hover:text-gray-900" %>
-          <%= link_to "Sign up", new_registration_path, class: "bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" %>
+          <div class="flex items-center gap-4">
+            <%= link_to "Log in", new_session_path, class: "text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors" %>
+            <%= link_to "Sign up", new_registration_path, class: "btn-primary text-sm py-2 px-4 rounded-lg shadow-lg shadow-primary-500/20" %>
+          </div>
         <% end %>
       </div>
     </div>

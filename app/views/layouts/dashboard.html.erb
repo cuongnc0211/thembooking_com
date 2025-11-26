@@ -15,26 +15,34 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-gray-10">
+  <body class="bg-surface-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
     <%= render 'layouts/nav_bar' %>
 
     <!-- Main Layout Container -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-      <div class="flex min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12 w-full flex-grow">
+      <div class="flex min-h-[calc(100vh-8rem)] gap-8">
         <%= render 'layouts/dashboard/side_bar' %>
 
         <!-- Main Content -->
-        <main class="flex-1 min-w-0 py-6 md:pl-8">
-          <!-- Flash Messages -->
+        <main class="flex-1 min-w-0">
+          <!-- Flash Messages (Toast Style) -->
           <% if flash.any? %>
-            <div class="mb-6">
+            <div class="fixed top-24 right-4 z-50 flex flex-col gap-2 w-full max-w-sm pointer-events-none">
               <% flash.each do |name, msg| %>
-                <div class="<%= flash_class(name) %> px-4 py-3 rounded mb-4 border">
-                  <%= msg %>
+                <div class="pointer-events-auto transform transition-all duration-300 hover:scale-105 <%= flash_class(name) %> bg-white border border-slate-100 shadow-lg rounded-xl p-4 flex items-start gap-3 animate-in slide-in-from-right-5 fade-in">
+                  <div class="flex-1 text-sm font-medium text-slate-700"><%= msg %></div>
+                  <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                  </button>
                 </div>
               <% end %>
             </div>
