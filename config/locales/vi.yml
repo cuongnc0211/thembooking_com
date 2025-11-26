@@ -1,0 +1,60 @@
+vi:
+  common:
+    actions:
+      submit: "Gửi"
+      cancel: "Hủy"
+      save: "Lưu"
+      save_changes: "Lưu thay đổi"
+      delete: "Xóa"
+      edit: "Chỉnh sửa"
+      back: "Quay lại"
+      create: "Tạo"
+      update: "Cập nhật"
+      confirm: "Xác nhận"
+      remove: "Xóa bỏ"
+      add: "Thêm"
+      close: "Đóng"
+      copy: "Sao chép"
+    status:
+      active: "Hoạt động"
+      inactive: "Không hoạt động"
+      pending: "Đang chờ"
+      confirmed: "Đã xác nhận"
+    time:
+      days:
+        monday: "Thứ Hai"
+        tuesday: "Thứ Ba"
+        wednesday: "Thứ Tư"
+        thursday: "Thứ Năm"
+        friday: "Thứ Sáu"
+        saturday: "Thứ Bảy"
+        sunday: "Chủ Nhật"
+
+  navigation:
+    brand: "ThemBooking"
+    sign_in: "Đăng nhập"
+    sign_up: "Đăng ký"
+    sign_out: "Đăng xuất"
+    account_settings: "Cài đặt tài khoản"
+    dashboard: "Bảng điều khiển"
+    business_profile: "Hồ sơ doanh nghiệp"
+    services: "Dịch vụ"
+    operating_hours: "Giờ làm việc"
+    bookings: "Đặt chỗ"
+    language: "Ngôn ngữ"
+
+  footer:
+    tagline: "Giải pháp đặt chỗ hiện đại cho doanh nghiệp hiện đại. Tối ưu hóa lịch hẹn và phát triển doanh nghiệp của bạn."
+    product: "Sản phẩm"
+    features: "Tính năng"
+    pricing: "Bảng giá"
+    company: "Công ty"
+    about: "Về chúng tôi"
+    contact: "Liên hệ"
+    rights_reserved: "Đã đăng ký bản quyền."
+
+  flash:
+    success: "Thành công!"
+    error: "Lỗi!"
+    notice: "Thông báo"
+    alert: "Cảnh báo"

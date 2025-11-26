@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
+  # Locale switching
+  patch "/locale", to: "locales#update", as: :locale
+
   # Authentication
   resource :session
   resources :passwords, param: :token
 
   # Registration
   resource :registration, only: [ :new, :create ]
+  get "/sign_up", to: "registrations#new", as: :sign_up
 
   # Email Confirmation
   get "/confirm_email/:token", to: "email_confirmations#show", as: :confirm_email

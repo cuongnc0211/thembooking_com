@@ -1,0 +1,87 @@
+vi:
+  activerecord:
+    models:
+      user: "Người dùng"
+      business: "Doanh nghiệp"
+      service: "Dịch vụ"
+
+    attributes:
+      user:
+        email_address: "Địa chỉ email"
+        password: "Mật khẩu"
+        password_confirmation: "Xác nhận mật khẩu"
+        name: "Tên"
+        phone: "Số điện thoại"
+        avatar: "Ảnh đại diện"
+        time_zone: "Múi giờ"
+
+      business:
+        name: "Tên doanh nghiệp"
+        slug: "Đường dẫn đặt chỗ"
+        business_type: "Loại hình"
+        description: "Mô tả"
+        address: "Địa chỉ"
+        phone: "Số điện thoại"
+        capacity: "Sức chứa"
+        logo: "Logo doanh nghiệp"
+        operating_hours: "Giờ làm việc"
+
+      service:
+        name: "Tên dịch vụ"
+        description: "Mô tả"
+        duration_minutes: "Thời lượng"
+        price: "Giá"
+        active: "Hoạt động"
+        position: "Vị trí"
+
+    errors:
+      models:
+        user:
+          attributes:
+            email_address:
+              taken: "đã được đăng ký"
+              invalid: "không hợp lệ"
+            password:
+              too_short: "quá ngắn (tối thiểu %{count} ký tự)"
+
+        business:
+          attributes:
+            name:
+              blank: "không được để trống"
+              too_long: "quá dài (tối đa %{count} ký tự)"
+            slug:
+              blank: "không được để trống"
+              taken: "đã được sử dụng"
+              invalid: "chỉ chứa chữ thường, số và dấu gạch ngang"
+              too_short: "quá ngắn (tối thiểu %{count} ký tự)"
+              too_long: "quá dài (tối đa %{count} ký tự)"
+            business_type:
+              blank: "không được để trống"
+            capacity:
+              blank: "không được để trống"
+              not_a_number: "phải là số"
+              greater_than: "phải lớn hơn %{count}"
+              less_than_or_equal_to: "phải nhỏ hơn hoặc bằng %{count}"
+            phone:
+              invalid: "không hợp lệ"
+            operating_hours:
+              invalid_format: "có định dạng không hợp lệ"
+              invalid_time_range: "giờ đóng cửa phải sau giờ mở cửa"
+              same_time: "giờ mở cửa và đóng cửa không thể giống nhau"
+              break_outside_hours: "thời gian nghỉ phải nằm trong giờ làm việc"
+              break_invalid_range: "giờ kết thúc nghỉ phải sau giờ bắt đầu"
+              overlapping_breaks: "thời gian nghỉ bị trùng lặp"
+
+        service:
+          attributes:
+            name:
+              blank: "không được để trống"
+              taken: "đã tồn tại trong doanh nghiệp này"
+              too_long: "quá dài (tối đa %{count} ký tự)"
+            duration_minutes:
+              blank: "không được để trống"
+              inclusion: "không hợp lệ"
+            price:
+              blank: "không được để trống"
+              greater_than: "phải lớn hơn %{count}"
+              not_a_number: "phải là số"

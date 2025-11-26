@@ -18,8 +18,44 @@
         <% end %>
       </div>
 
-      <!-- Right: Auth buttons -->
+      <!-- Right: Language Switcher + Auth buttons -->
       <div class="flex items-center gap-3">
+        <!-- Language Switcher (Desktop) -->
+        <div data-controller="dropdown" class="relative hidden md:block">
+          <button data-action="click->dropdown#toggle" class="flex items-center gap-2 p-2 rounded-lg hover:bg-white/50 transition-colors">
+            <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+            </svg>
+            <span class="text-sm font-medium text-slate-700"><%= I18n.locale.to_s.upcase %></span>
+            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+
+          <!-- Language Dropdown Menu -->
+          <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-2 z-50">
+            <%= button_to locale_path, method: :patch, params: { locale: "en" }, class: "flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer text-left #{I18n.locale == :en ? 'bg-primary-50 text-primary-700' : ''}" do %>
+              <span class="mr-3 text-lg">🇬🇧</span>
+              English
+              <% if I18n.locale == :en %>
+                <svg class="ml-auto h-4 w-4 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              <% end %>
+            <% end %>
+
+            <%= button_to locale_path, method: :patch, params: { locale: "vi" }, class: "flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer text-left #{I18n.locale == :vi ? 'bg-primary-50 text-primary-700' : ''}" do %>
+              <span class="mr-3 text-lg">🇻🇳</span>
+              Tiếng Việt
+              <% if I18n.locale == :vi %>
+                <svg class="ml-auto h-4 w-4 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+
         <% if current_user %>
           <!-- Desktop: User Avatar Dropdown -->
           <div data-controller="dropdown" class="relative hidden md:block">
@@ -50,7 +86,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
-                Account Settings
+                <%= t('navigation.account_settings') %>
               <% end %>
 
               <div class="border-t border-slate-100 my-1"></div>
@@ -59,7 +95,7 @@
                 <svg class="mr-3 h-5 w-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                 </svg>
-                Sign out
+                <%= t('navigation.sign_out') %>
               <% end %>
             </div>
           </div>

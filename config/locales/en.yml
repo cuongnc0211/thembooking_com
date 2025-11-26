@@ -28,4 +28,62 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  common:
+    actions:
+      submit: "Submit"
+      cancel: "Cancel"
+      save: "Save"
+      save_changes: "Save Changes"
+      delete: "Delete"
+      edit: "Edit"
+      back: "Back"
+      create: "Create"
+      update: "Update"
+      confirm: "Confirm"
+      remove: "Remove"
+      add: "Add"
+      close: "Close"
+      copy: "Copy"
+    status:
+      active: "Active"
+      inactive: "Inactive"
+      pending: "Pending"
+      confirmed: "Confirmed"
+    time:
+      days:
+        monday: "Monday"
+        tuesday: "Tuesday"
+        wednesday: "Wednesday"
+        thursday: "Thursday"
+        friday: "Friday"
+        saturday: "Saturday"
+        sunday: "Sunday"
+
+  navigation:
+    brand: "ThemBooking"
+    sign_in: "Sign in"
+    sign_up: "Sign up"
+    sign_out: "Sign out"
+    account_settings: "Account Settings"
+    dashboard: "Dashboard"
+    business_profile: "Business Profile"
+    services: "Services"
+    operating_hours: "Operating Hours"
+    bookings: "Bookings"
+    language: "Language"
+
+  footer:
+    tagline: "Modern booking solutions for modern businesses. Streamline your scheduling and grow your business."
+    product: "Product"
+    features: "Features"
+    pricing: "Pricing"
+    company: "Company"
+    about: "About"
+    contact: "Contact"
+    rights_reserved: "All rights reserved."
+
+  flash:
+    success: "Success!"
+    error: "Error!"
+    notice: "Notice"
+    alert: "Alert"
