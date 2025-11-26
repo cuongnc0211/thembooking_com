@@ -9,15 +9,15 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
           </svg>
         </div>
-        <h1 class="text-3xl font-display font-bold text-slate-900 mb-2">Welcome back</h1>
-        <p class="text-slate-600">Sign in to your account to continue</p>
+        <h1 class="text-3xl font-display font-bold text-slate-900 mb-2"><%= t('views.sessions.new.title') %></h1>
+        <p class="text-slate-600"><%= t('views.sessions.new.subtitle') %></p>
       </div>
 
       <!-- Form -->
       <%= form_with url: session_url, class: "space-y-6" do |form| %>
         <!-- Email Field -->
         <div>
-          <%= form.label :email_address, "Email address", class: "form-label" %>
+          <%= form.label :email_address, t('activerecord.attributes.user.email_address'), class: "form-label" %>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -28,7 +28,7 @@
                 required: true,
                 autofocus: true,
                 autocomplete: "username",
-                placeholder: "you@example.com",
+                placeholder: t('views.sessions.new.email_placeholder'),
                 value: params[:email_address],
                 class: "form-input pl-10" %>
           </div>
@@ -36,7 +36,7 @@
 
         <!-- Password Field -->
         <div>
-          <%= form.label :password, "Password", class: "form-label" %>
+          <%= form.label :password, t('activerecord.attributes.user.password'), class: "form-label" %>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,7 +46,7 @@
             <%= form.password_field :password,
                 required: true,
                 autocomplete: "current-password",
-                placeholder: "Enter your password",
+                placeholder: t('views.sessions.new.password_placeholder'),
                 maxlength: 72,
                 class: "form-input pl-10" %>
           </div>
@@ -54,12 +54,12 @@
 
         <!-- Forgot Password Link -->
         <div class="flex items-center justify-end">
-          <%= link_to "Forgot password?", new_password_path, class: "text-sm font-medium text-primary-600 hover:text-primary-500 transition duration-150 ease-in-out" %>
+          <%= link_to t('views.sessions.new.forgot_password'), new_password_path, class: "text-sm font-medium text-primary-600 hover:text-primary-500 transition duration-150 ease-in-out" %>
         </div>
 
         <!-- Submit Button -->
         <div>
-          <%= form.submit "Sign in", class: "btn-primary w-full cursor-pointer" %>
+          <%= form.submit t('views.sessions.new.submit'), class: "btn-primary w-full cursor-pointer" %>
         </div>
       <% end %>
 
@@ -69,12 +69,12 @@
           <div class="w-full border-t border-slate-200"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="px-4 bg-white text-slate-500">Don't have an account?</span>
+          <span class="px-4 bg-white text-slate-500"><%= t('views.sessions.new.no_account') %></span>
         </div>
       </div>
 
       <div class="text-center">
-        <%= link_to "Create an account", new_registration_path, class: "btn-secondary w-full" %>
+        <%= link_to t('views.sessions.new.sign_up_link'), new_registration_path, class: "btn-secondary w-full" %>
       </div>
     </div>
   </div>

@@ -55,28 +55,28 @@
       <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div class="col-span-1 md:col-span-2">
-            <span class="text-xl font-display font-bold text-slate-900">ThemBooking</span>
+            <span class="text-xl font-display font-bold text-slate-900"><%= t('navigation.brand') %></span>
             <p class="mt-4 text-sm text-slate-500 max-w-xs">
-              Modern booking solutions for modern businesses. Streamline your scheduling and grow your business.
+              <%= t('footer.tagline') %>
             </p>
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-slate-900 tracking-wider uppercase">Product</h3>
+            <h3 class="text-sm font-semibold text-slate-900 tracking-wider uppercase"><%= t('footer.product') %></h3>
             <ul class="mt-4 space-y-4">
-              <li><a href="#" class="text-sm text-slate-500 hover:text-primary-600 transition-colors">Features</a></li>
-              <li><a href="#" class="text-sm text-slate-500 hover:text-primary-600 transition-colors">Pricing</a></li>
+              <li><a href="#" class="text-sm text-slate-500 hover:text-primary-600 transition-colors"><%= t('footer.features') %></a></li>
+              <li><a href="#" class="text-sm text-slate-500 hover:text-primary-600 transition-colors"><%= t('footer.pricing') %></a></li>
             </ul>
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-slate-900 tracking-wider uppercase">Company</h3>
+            <h3 class="text-sm font-semibold text-slate-900 tracking-wider uppercase"><%= t('footer.company') %></h3>
             <ul class="mt-4 space-y-4">
-              <li><a href="#" class="text-sm text-slate-500 hover:text-primary-600 transition-colors">About</a></li>
-              <li><a href="#" class="text-sm text-slate-500 hover:text-primary-600 transition-colors">Contact</a></li>
+              <li><a href="#" class="text-sm text-slate-500 hover:text-primary-600 transition-colors"><%= t('footer.about') %></a></li>
+              <li><a href="#" class="text-sm text-slate-500 hover:text-primary-600 transition-colors"><%= t('footer.contact') %></a></li>
             </ul>
           </div>
         </div>
         <div class="mt-12 border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p class="text-sm text-slate-400">&copy; <%= Time.current.year %> ThemBooking. All rights reserved.</p>
+          <p class="text-sm text-slate-400">&copy; <%= Time.current.year %> <%= t('navigation.brand') %>. <%= t('footer.rights_reserved') %></p>
           <div class="flex space-x-6">
             <a href="#" class="text-slate-400 hover:text-slate-500">
               <span class="sr-only">Twitter</span>

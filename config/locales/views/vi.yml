@@ -2,10 +2,21 @@ vi:
   views:
     home:
       index:
-        hero_title: "Hệ Thống Đặt Chỗ Hiện Đại Cho Doanh Nghiệp Dịch Vụ"
-        hero_subtitle: "Tối ưu hóa lịch hẹn, quản lý khách vãng lai, và phát triển doanh nghiệp với nền tảng đặt chỗ giá cả phải chăng"
+        setup_business_title: "Thiết Lập Doanh Nghiệp"
+        setup_business_message: "Bắt đầu với ThemBooking bằng cách tạo hồ sơ doanh nghiệp. Thêm tên doanh nghiệp, dịch vụ và bắt đầu nhận đặt chỗ trong vài phút."
+        coming_soon: "Sắp Có"
+        badge_text: "Mới: Rails 8.1 + Solid Trio"
+        hero_title: "Đặt chỗ đơn giản và đẹp mắt."
+        hero_subtitle: "ThemBooking là cách hiện đại để quản lý lịch hẹn. Được xây dựng với công nghệ mới nhất để mang lại tốc độ, độ tin cậy và trải nghiệm người dùng cao cấp."
+        dashboard_button: "Đến Bảng Điều Khiển"
         get_started: "Bắt Đầu Miễn Phí"
         learn_more: "Tìm Hiểu Thêm"
+        feature1_title: "Cực Kỳ Nhanh"
+        feature1_description: "Được hỗ trợ bởi Rails 8 và Solid Cache, trải nghiệm tải trang tức thì và tương tác mượt mà."
+        feature2_title: "Công Nghệ Hiện Đại"
+        feature2_description: "Được xây dựng với Importmap, Tailwind CSS và PostgreSQL. Không cần các bước build phức tạp, chỉ là năng suất thuần túy."
+        feature3_title: "An Toàn & Đáng Tin Cậy"
+        feature3_description: "Bảo mật cấp doanh nghiệp với bcrypt và xử lý mật khẩu an toàn ngay từ đầu."
 
     sessions:
       new:
@@ -22,14 +33,19 @@ vi:
     registrations:
       new:
         title: "Tạo tài khoản"
-        subtitle: "Bắt đầu với ThemBooking ngay hôm nay"
-        name_placeholder: "Họ và tên"
+        subtitle: "Bắt đầu hành trình đặt chỗ với ThemBooking"
+        errors_title: "Vui lòng sửa các lỗi sau:"
         email_placeholder: "email@example.com"
         password_placeholder: "Tạo mật khẩu"
         password_hint: "Tối thiểu 8 ký tự"
+        password_confirmation_placeholder: "Xác nhận mật khẩu"
         submit: "Tạo tài khoản"
         have_account: "Đã có tài khoản?"
         sign_in_link: "Đăng nhập"
+        terms_text: "Bằng việc tạo tài khoản, bạn đồng ý với"
+        terms_of_service: "Điều khoản dịch vụ"
+        terms_and: "và"
+        privacy_policy: "Chính sách bảo mật"
 
     passwords:
       new:
@@ -43,8 +59,11 @@ vi:
         title: "Tạo mật khẩu mới"
         subtitle: "Nhập mật khẩu mới của bạn"
         password_placeholder: "Mật khẩu mới"
+        password_hint: "Tối thiểu 8 ký tự"
         password_confirmation_placeholder: "Xác nhận mật khẩu mới"
         submit: "Đặt lại mật khẩu"
+        remember_password: "Nhớ mật khẩu?"
+        sign_in_link: "Quay lại đăng nhập"
 
     email_confirmations:
       show:

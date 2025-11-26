@@ -11,7 +11,7 @@
 
   <!-- Logo Upload -->
   <div>
-    <%= form.label :logo, "Business Logo", class: "form-label" %>
+    <%= form.label :logo, t('views.dashboard.businesses.form.logo_label'), class: "form-label" %>
     <div class="mt-2 p-4 border-2 border-dashed border-slate-200 rounded-xl hover:border-primary-400 transition-colors bg-slate-50/50">
       <% if business.logo.attached? %>
         <div class="flex items-center space-x-6">
@@ -19,9 +19,9 @@
           <div>
             <%= form.file_field :logo, class: "hidden", id: "logo-upload" %>
             <label for="logo-upload" class="btn-secondary py-2 px-4 text-sm cursor-pointer">
-              Change Logo
+              <%= t('views.dashboard.businesses.form.logo_change') %>
             </label>
-            <p class="mt-2 text-xs text-slate-500">JPEG, PNG, GIF, or WebP. Max 5MB.</p>
+            <p class="mt-2 text-xs text-slate-500"><%= t('views.dashboard.businesses.form.logo_hint') %></p>
           </div>
         </div>
       <% else %>
@@ -31,12 +31,12 @@
           </svg>
           <div class="mt-4 flex text-sm text-slate-600 justify-center">
             <label for="logo-upload" class="relative cursor-pointer rounded-md font-medium text-primary-600 hover:text-primary-500 focus-within:outline-none">
-              <span>Upload a file</span>
+              <span><%= t('views.dashboard.businesses.form.logo_upload') %></span>
               <%= form.file_field :logo, class: "sr-only", id: "logo-upload" %>
             </label>
-            <p class="pl-1">or drag and drop</p>
+            <p class="pl-1"><%= t('views.dashboard.businesses.form.logo_drag') %></p>
           </div>
-          <p class="text-xs text-slate-500">PNG, JPG, GIF up to 5MB</p>
+          <p class="text-xs text-slate-500"><%= t('views.dashboard.businesses.form.logo_types') %></p>
         </div>
       <% end %>
     </div>
@@ -44,57 +44,57 @@
 
   <!-- Business Name -->
   <div>
-    <%= form.label :name, "Business Name", class: "form-label" %>
-    <%= form.text_field :name, class: "form-input", placeholder: "e.g., John's Barbershop" %>
+    <%= form.label :name, t('views.dashboard.businesses.form.name_label'), class: "form-label" %>
+    <%= form.text_field :name, class: "form-input", placeholder: t('views.dashboard.businesses.form.name_placeholder') %>
   </div>
 
   <!-- Business Type -->
   <div>
-    <%= form.label :business_type, "Business Type", class: "form-label" %>
-    <%= form.select :business_type, Business.business_types.keys.map { |t| [t.titleize, t] }, { prompt: "Select business type" }, class: "form-input" %>
+    <%= form.label :business_type, t('views.dashboard.businesses.form.type_label'), class: "form-label" %>
+    <%= form.select :business_type, Business.business_types.keys.map { |t| [t.titleize, t] }, { prompt: t('views.dashboard.businesses.form.type_prompt') }, class: "form-input" %>
   </div>
 
   <!-- Booking URL (Slug) -->
   <div>
-    <%= form.label :slug, "Booking URL", class: "form-label" %>
+    <%= form.label :slug, t('views.dashboard.businesses.form.slug_label'), class: "form-label" %>
     <div class="mt-1 flex rounded-xl shadow-sm">
-      <%= form.text_field :slug, class: "flex-1 form-input rounded-r-none border-r-0 focus:ring-0", placeholder: "your-shop-name" %>
+      <%= form.text_field :slug, class: "flex-1 form-input rounded-r-none border-r-0 focus:ring-0", placeholder: t('views.dashboard.businesses.form.slug_placeholder') %>
       <span class="inline-flex items-center px-4 rounded-r-xl border border-l-0 border-slate-200 bg-slate-50 text-slate-500 text-sm font-medium">
         .thembooking.com
       </span>
     </div>
-    <p class="mt-1.5 text-sm text-slate-500">Only lowercase letters, numbers, and hyphens. This will be your public booking URL.</p>
+    <p class="mt-1.5 text-sm text-slate-500"><%= t('views.dashboard.businesses.form.slug_hint') %></p>
   </div>
 
   <!-- Description -->
   <div>
-    <%= form.label :description, "Description", class: "form-label" %>
-    <%= form.text_area :description, rows: 4, class: "form-input", placeholder: "Tell customers about your business..." %>
+    <%= form.label :description, t('views.dashboard.businesses.form.description_label'), class: "form-label" %>
+    <%= form.text_area :description, rows: 4, class: "form-input", placeholder: t('views.dashboard.businesses.form.description_placeholder') %>
   </div>
 
   <!-- Address -->
   <div>
-    <%= form.label :address, "Address", class: "form-label" %>
-    <%= form.text_field :address, class: "form-input", placeholder: "123 Main St, Ho Chi Minh City" %>
+    <%= form.label :address, t('views.dashboard.businesses.form.address_label'), class: "form-label" %>
+    <%= form.text_field :address, class: "form-input", placeholder: t('views.dashboard.businesses.form.address_placeholder') %>
   </div>
 
   <!-- Phone -->
   <div>
-    <%= form.label :phone, "Phone Number", class: "form-label" %>
-    <%= form.telephone_field :phone, class: "form-input", placeholder: "+84 123 456 789" %>
+    <%= form.label :phone, t('views.dashboard.businesses.form.phone_label'), class: "form-label" %>
+    <%= form.telephone_field :phone, class: "form-input", placeholder: t('views.dashboard.businesses.form.phone_placeholder') %>
   </div>
 
   <!-- Capacity -->
   <div>
-    <%= form.label :capacity, "Capacity", class: "form-label" %>
-    <%= form.number_field :capacity, class: "form-input", min: 1, max: 50, placeholder: "e.g., 3" %>
-    <p class="mt-1.5 text-sm text-slate-500">How many customers can you serve at the same time?</p>
+    <%= form.label :capacity, t('views.dashboard.businesses.form.capacity_label'), class: "form-label" %>
+    <%= form.number_field :capacity, class: "form-input", min: 1, max: 50, placeholder: t('views.dashboard.businesses.form.capacity_placeholder') %>
+    <p class="mt-1.5 text-sm text-slate-500"><%= t('views.dashboard.businesses.form.capacity_hint') %></p>
   </div>
 
   <!-- Operating Hours Section -->
   <div class="space-y-4" data-controller="operating-hours">
-    <h3 class="text-lg font-semibold text-slate-900">Operating Hours</h3>
-    <p class="text-sm text-slate-500">Set your business hours and break times for each day</p>
+    <h3 class="text-lg font-semibold text-slate-900"><%= t('views.dashboard.businesses.form.operating_hours_title') %></h3>
+    <p class="text-sm text-slate-500"><%= t('views.dashboard.businesses.form.operating_hours_subtitle') %></p>
 
     <% Business::WEEKDAYS.each do |day| %>
       <% day_hours = business.operating_hours&.dig(day) || {} %>
@@ -104,7 +104,7 @@
       <div class="border border-slate-200 rounded-lg p-4 space-y-3">
         <!-- Day Header with Open/Close Times -->
         <div class="flex items-center gap-4">
-          <label class="w-28 text-sm font-medium text-slate-700 capitalize"><%= day %></label>
+          <label class="w-28 text-sm font-medium text-slate-700 capitalize"><%= t("time.day_names_short.#{day}") %></label>
 
           <%= form.time_field "operating_hours[#{day}][open]",
                 value: day_hours["open"],
@@ -112,7 +112,7 @@
                 disabled: is_closed,
                 data: { operating_hours_target: "#{day}Open" } %>
 
-          <span class="text-slate-500">to</span>
+          <span class="text-slate-500"><%= t('views.dashboard.businesses.form.day_open') %></span>
 
           <%= form.time_field "operating_hours[#{day}][close]",
                 value: day_hours["close"],
@@ -129,12 +129,12 @@
                   day: day
                 } %>
 
-          <%= form.label "operating_hours[#{day}][closed]", "Closed", class: "ml-2 text-sm text-slate-600" %>
+          <%= form.label "operating_hours[#{day}][closed]", t('views.dashboard.businesses.form.day_closed'), class: "ml-2 text-sm text-slate-600" %>
         </div>
 
         <!-- Break Times -->
         <div class="ml-32 space-y-2" data-operating-hours-target="<%= day %>Breaks">
-          <label class="text-xs font-medium text-slate-600 uppercase">Break Times</label>
+          <label class="text-xs font-medium text-slate-600 uppercase"><%= t('views.dashboard.businesses.form.breaks_title') %></label>
 
           <div class="space-y-2">
             <% breaks.each_with_index do |break_period, index| %>
@@ -142,7 +142,7 @@
                 <%= form.time_field "operating_hours[#{day}][breaks][][start]",
                       value: break_period["start"],
                       class: "form-input w-28 text-sm",
-                      placeholder: "Start",
+                      placeholder: t('views.dashboard.businesses.form.break_start_placeholder'),
                       disabled: is_closed %>
 
                 <span class="text-slate-400 text-sm">to</span>
@@ -150,13 +150,13 @@
                 <%= form.time_field "operating_hours[#{day}][breaks][][end]",
                       value: break_period["end"],
                       class: "form-input w-28 text-sm",
-                      placeholder: "End",
+                      placeholder: t('views.dashboard.businesses.form.break_end_placeholder'),
                       disabled: is_closed %>
 
                 <button type="button"
                         class="text-red-600 hover:text-red-700 text-sm"
                         data-action="click->operating-hours#removeBreak">
-                  Remove
+                  <%= t('views.dashboard.businesses.form.break_remove') %>
                 </button>
               </div>
             <% end %>
@@ -167,7 +167,7 @@
                   data-action="click->operating-hours#addBreak"
                   data-day="<%= day %>"
                   <%= 'disabled' if is_closed %>>
-            + Add Break Time
+            <%= t('views.dashboard.businesses.form.break_add') %>
           </button>
         </div>
       </div>
@@ -179,26 +179,26 @@
         <input type="time"
                name="business[operating_hours][DAY_PLACEHOLDER][breaks][][start]"
                class="form-input w-28 text-sm"
-               placeholder="Start">
+               placeholder="<%= t('views.dashboard.businesses.form.break_start_placeholder') %>">
 
         <span class="text-slate-400 text-sm">to</span>
 
         <input type="time"
                name="business[operating_hours][DAY_PLACEHOLDER][breaks][][end]"
                class="form-input w-28 text-sm"
-               placeholder="End">
+               placeholder="<%= t('views.dashboard.businesses.form.break_end_placeholder') %>">
 
         <button type="button"
                 class="text-red-600 hover:text-red-700 text-sm"
                 data-action="click->operating-hours#removeBreak">
-          Remove
+          <%= t('views.dashboard.businesses.form.break_remove') %>
         </button>
       </div>
     </template>
   </div>
 
   <!-- Submit Button -->
-  <div class="flex justify-end pt-4 border-t border-slate-100">
-    <%= form.submit business.persisted? ? "Save Changes" : "Create Business", class: "btn-primary cursor-pointer" %>
+  <div class="flex justify-end pt-4 border-slate-100">
+    <%= form.submit business.persisted? ? t('views.dashboard.businesses.form.submit_update') : t('views.dashboard.businesses.form.submit_create'), class: "btn-primary cursor-pointer" %>
   </div>
 <% end %>

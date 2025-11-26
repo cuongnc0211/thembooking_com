@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_25_095426) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_26_073813) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,28 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_095426) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.bigint "business_id", null: false
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.string "customer_email", limit: 255
+    t.string "customer_name", limit: 100, null: false
+    t.string "customer_phone", limit: 20, null: false
+    t.text "notes"
+    t.datetime "scheduled_at", null: false
+    t.bigint "service_id", null: false
+    t.integer "source", default: 0, null: false
+    t.datetime "started_at"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["business_id", "scheduled_at"], name: "index_bookings_on_business_id_and_scheduled_at"
+    t.index ["business_id", "status"], name: "index_bookings_on_business_id_and_status"
+    t.index ["business_id"], name: "index_bookings_on_business_id"
+    t.index ["customer_email"], name: "index_bookings_on_customer_email"
+    t.index ["customer_phone"], name: "index_bookings_on_customer_phone"
+    t.index ["service_id"], name: "index_bookings_on_service_id"
   end
 
   create_table "businesses", force: :cascade do |t|
@@ -106,6 +128,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_095426) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bookings", "businesses"
+  add_foreign_key "bookings", "services"
   add_foreign_key "businesses", "users"
   add_foreign_key "services", "businesses"
   add_foreign_key "sessions", "users"

@@ -16,7 +16,7 @@ RSpec.describe Service, type: :model do
         service = create(:service, name: "Haircut")
         duplicate = build(:service, name: "Haircut", business: service.business)
         expect(duplicate).not_to be_valid
-        expect(duplicate.errors[:name]).to include("has already been taken")
+        expect(duplicate.errors[:name]).to include("is already taken for this business")
       end
 
       it "allows same name in different businesses" do
@@ -33,7 +33,7 @@ RSpec.describe Service, type: :model do
       it "rejects invalid durations" do
         service = build(:service, duration_minutes: 25)
         expect(service).not_to be_valid
-        expect(service.errors[:duration_minutes]).to include("is not included in the list")
+        expect(service.errors[:duration_minutes]).to include("is not a valid duration")
       end
     end
 

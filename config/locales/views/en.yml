@@ -2,10 +2,21 @@ en:
   views:
     home:
       index:
-        hero_title: "Modern Booking System for Service Businesses"
-        hero_subtitle: "Streamline appointments, manage walk-ins, and grow your business with our affordable booking platform"
+        setup_business_title: "Set Up Your Business"
+        setup_business_message: "Get started with ThemBooking by creating your business profile. Add your business name, services, and start accepting bookings in minutes."
+        coming_soon: "Coming Soon"
+        badge_text: "New: Rails 8.1 + Solid Trio"
+        hero_title: "Booking made simple and beautiful."
+        hero_subtitle: "ThemBooking is the modern way to manage appointments. Built with the latest tech stack for speed, reliability, and a premium user experience."
+        dashboard_button: "Go to Dashboard"
         get_started: "Get Started Free"
         learn_more: "Learn More"
+        feature1_title: "Lightning Fast"
+        feature1_description: "Powered by Rails 8 and Solid Cache, experience instant page loads and snappy interactions."
+        feature2_title: "Modern Stack"
+        feature2_description: "Built with Importmap, Tailwind CSS, and PostgreSQL. No complex build steps, just pure productivity."
+        feature3_title: "Secure & Reliable"
+        feature3_description: "Enterprise-grade security with bcrypt and secure password handling out of the box."
 
     sessions:
       new:
@@ -21,15 +32,20 @@ en:
 
     registrations:
       new:
-        title: "Create your account"
-        subtitle: "Get started with ThemBooking today"
-        name_placeholder: "Your full name"
-        email_placeholder: "your@email.com"
+        title: "Create account"
+        subtitle: "Start your booking journey with ThemBooking"
+        errors_title: "Please fix the following errors:"
+        email_placeholder: "you@example.com"
         password_placeholder: "Create a password"
-        password_hint: "Must be at least 8 characters"
+        password_hint: "Minimum 8 characters required"
+        password_confirmation_placeholder: "Confirm your password"
         submit: "Create account"
         have_account: "Already have an account?"
-        sign_in_link: "Sign in"
+        sign_in_link: "Sign in instead"
+        terms_text: "By creating an account, you agree to our"
+        terms_of_service: "Terms of Service"
+        terms_and: "and"
+        privacy_policy: "Privacy Policy"
 
     passwords:
       new:
@@ -43,8 +59,11 @@ en:
         title: "Create new password"
         subtitle: "Enter your new password below"
         password_placeholder: "New password"
+        password_hint: "Minimum 8 characters required"
         password_confirmation_placeholder: "Confirm new password"
         submit: "Reset password"
+        remember_password: "Remember your password?"
+        sign_in_link: "Back to sign in"
 
     email_confirmations:
       show:

@@ -24,7 +24,7 @@ RSpec.describe Business, type: :model do
 
         business.slug = "Invalid Slug!"
         expect(business).not_to be_valid
-        expect(business.errors[:slug]).to include("only allows lowercase letters, numbers, and hyphens")
+        expect(business.errors[:slug]).to include("can only contain lowercase letters, numbers, and hyphens")
       end
 
       it "normalizes slug to lowercase and strips whitespace" do

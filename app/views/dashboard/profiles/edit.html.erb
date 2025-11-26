@@ -1,5 +1,5 @@
 <div class="max-w-2xl mx-auto mt-8 px-4">
-  <h1 class="text-3xl font-display font-bold text-slate-900 mb-6">Account Settings</h1>
+  <h1 class="text-3xl font-display font-bold text-slate-900 mb-6"><%= t('views.dashboard.profiles.edit.title') %></h1>
 
   <%= form_with model: @user, url: dashboard_profile_path, method: :patch, class: "space-y-6" do |form| %>
     <% if @user.errors.any? %>
@@ -14,7 +14,7 @@
 
     <!-- Avatar Upload -->
     <div data-controller="image-preview" class="card p-6">
-      <label class="block text-sm font-medium text-slate-700 mb-4">Profile Photo</label>
+      <label class="block text-sm font-medium text-slate-700 mb-4"><%= t('views.dashboard.profiles.edit.avatar_label') %></label>
 
       <div class="flex items-center space-x-6">
         <% if @user.avatar.attached? %>
@@ -38,61 +38,61 @@
                 action: "change->image-preview#preview"
               } %>
           <label for="avatar-upload" class="btn-secondary py-2 px-4 text-sm cursor-pointer">
-            <%= @user.avatar.attached? ? "Change Photo" : "Upload Photo" %>
+            <%= @user.avatar.attached? ? t('views.dashboard.profiles.edit.avatar_change') : t('views.dashboard.profiles.edit.avatar_upload') %>
           </label>
-          <p class="mt-2 text-xs text-slate-500">JPG, PNG, or GIF. Max 5MB.</p>
+          <p class="mt-2 text-xs text-slate-500"><%= t('views.dashboard.profiles.edit.avatar_hint') %></p>
         </div>
       </div>
     </div>
 
     <!-- Personal Information -->
     <div class="card p-6 space-y-6">
-      <h2 class="text-lg font-semibold text-slate-900 border-b border-slate-100 pb-4">Personal Information</h2>
+      <h2 class="text-lg font-semibold text-slate-900 border-b border-slate-100 pb-4"><%= t('views.dashboard.profiles.edit.subtitle') %></h2>
       
       <!-- Name -->
       <div>
-        <%= form.label :name, class: "form-label" %>
-        <%= form.text_field :name, class: "form-input", placeholder: "Your full name" %>
+        <%= form.label :name, t('views.dashboard.profiles.edit.name_label'), class: "form-label" %>
+        <%= form.text_field :name, class: "form-input", placeholder: t('views.dashboard.profiles.edit.name_placeholder') %>
       </div>
 
       <!-- Email -->
       <div>
-        <%= form.label :email_address, "Email", class: "form-label" %>
+        <%= form.label :email_address, t('views.dashboard.profiles.edit.email_label'), class: "form-label" %>
         <%= form.email_field :email_address, class: "form-input" %>
         <% if @user.confirmed? %>
           <p class="mt-1.5 text-sm text-green-600 flex items-center">
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-            Verified
+            <%= t('common.status.verified') %>
           </p>
         <% else %>
           <p class="mt-1.5 text-sm text-amber-600 flex items-center">
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-            Not verified
+            <%= t('common.status.not_verified') %>
           </p>
         <% end %>
       </div>
 
       <!-- Phone -->
       <div>
-        <%= form.label :phone, class: "form-label" %>
-        <%= form.telephone_field :phone, class: "form-input", placeholder: "+84 123 456 789" %>
-        <p class="mt-1.5 text-sm text-slate-500">Optional. Include country code (e.g., +84 for Vietnam)</p>
+        <%= form.label :phone, t('views.dashboard.profiles.edit.phone_label'), class: "form-label" %>
+        <%= form.telephone_field :phone, class: "form-input", placeholder: t('views.dashboard.profiles.edit.phone_placeholder') %>
+        <p class="mt-1.5 text-sm text-slate-500"><%= t('views.dashboard.profiles.edit.phone_hint') %></p>
       </div>
 
       <!-- Time Zone -->
       <div>
-        <%= form.label :time_zone, class: "form-label" %>
+        <%= form.label :time_zone, t('views.dashboard.profiles.edit.timezone_label'), class: "form-label" %>
         <%= form.time_zone_select :time_zone,
               ActiveSupport::TimeZone.all,
               { default: @user.time_zone || "Hanoi" },
               class: "form-input" %>
-        <p class="mt-1.5 text-sm text-slate-500">Used to display booking times in your local timezone</p>
+        <p class="mt-1.5 text-sm text-slate-500"><%= t('views.dashboard.profiles.edit.timezone_hint') %></p>
       </div>
     </div>
 
     <!-- Submit Button -->
     <div class="flex justify-end pt-4">
-      <%= form.submit "Save Changes", class: "btn-primary cursor-pointer" %>
+      <%= form.submit t('common.actions.save_changes'), class: "btn-primary cursor-pointer" %>
     </div>
   <% end %>
 
@@ -100,10 +100,10 @@
   <div class="mt-12 card p-6">
     <div class="flex items-center justify-between">
       <div>
-        <h2 class="text-lg font-semibold text-slate-900">Password & Security</h2>
-        <p class="text-sm text-slate-500 mt-1">Manage your password and security settings</p>
+        <h2 class="text-lg font-semibold text-slate-900"><%= t('views.dashboard.profiles.edit.password_section') %></h2>
+        <p class="text-sm text-slate-500 mt-1"><%= t('views.dashboard.profiles.edit.password_section_subtitle') %></p>
       </div>
-      <%= link_to "Reset Password", new_password_path, class: "btn-secondary" %>
+      <%= link_to t('views.dashboard.profiles.edit.reset_password_button'), new_password_path, class: "btn-secondary" %>
     </div>
   </div>
 </div>

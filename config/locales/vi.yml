@@ -1,5 +1,6 @@
 vi:
   common:
+    errors_header: "Vui lòng sửa các lỗi sau:"
     actions:
       submit: "Gửi"
       cancel: "Hủy"
@@ -16,10 +17,17 @@ vi:
       close: "Đóng"
       copy: "Sao chép"
     status:
+      title: "Trạng Thái"
       active: "Hoạt động"
       inactive: "Không hoạt động"
       pending: "Đang chờ"
       confirmed: "Đã xác nhận"
+      verified: "Đã xác minh"
+      not_verified: "Chưa xác minh"
+    order: "Thứ Tự"
+    actions_title: "Hành Động"
+    confirm_delete: "Bạn có chắc chắn?"
+    back_to: "Quay lại %{resource}"
     time:
       days:
         monday: "Thứ Hai"

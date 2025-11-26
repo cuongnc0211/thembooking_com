@@ -1,11 +1,11 @@
 <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 card">
-  <h1 class="text-3xl font-bold mb-6">Edit Service</h1>
+  <h1 class="text-3xl font-bold mb-6"><%= t('views.dashboard.services.edit.title') %></h1>
 
   <div class="p-6">
     <%= render "form", service: @service %>
   </div>
 
   <div class="mt-4">
-    <%= link_to "Back to Services", dashboard_services_path, class: "text-gray-600 hover:text-gray-900" %>
+    <%= link_to t('common.back_to', resource: t('views.dashboard.services.index.title')), dashboard_services_path, class: "text-gray-600 hover:text-gray-900" %>
   </div>
 </div>

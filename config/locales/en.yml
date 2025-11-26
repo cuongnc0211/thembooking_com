@@ -29,6 +29,7 @@
 
 en:
   common:
+    errors_header: "Please fix the following errors:"
     actions:
       submit: "Submit"
       cancel: "Cancel"
@@ -45,10 +46,17 @@ en:
       close: "Close"
       copy: "Copy"
     status:
+      title: "Status"
       active: "Active"
       inactive: "Inactive"
       pending: "Pending"
       confirmed: "Confirmed"
+      verified: "Verified"
+      not_verified: "Not verified"
+    order: "Order"
+    actions_title: "Actions"
+    confirm_delete: "Are you sure?"
+    back_to: "Back to %{resource}"
     time:
       days:
         monday: "Monday"
