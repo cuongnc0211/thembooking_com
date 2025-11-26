@@ -41,7 +41,7 @@
       <% end %>
     </div>
 
-    <!-- Contact Info -->
+    <!-- Contact Info & Capacity -->
     <div class="card p-6">
       <h3 class="text-lg font-semibold mb-2">Contact Information</h3>
       <dl class="space-y-2">
@@ -57,6 +57,15 @@
             <dd class="text-slate-900"><%= @business.phone %></dd>
           </div>
         <% end %>
+        <div>
+          <dt class="text-sm text-slate-500">Capacity</dt>
+          <dd class="text-slate-900">
+            <%= @business.capacity %>
+            <span class="text-sm text-slate-500">
+              <%= @business.capacity == 1 ? "client" : "clients" %> at a time
+            </span>
+          </dd>
+        </div>
         <% if @business.address.blank? && @business.phone.blank? %>
           <p class="text-slate-400 italic">No contact info added yet.</p>
         <% end %>

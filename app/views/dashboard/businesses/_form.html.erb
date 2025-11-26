@@ -84,6 +84,13 @@
     <%= form.telephone_field :phone, class: "form-input", placeholder: "+84 123 456 789" %>
   </div>
 
+  <!-- Capacity -->
+  <div>
+    <%= form.label :capacity, "Capacity", class: "form-label" %>
+    <%= form.number_field :capacity, class: "form-input", min: 1, max: 50, placeholder: "e.g., 3" %>
+    <p class="mt-1.5 text-sm text-slate-500">How many customers can you serve at the same time?</p>
+  </div>
+
   <!-- Operating Hours Section -->
   <div class="space-y-4" data-controller="operating-hours">
     <h3 class="text-lg font-semibold text-slate-900">Operating Hours</h3>

@@ -47,7 +47,8 @@ RSpec.describe "Dashboard::Businesses", type: :request do
             business_type: "barber",
             description: "Best barbershop in town",
             address: "123 Main St, Ho Chi Minh City",
-            phone: "+84 123 456 789"
+            phone: "+84 123 456 789",
+            capacity: 3
           }
         }
       end
@@ -165,6 +166,11 @@ RSpec.describe "Dashboard::Businesses", type: :request do
         it "updates the business" do
           patch dashboard_business_path, params: { business: { name: "New Name" } }
           expect(business.reload.name).to eq("New Name")
+        end
+
+        it "updates capacity" do
+          patch dashboard_business_path, params: { business: { capacity: 5 } }
+          expect(business.reload.capacity).to eq(5)
         end
 
         it "redirects to show page with success message" do

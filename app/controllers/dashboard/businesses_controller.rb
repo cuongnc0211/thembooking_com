@@ -54,6 +54,7 @@ module Dashboard
         :description,
         :address,
         :phone,
+        :capacity,
         :logo,
         operating_hours: {
           monday: [ :open, :close, :closed, breaks: [ :start, :end ] ],
