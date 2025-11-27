@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :service do
     association :business
-    name { "Men's Haircut" }
-    description { "Professional haircut service for men" }
+    sequence(:name) { |n| "Service #{n}" }
+    description { Faker::Lorem.sentence }
     duration_minutes { 30 }
     price_cents { 8000000 } # 80,000 VND
     currency { "VND" }

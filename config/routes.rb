@@ -42,6 +42,12 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
+  # Public booking routes (must be at the end to avoid conflicts)
+  get "/:business_slug", to: "bookings#new", as: :booking, constraints: { business_slug: /[a-z0-9\-]+/ }
+  get "/:business_slug/availability", to: "bookings#availability"
+  post "/:business_slug/bookings", to: "bookings#create"
+  get "/:business_slug/bookings/:id", to: "bookings#show", as: :booking_confirmation
+
   # Defines the root path route ("/")
   root "home#index"
 end
