@@ -4,6 +4,9 @@ class Service < ApplicationRecord
   # Money integration
   monetize :price_cents, with_model_currency: :currency
 
+  # Scopes
+  scope :active, -> { where(active: true) }
+
   # Validations
   validates :name, presence: true,
                    length: { maximum: 100 },

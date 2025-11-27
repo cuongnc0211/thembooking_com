@@ -69,6 +69,8 @@ group :development do
 
   # Preview email in browser instead of sending
   gem "letter_opener"
+
+  gem 'bullet'
 end
 
 gem "resend"

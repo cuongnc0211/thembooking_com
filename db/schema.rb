@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_26_073813) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_27_045310) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,16 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_26_073813) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "booking_services", force: :cascade do |t|
+    t.bigint "booking_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "service_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["booking_id", "service_id"], name: "index_booking_services_on_booking_id_and_service_id", unique: true
+    t.index ["booking_id"], name: "index_booking_services_on_booking_id"
+    t.index ["service_id"], name: "index_booking_services_on_service_id"
+  end
+
   create_table "bookings", force: :cascade do |t|
     t.bigint "business_id", null: false
     t.datetime "completed_at"
@@ -51,7 +61,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_26_073813) do
     t.string "customer_phone", limit: 20, null: false
     t.text "notes"
     t.datetime "scheduled_at", null: false
-    t.bigint "service_id", null: false
     t.integer "source", default: 0, null: false
     t.datetime "started_at"
     t.integer "status", default: 0, null: false
@@ -61,7 +70,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_26_073813) do
     t.index ["business_id"], name: "index_bookings_on_business_id"
     t.index ["customer_email"], name: "index_bookings_on_customer_email"
     t.index ["customer_phone"], name: "index_bookings_on_customer_phone"
-    t.index ["service_id"], name: "index_bookings_on_service_id"
   end
 
   create_table "businesses", force: :cascade do |t|
@@ -128,8 +136,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_26_073813) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "booking_services", "bookings"
+  add_foreign_key "booking_services", "services"
   add_foreign_key "bookings", "businesses"
-  add_foreign_key "bookings", "services"
   add_foreign_key "businesses", "users"
   add_foreign_key "services", "businesses"
   add_foreign_key "sessions", "users"
