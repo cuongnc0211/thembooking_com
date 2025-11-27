@@ -6,7 +6,7 @@ vi:
         setup_business_message: "Bắt đầu với ThemBooking bằng cách tạo hồ sơ doanh nghiệp. Thêm tên doanh nghiệp, dịch vụ và bắt đầu nhận đặt chỗ trong vài phút."
         coming_soon: "Sắp Có"
         badge_text: "Mới: Rails 8.1 + Solid Trio"
-        hero_title: "Đặt chỗ đơn giản và đẹp mắt."
+        hero_title: "Đặt chỗ <span class='text-gradient'>Đơn giản</span> và <span class='text-gradient'>Phong cách</span>."
         hero_subtitle: "ThemBooking là cách hiện đại để quản lý lịch hẹn. Được xây dựng với công nghệ mới nhất để mang lại tốc độ, độ tin cậy và trải nghiệm người dùng cao cấp."
         dashboard_button: "Đến Bảng Điều Khiển"
         get_started: "Bắt Đầu Miễn Phí"

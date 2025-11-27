@@ -6,7 +6,7 @@ en:
         setup_business_message: "Get started with ThemBooking by creating your business profile. Add your business name, services, and start accepting bookings in minutes."
         coming_soon: "Coming Soon"
         badge_text: "New: Rails 8.1 + Solid Trio"
-        hero_title: "Booking made simple and beautiful."
+        hero_title: "Booking made <span class='text-gradient'>simple</span> and <span class='text-gradient'>beautiful</span>."
         hero_subtitle: "ThemBooking is the modern way to manage appointments. Built with the latest tech stack for speed, reliability, and a premium user experience."
         dashboard_button: "Go to Dashboard"
         get_started: "Get Started Free"

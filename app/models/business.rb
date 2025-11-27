@@ -40,7 +40,11 @@ class Business < ApplicationRecord
   normalizes :slug, with: ->(slug) { slug.strip.downcase }
 
   def booking_url
-    "#{slug}.thembooking.com"
+    if Rails.env.development?
+      "localhost:3000/#{slug}"
+    else
+      "thembooking.com/#{slug}"
+    end
   end
 
   # Operating hours helper methods
