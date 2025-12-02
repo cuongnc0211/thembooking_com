@@ -1,0 +1,102 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header with title and add walk-in button -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">Bookings</h1>
+    <%= link_to "+ Walk-In", new_dashboard_booking_path, class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded" %>
+  </div>
+
+  <!-- Capacity Indicator -->
+  <%= render "capacity_indicator", business: @business, current_capacity: @current_capacity, total_capacity: @total_capacity, capacity_percentage: @capacity_percentage %>
+
+  <!-- Date Navigation -->
+  <div class="card mb-6 p-4">
+    <div class="flex items-center justify-between">
+      <%= link_to "← Previous", dashboard_bookings_path(date: (@date - 1.day).to_s, status: params[:status], service_id: params[:service_id], search: params[:search]), class: "text-primary-600 hover:text-primary-800 font-medium" %>
+
+      <div class="text-center">
+        <div class="text-lg font-semibold text-slate-900">
+          <%= @date == Date.current ? "Today" : @date.strftime("%B %d, %Y") %>
+        </div>
+        <div class="text-sm text-slate-500">
+          <%= @date.strftime("%A") %>
+        </div>
+      </div>
+
+      <%= link_to "Next →", dashboard_bookings_path(date: (@date + 1.day).to_s, status: params[:status], service_id: params[:service_id], search: params[:search]), class: "text-primary-600 hover:text-primary-800 font-medium" %>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="card mb-6 p-4">
+    <%= form_with url: dashboard_bookings_path, method: :get, class: "flex gap-4 flex-wrap items-end" do %>
+      <%= hidden_field_tag :date, @date.to_s %>
+
+      <!-- Status Filter -->
+      <div class="flex-1 min-w-[150px]">
+        <%= label_tag :status, "Status", class: "block text-sm font-medium text-slate-700 mb-1" %>
+        <%= select_tag :status,
+            options_for_select(
+              [
+                ["All Statuses", ""],
+                ["Pending", "pending"],
+                ["Confirmed", "confirmed"],
+                ["In Progress", "in_progress"],
+                ["Completed", "completed"],
+                ["Cancelled", "cancelled"],
+                ["No Show", "no_show"]
+              ],
+              params[:status]
+            ),
+            class: "w-full rounded border-slate-300 focus:border-primary-500 focus:ring-primary-500",
+            onchange: "this.form.requestSubmit()"
+        %>
+      </div>
+
+      <!-- Service Filter -->
+      <div class="flex-1 min-w-[150px]">
+        <%= label_tag :service_id, "Service", class: "block text-sm font-medium text-slate-700 mb-1" %>
+        <%= select_tag :service_id,
+            options_for_select(
+              [["All Services", ""]] + @services.map { |s| [s.name, s.id] },
+              params[:service_id]
+            ),
+            class: "w-full rounded border-slate-300 focus:border-primary-500 focus:ring-primary-500",
+            onchange: "this.form.requestSubmit()"
+        %>
+      </div>
+
+      <!-- Search -->
+      <div class="flex-1 min-w-[200px]">
+        <%= label_tag :search, "Search", class: "block text-sm font-medium text-slate-700 mb-1" %>
+        <%= text_field_tag :search, params[:search],
+            placeholder: "Customer name or phone",
+            class: "w-full rounded border-slate-300 focus:border-primary-500 focus:ring-primary-500"
+        %>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <%= submit_tag "Filter", class: "bg-slate-600 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded cursor-pointer" %>
+        <% if params[:status].present? || params[:service_id].present? || params[:search].present? %>
+          <%= link_to "Clear", dashboard_bookings_path(date: @date.to_s), class: "ml-2 text-slate-600 hover:text-slate-800 font-medium" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Bookings List -->
+  <% if @bookings.any? %>
+    <div class="space-y-4">
+      <% @bookings.each do |booking| %>
+        <%= render "booking_card", booking: booking %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card p-8 text-center">
+      <p class="text-slate-500 text-lg mb-4">No bookings found for this date</p>
+      <% if @date == Date.current %>
+        <%= link_to "+ Add Walk-In", new_dashboard_booking_path, class: "btn-primary" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

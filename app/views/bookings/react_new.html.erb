@@ -1,0 +1,27 @@
+<% content_for :title, "#{@business.name} - Book Appointment" %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "react_application", type: "module", "data-turbo-track": "reload" %>
+<% end %>
+
+<div
+  id="react-booking-root"
+  data-business-slug="<%= @business.slug %>"
+  data-business="<%= {
+    id: @business.id,
+    name: @business.name,
+    description: @business.description,
+    address: @business.address,
+    phone: @business.phone
+  }.to_json %>"
+  data-services="<%= @services.map { |s|
+    {
+      id: s.id,
+      name: s.name,
+      description: s.description,
+      duration_minutes: s.duration_minutes,
+      price_cents: s.price.cents
+    }
+  }.to_json %>"
+  data-turbo="false"
+></div>

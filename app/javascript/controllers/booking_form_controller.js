@@ -6,7 +6,7 @@ export default class extends Controller {
     "summary",
     "totalDuration",
     "totalPrice",
-    "dateTimeSection",
+    "availableMessage",
     "dateInput",
     "dateDisplay",
     "timeSlotsContainer",
@@ -97,7 +97,7 @@ export default class extends Controller {
 
       // Show summary and date/time section
       this.summaryTarget.classList.remove("hidden")
-      this.dateTimeSectionTarget.classList.remove("hidden")
+      this.availableMessageTarget.classList.add("hidden")
 
       // If date is already selected, re-fetch availability
       if (this.dateInputTarget.value) {
@@ -106,7 +106,7 @@ export default class extends Controller {
     } else {
       // Hide summary and date/time section
       this.summaryTarget.classList.add("hidden")
-      this.dateTimeSectionTarget.classList.add("hidden")
+      this.availableMessageTarget.classList.remove("hidden")
       this.timeSlotsContainerTarget.classList.add("hidden")
     }
 

@@ -6,6 +6,11 @@ class BookingsController < ApplicationController
     @services = @business.services.active.order(:position)
   end
 
+  def react_new
+    @business = Business.find_by!(slug: params[:business_slug])
+    @services = @business.services.active.order(:position)
+  end
+
   def availability
     @business = Business.find_by!(slug: params[:business_slug])
     service_ids = params[:service_ids] || []

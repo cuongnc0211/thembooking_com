@@ -26,12 +26,15 @@ class Booking < ApplicationRecord
   validates :scheduled_at, presence: true
   validate :customer_phone_format
   validate :customer_email_format, if: -> { customer_email.present? }
-  validate :scheduled_at_in_future, if: -> { scheduled_at.present? }
+  validate :scheduled_at_in_future, if: -> { scheduled_at.present? && online? && !skip_future_validation }
   validate :must_have_at_least_one_service
+
+  attr_accessor :skip_future_validation
 
   # Scopes
   scope :active, -> { where(status: [:confirmed, :in_progress]) }
   scope :for_date, ->(date) { where("DATE(scheduled_at) = ?", date) }
+  scope :by_time, -> { order(scheduled_at: :asc) }
   scope :overlapping, ->(start_time, end_time) {
     joins(:booking_services, :services)
       .group("bookings.id")

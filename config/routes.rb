@@ -26,6 +26,15 @@ Rails.application.routes.draw do
         post :move_down
       end
     end
+    resources :bookings, only: [ :index, :show, :new, :create, :update ] do
+      member do
+        patch :confirm
+        patch :start
+        patch :complete
+        patch :cancel
+        patch :no_show
+      end
+    end
   end
 
   # Home
@@ -43,6 +52,10 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Public booking routes (must be at the end to avoid conflicts)
+  # React version of booking page
+  get "/booking/:business_slug", to: "bookings#react_new", as: :react_booking, constraints: { business_slug: /[a-z0-9\-]+/ }
+
+  # Stimulus version (original)
   get "/:business_slug", to: "bookings#new", as: :booking, constraints: { business_slug: /[a-z0-9\-]+/ }
   get "/:business_slug/availability", to: "bookings#availability"
   post "/:business_slug/bookings", to: "bookings#create"

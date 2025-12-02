@@ -46,3 +46,5 @@ claude.md
 # Ignore Kamal secrets
 /.kamal/secrets
 .kamal/secrets
+
+/node_modules

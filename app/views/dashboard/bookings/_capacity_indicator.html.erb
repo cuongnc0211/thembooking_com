@@ -1,0 +1,33 @@
+<div class="card mb-6 p-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <div class="text-sm font-medium text-slate-600 mb-1">Current Capacity</div>
+      <div class="text-3xl font-bold <%= capacity_percentage < 70 ? 'text-green-600' : (capacity_percentage < 90 ? 'text-yellow-600' : 'text-red-600') %>">
+        <%= current_capacity %> / <%= total_capacity %>
+      </div>
+      <div class="text-sm text-slate-500 mt-1">
+        <%= capacity_percentage %>% occupied
+      </div>
+    </div>
+
+    <div class="flex-1 max-w-md ml-8">
+      <!-- Progress Bar -->
+      <div class="w-full bg-slate-200 rounded-full h-4 overflow-hidden">
+        <div class="h-full <%= capacity_percentage < 70 ? 'bg-green-500' : (capacity_percentage < 90 ? 'bg-yellow-500' : 'bg-red-500') %> transition-all duration-300"
+             style="width: <%= [capacity_percentage, 100].min %>%">
+        </div>
+      </div>
+      <div class="text-xs text-slate-500 mt-1 text-center">
+        <% if capacity_percentage == 0 %>
+          All capacity available
+        <% elsif capacity_percentage < 70 %>
+          Good availability
+        <% elsif capacity_percentage < 90 %>
+          Getting busy
+        <% else %>
+          At or near capacity
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

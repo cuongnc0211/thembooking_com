@@ -93,6 +93,16 @@ class Business < ApplicationRecord
     end
   end
 
+  # Capacity tracking methods
+  def current_capacity_usage
+    bookings.where(status: :in_progress).count
+  end
+
+  def capacity_percentage
+    return 0 if capacity.zero?
+    (current_capacity_usage.to_f / capacity * 100).round
+  end
+
   private
 
   def need_init_operating_hours

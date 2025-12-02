@@ -4,7 +4,7 @@
     <div class="flex justify-between items-center h-16">
       <!-- Left: Hamburger (mobile only) + Logo -->
       <div class="flex items-center gap-3">
-        <% if current_user %>
+        <% if current_user && controller_path.start_with?('dashboard') %>
           <!-- Hamburger menu for mobile (only visible in dashboard) -->
           <button data-action="sidebar#toggle" class="md:hidden text-slate-600 hover:text-slate-900 p-1">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -26,6 +26,7 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
   <body class="bg-surface-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
@@ -46,7 +47,7 @@
     <% end %>
 
     <!-- Main Content -->
-    <main class="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    <main class="flex-grow pb-0 pt-18 lg:pt-24 lg:pb-12 sm:px-0 lg:px-8 max-w-7xl mx-auto w-full">
       <%= yield %>
     </main>
 

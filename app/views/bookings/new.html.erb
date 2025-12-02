@@ -91,7 +91,7 @@
     </div>
 
     <!-- Date & Time Selection -->
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-6" data-booking-form-target="dateTimeSection">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-6">
       <h2 class="text-lg font-semibold text-slate-900 mb-4">Select Date & Time</h2>
 
       <div class="space-y-4">
@@ -124,15 +124,18 @@
         </div>
 
         <!-- Time Slots -->
-        <div data-booking-form-target="timeSlotsContainer" class="hidden">
+        <div>
           <label class="block text-sm font-medium text-slate-700 mb-2">Available Time Slots</label>
+          <label class="block text-xs font-medium text-slate-700 mb-2" data-booking-form-target="availableMessage">Please select service to see the available time</label>
 
-          <div data-booking-form-target="loadingSpinner" class="hidden text-center py-8">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-slate-200 border-t-primary-600"></div>
-            <p class="text-sm text-slate-500 mt-2">Loading available times...</p>
+          <div data-booking-form-target="timeSlotsContainer" class="hidden">
+            <div data-booking-form-target="loadingSpinner" class="hidden text-center py-8">
+              <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-slate-200 border-t-primary-600"></div>
+              <p class="text-sm text-slate-500 mt-2">Loading available times...</p>
+            </div>
+
+            <div data-booking-form-target="timeSlots" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2"></div>
           </div>
-
-          <div data-booking-form-target="timeSlots" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2"></div>
 
           <div data-booking-form-target="noSlotsMessage" class="hidden text-center py-8">
             <svg class="w-12 h-12 text-slate-300 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
