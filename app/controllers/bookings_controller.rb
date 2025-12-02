@@ -9,34 +9,62 @@ class BookingsController < ApplicationController
   def availability
     @business = Business.find_by!(slug: params[:business_slug])
     service_ids = params[:service_ids] || []
-    date = Date.parse(params[:date])
+    date = params[:date] ? Date.parse(params[:date]) : Date.current
 
-    slots = Bookings::CheckAvailability.new(
-      business: @business,
-      service_ids: service_ids,
-      date: date
-    ).call
+    # For slot-based availability, we need to get the service(s)
+    # For simplicity, calculate total duration from all services
+    if service_ids.any?
+      services = @business.services.where(id: service_ids)
+      total_duration = services.sum(:duration_minutes)
 
-    render json: { available_slots: slots }
+      # Create a temporary service object with combined duration
+      # Or use the CheckAvailability with service_ids parameter
+      available_times = Bookings::CheckAvailability.new(
+        business: @business,
+        service_ids: service_ids,
+        date: date
+      ).call
+    else
+      available_times = []
+    end
+
+    # Return as array of time strings (HH:MM format)
+    slots = available_times.map { |time| time.strftime("%H:%M") }
+
+    render json: { available_slots: slots, date: date.to_s }
   rescue Date::Error
-    render json: { available_slots: [] }, status: :bad_request
+    render json: { available_slots: [], error: "Invalid date" }, status: :bad_request
   end
 
   def create
     @business = Business.find_by!(slug: params[:business_slug])
     @services = @business.services.active.order(:position)
 
+    # Parse start_time from params (format: "YYYY-MM-DD HH:MM")
+    start_time = if params[:start_time].present?
+      Time.zone.parse(params[:start_time])
+    elsif params[:scheduled_at].present?
+      params[:scheduled_at] # Support old parameter name
+    else
+      nil
+    end
+
     result = Bookings::CreateBooking.new(
       business: @business,
       service_ids: params[:service_ids],
-      scheduled_at: params[:scheduled_at],
+      start_time: start_time,
       customer_params: booking_params
     ).call
 
-    if result.success?
-      redirect_to booking_confirmation_path(@business.slug, result.booking)
+    # Handle both hash and Result struct responses
+    success = result.is_a?(Hash) ? result[:success] : result.success?
+    booking = result.is_a?(Hash) ? result[:booking] : result.booking
+    error = result.is_a?(Hash) ? result[:error] : result.error
+
+    if success
+      redirect_to booking_confirmation_path(@business.slug, booking)
     else
-      @error = result.error
+      @error = error
       render :new, status: :unprocessable_entity
     end
   end

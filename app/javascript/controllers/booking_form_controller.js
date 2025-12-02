@@ -8,6 +8,7 @@ export default class extends Controller {
     "totalPrice",
     "dateTimeSection",
     "dateInput",
+    "dateDisplay",
     "timeSlotsContainer",
     "loadingSpinner",
     "timeSlots",
@@ -23,7 +24,62 @@ export default class extends Controller {
 
   connect() {
     this.selectedTimeSlot = null
+    this.selectedDate = new Date()
+    this.setToday()
     this.updateSelection()
+  }
+
+  // Set today as default date
+  setToday() {
+    this.selectedDate = new Date()
+    this.updateDateDisplay()
+  }
+
+  // Navigate to previous day
+  prevDay() {
+    const newDate = new Date(this.selectedDate)
+    newDate.setDate(newDate.getDate() - 1)
+
+    // Don't go before today
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    if (newDate >= today) {
+      this.selectedDate = newDate
+      this.updateDateDisplay()
+      this.fetchAvailability()
+    }
+  }
+
+  // Navigate to next day
+  nextDay() {
+    const newDate = new Date(this.selectedDate)
+    newDate.setDate(newDate.getDate() + 1)
+
+    // Don't go beyond 30 days from now
+    const maxDate = new Date()
+    maxDate.setDate(maxDate.getDate() + 30)
+    if (newDate <= maxDate) {
+      this.selectedDate = newDate
+      this.updateDateDisplay()
+      this.fetchAvailability()
+    }
+  }
+
+  // Update the date display
+  updateDateDisplay() {
+    const formattedDate = this.selectedDate.toLocaleDateString("vi-VN", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    })
+    this.dateDisplayTarget.textContent = formattedDate
+
+    // Update hidden field with YYYY-MM-DD format
+    const year = this.selectedDate.getFullYear()
+    const month = String(this.selectedDate.getMonth() + 1).padStart(2, "0")
+    const day = String(this.selectedDate.getDate()).padStart(2, "0")
+    this.dateInputTarget.value = `${year}-${month}-${day}`
   }
 
   // Called when service checkboxes are changed
@@ -126,9 +182,10 @@ export default class extends Controller {
     button.classList.remove("border-slate-200", "text-slate-700")
     button.classList.add("border-primary-600", "bg-primary-100", "text-primary-900")
 
-    // Store selected time and update hidden field
+    // Store selected time and update hidden field with full datetime
     this.selectedTimeSlot = time
-    this.scheduledAtInputTarget.value = time
+    const date = this.dateInputTarget.value
+    this.scheduledAtInputTarget.value = `${date} ${time}`
 
     // Show customer section and update submit button
     this.customerSectionTarget.classList.remove("hidden")
@@ -165,13 +222,12 @@ export default class extends Controller {
     }).format(amount)
   }
 
-  // Helper: Format time string
-  formatTime(isoString) {
-    const date = new Date(isoString)
-    return date.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true
-    })
+  // Helper: Format time string (converts "09:00" to "9:00 AM")
+  formatTime(timeString) {
+    const [hours, minutes] = timeString.split(":")
+    const hour = parseInt(hours)
+    const ampm = hour >= 12 ? "PM" : "AM"
+    const displayHour = hour % 12 || 12
+    return `${displayHour}:${minutes} ${ampm}`
   }
 }

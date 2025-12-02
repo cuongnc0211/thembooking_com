@@ -6,7 +6,9 @@ module Bookings
     def initialize(business:, service_ids:, start_time: nil, scheduled_at: nil, customer_params:)
       @business = business
       @service_ids = Array(service_ids)
-      @start_time = start_time || scheduled_at # Support both parameter names
+      # Support both parameter names and ensure it's a Time object
+      raw_time = start_time || scheduled_at
+      @start_time = raw_time.is_a?(String) ? Time.zone.parse(raw_time) : raw_time
       @customer_params = customer_params
     end
 
