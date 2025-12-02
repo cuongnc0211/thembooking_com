@@ -64,6 +64,12 @@ module Dashboard
       end
     end
 
+    def edit
+      @business = current_user.business
+      @booking = @business.bookings.find(params[:id])
+      @services = @business.services.active.order(:position)
+    end
+
     def update
       @business = current_user.business
       @booking = @business.bookings.find(params[:id])
@@ -71,7 +77,8 @@ module Dashboard
       if @booking.update(booking_params)
         redirect_to dashboard_booking_path(@booking), notice: "Booking updated successfully"
       else
-        render :show, status: :unprocessable_entity
+        @services = @business.services.active.order(:position)
+        render :edit, status: :unprocessable_entity
       end
     end
 

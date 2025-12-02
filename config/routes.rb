@@ -26,7 +26,7 @@ Rails.application.routes.draw do
         post :move_down
       end
     end
-    resources :bookings, only: [ :index, :show, :new, :create, :update ] do
+    resources :bookings, only: [ :index, :show, :new, :create, :edit, :update ] do
       member do
         patch :confirm
         patch :start

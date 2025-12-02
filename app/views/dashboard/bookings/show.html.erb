@@ -1,0 +1,136 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h1 class="text-3xl font-bold mb-2">Booking Details</h1>
+      <%= link_to "← Back to Bookings", dashboard_bookings_path, class: "text-slate-600 hover:text-slate-800" %>
+    </div>
+    <div class="flex gap-3">
+      <%= link_to "Edit", edit_dashboard_booking_path(@booking), class: "bg-slate-600 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded transition-colors" %>
+    </div>
+  </div>
+
+  <!-- Booking Card -->
+  <div class="card p-6 space-y-6">
+    <!-- Status Badge -->
+    <div class="flex items-center gap-3">
+      <span class="px-3 py-1 rounded-full text-sm font-medium <%= case @booking.status
+        when 'pending' then 'bg-yellow-100 text-yellow-800'
+        when 'confirmed' then 'bg-blue-100 text-blue-800'
+        when 'in_progress' then 'bg-purple-100 text-purple-800'
+        when 'completed' then 'bg-green-100 text-green-800'
+        when 'cancelled' then 'bg-red-100 text-red-800'
+        when 'no_show' then 'bg-gray-100 text-gray-800'
+        end %>">
+        <%= @booking.status.titleize %>
+      </span>
+      <span class="px-3 py-1 rounded-full text-sm font-medium bg-slate-100 text-slate-700">
+        <%= @booking.source.titleize %>
+      </span>
+    </div>
+
+    <!-- Customer Information -->
+    <div class="border-t border-slate-200 pt-6">
+      <h2 class="text-lg font-semibold text-slate-900 mb-4">Customer Information</h2>
+      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm font-medium text-slate-500 mb-1">Name</dt>
+          <dd class="text-base text-slate-900"><%= @booking.customer_name %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-slate-500 mb-1">Phone</dt>
+          <dd class="text-base text-slate-900"><%= @booking.customer_phone %></dd>
+        </div>
+        <% if @booking.customer_email.present? %>
+          <div>
+            <dt class="text-sm font-medium text-slate-500 mb-1">Email</dt>
+            <dd class="text-base text-slate-900"><%= @booking.customer_email %></dd>
+          </div>
+        <% end %>
+      </dl>
+    </div>
+
+    <!-- Services -->
+    <div class="border-t border-slate-200 pt-6">
+      <h2 class="text-lg font-semibold text-slate-900 mb-4">Services</h2>
+      <div class="space-y-3">
+        <% @booking.services.each do |service| %>
+          <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+            <div>
+              <div class="font-medium text-slate-900"><%= service.name %></div>
+              <div class="text-sm text-slate-500"><%= service.duration_minutes %> minutes</div>
+            </div>
+            <div class="text-right">
+              <div class="font-semibold text-slate-900">
+                <%= number_to_currency(service.price_cents / 100.0, unit: "₫", precision: 0, format: "%n %u") %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <div class="flex items-center justify-between pt-3 border-t border-slate-200">
+          <div class="font-semibold text-slate-900">Total Duration</div>
+          <div class="font-semibold text-slate-900"><%= @booking.total_duration_minutes %> minutes</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking Schedule -->
+    <div class="border-t border-slate-200 pt-6">
+      <h2 class="text-lg font-semibold text-slate-900 mb-4">Schedule</h2>
+      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm font-medium text-slate-500 mb-1">Scheduled Time</dt>
+          <dd class="text-base text-slate-900">
+            <%= @booking.scheduled_at.strftime("%B %d, %Y at %I:%M %p") %>
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-slate-500 mb-1">Expected End Time</dt>
+          <dd class="text-base text-slate-900">
+            <%= @booking.end_time.strftime("%I:%M %p") %>
+          </dd>
+        </div>
+        <% if @booking.started_at.present? %>
+          <div>
+            <dt class="text-sm font-medium text-slate-500 mb-1">Started At</dt>
+            <dd class="text-base text-slate-900">
+              <%= @booking.started_at.strftime("%I:%M %p") %>
+            </dd>
+          </div>
+        <% end %>
+        <% if @booking.completed_at.present? %>
+          <div>
+            <dt class="text-sm font-medium text-slate-500 mb-1">Completed At</dt>
+            <dd class="text-base text-slate-900">
+              <%= @booking.completed_at.strftime("%I:%M %p") %>
+            </dd>
+          </div>
+        <% end %>
+      </dl>
+    </div>
+
+    <!-- Notes -->
+    <% if @booking.notes.present? %>
+      <div class="border-t border-slate-200 pt-6">
+        <h2 class="text-lg font-semibold text-slate-900 mb-2">Notes</h2>
+        <p class="text-slate-700"><%= @booking.notes %></p>
+      </div>
+    <% end %>
+
+    <!-- Action Buttons -->
+    <div class="border-t border-slate-200 pt-6 flex flex-wrap gap-3">
+      <% case @booking.status %>
+      <% when "pending" %>
+        <%= button_to "Confirm", confirm_dashboard_booking_path(@booking), method: :patch, class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors" %>
+        <%= button_to "Cancel", cancel_dashboard_booking_path(@booking), method: :patch, class: "bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors", data: { confirm: "Are you sure?" } %>
+      <% when "confirmed" %>
+        <%= button_to "Start Service", start_dashboard_booking_path(@booking), method: :patch, class: "bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded transition-colors" %>
+        <%= button_to "Mark No-Show", no_show_dashboard_booking_path(@booking), method: :patch, class: "bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded transition-colors", data: { confirm: "Mark customer as no-show?" } %>
+        <%= button_to "Cancel", cancel_dashboard_booking_path(@booking), method: :patch, class: "bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors", data: { confirm: "Are you sure?" } %>
+      <% when "in_progress" %>
+        <%= button_to "Complete", complete_dashboard_booking_path(@booking), method: :patch, class: "bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded transition-colors" %>
+        <%= button_to "Cancel", cancel_dashboard_booking_path(@booking), method: :patch, class: "bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors", data: { confirm: "Are you sure?" } %>
+      <% end %>
+    </div>
+  </div>
+</div>

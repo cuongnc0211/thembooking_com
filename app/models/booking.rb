@@ -5,6 +5,11 @@ class Booking < ApplicationRecord
   has_many :booking_slots, dependent: :destroy
   has_many :slots, through: :booking_slots
 
+  # Turbo Streams - Broadcast changes to business-specific stream
+  after_create_commit :broadcast_booking_created
+  after_update_commit :broadcast_booking_updated
+  after_destroy_commit :broadcast_booking_destroyed
+
   # Enums
   enum :status, {
     pending: 0,
@@ -84,5 +89,23 @@ class Booking < ApplicationRecord
     if services.empty?
       errors.add(:services, "must have at least one service")
     end
+  end
+
+  def broadcast_booking_created
+    broadcast_refresh_to_business
+  end
+
+  def broadcast_booking_updated
+    broadcast_refresh_to_business
+  end
+
+  def broadcast_booking_destroyed
+    broadcast_refresh_to_business
+  end
+
+  def broadcast_refresh_to_business
+    # Broadcast a page refresh to all clients watching this business's bookings
+    # This ensures capacity indicators and booking lists stay in sync
+    broadcast_refresh_to "business_#{business_id}_bookings"
   end
 end
