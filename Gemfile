@@ -77,3 +77,5 @@ group :development do
 end
 
 gem "resend"
+
+gem "mission_control-jobs"

@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+
+  mount MissionControl::Jobs::Engine, at: "/jobs"
+
   # Locale switching
   patch "/locale", to: "locales#update", as: :locale
 
