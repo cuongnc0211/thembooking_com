@@ -13,14 +13,12 @@ servers:
     proxy: true
     options:
       add-host: "host.docker.internal:host-gateway"
-  # worker:                   # DISABLED (temporarily) - Solid Queue worker
-  #   hosts:
-  #     - mypc
-  #   cmd: bin/jobs             # chạy Solid Queue supervisor (Rails 8 tạo bin/jobs)  [oai_citation:5‡GitHub](https://github.com/rails/solid_queue?utm_source=chatgpt.com)
-  # job:
-  #   hosts:
-  #     - 192.168.0.1
-  #   cmd: bin/jobs
+  worker:
+    hosts:
+      - mypc
+    cmd: bin/jobs
+    options:
+      add-host: "host.docker.internal:host-gateway"
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
 # If used with Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
