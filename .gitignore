@@ -48,3 +48,8 @@ claude.md
 .kamal/secrets
 
 /node_modules
+
+/.repomixignore
+/.claude/
+/.opencode/
+/plans/*
