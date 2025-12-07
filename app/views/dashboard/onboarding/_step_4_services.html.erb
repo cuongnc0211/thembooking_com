@@ -1,0 +1,26 @@
+<%= form_with url: dashboard_onboarding_path, method: :patch, class: "space-y-6",
+    data: { controller: "onboarding-services" } do |form| %>
+
+  <p class="text-sm text-slate-600 bg-blue-50 p-3 rounded-lg">
+    Add at least one service. You can add more services later from your dashboard.
+  </p>
+
+  <div id="services-container" data-onboarding-services-target="container">
+    <% @services.each_with_index do |service, index| %>
+      <%= render "service_fields", service: service, index: index %>
+    <% end %>
+  </div>
+
+  <button type="button" class="btn-secondary w-full"
+      data-action="click->onboarding-services#addService">
+    + Add Another Service
+  </button>
+
+  <div class="pt-4">
+    <%= submit_tag "Complete Setup", class: "btn-primary w-full cursor-pointer" %>
+  </div>
+<% end %>
+
+<template data-onboarding-services-target="template">
+  <%= render "service_fields", service: Service.new, index: "INDEX_PLACEHOLDER" %>
+</template>

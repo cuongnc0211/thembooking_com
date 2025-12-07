@@ -1,0 +1,46 @@
+<%= form_with model: @user, url: dashboard_onboarding_path, method: :patch, class: "space-y-6" do |form| %>
+  <% if @user.errors.any? %>
+    <div class="bg-red-50 border border-red-100 text-red-700 px-4 py-3 rounded-xl" role="alert">
+      <ul class="list-disc list-inside">
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= h(message) %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Avatar (Optional) -->
+  <div>
+    <%= form.label :avatar, "Profile Photo (Optional)", class: "form-label" %>
+    <div class="mt-2 flex items-center gap-4">
+      <% if @user.avatar.attached? %>
+        <%= image_tag @user.avatar.variant(resize_to_limit: [80, 80]), class: "h-16 w-16 rounded-full object-cover" %>
+      <% else %>
+        <div class="h-16 w-16 rounded-full bg-slate-100 flex items-center justify-center">
+          <svg class="h-8 w-8 text-slate-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+        </div>
+      <% end %>
+      <%= form.file_field :avatar, class: "text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100" %>
+    </div>
+  </div>
+
+  <!-- Name -->
+  <div>
+    <%= form.label :name, "Your Name", class: "form-label" %>
+    <%= form.text_field :name, class: "form-input", placeholder: "e.g., Nguyen Van A", required: true %>
+    <p class="mt-1 text-sm text-slate-500">This will be shown to your customers</p>
+  </div>
+
+  <!-- Phone -->
+  <div>
+    <%= form.label :phone, "Phone Number", class: "form-label" %>
+    <%= form.telephone_field :phone, class: "form-input", placeholder: "0901 234 567", required: true %>
+    <p class="mt-1 text-sm text-slate-500">For business contact purposes</p>
+  </div>
+
+  <div class="pt-4">
+    <%= form.submit "Continue", class: "btn-primary w-full cursor-pointer" %>
+  </div>
+<% end %>

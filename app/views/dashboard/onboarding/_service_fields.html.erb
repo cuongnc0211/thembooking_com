@@ -1,0 +1,38 @@
+<div class="border border-slate-200 rounded-xl p-4 space-y-4 mb-4" data-onboarding-services-target="serviceRow">
+  <div class="flex justify-between items-center">
+    <h4 class="font-medium text-slate-700">Service <%= index.is_a?(Integer) ? index + 1 : "" %></h4>
+    <% if index != 0 %>
+      <button type="button" class="text-red-600 hover:text-red-700 text-sm"
+          data-action="click->onboarding-services#removeService">
+        Remove
+      </button>
+    <% end %>
+  </div>
+
+  <div>
+    <label class="form-label">Service Name</label>
+    <input type="text" name="services[][name]" value="<%= h(service.name) %>"
+        class="form-input" placeholder="e.g., Haircut, Massage" required>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <label class="form-label">Duration</label>
+      <select name="services[][duration_minutes]" class="form-input" required>
+        <option value="">Select</option>
+        <% [[15, "15 min"], [30, "30 min"], [45, "45 min"], [60, "1 hour"], [90, "1.5 hours"], [120, "2 hours"]].each do |value, label| %>
+          <option value="<%= value %>" <%= 'selected' if service.duration_minutes == value %>><%= label %></option>
+        <% end %>
+      </select>
+    </div>
+    <div>
+      <label class="form-label">Price (VND)</label>
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">VND</span>
+        <input type="number" name="services[][price]"
+            value="<%= (service.price.to_f / 100).round if service.price_cents && service.price_cents > 0 %>"
+            class="form-input pl-12" placeholder="80000" min="0" step="1000" required>
+      </div>
+    </div>
+  </div>
+</div>

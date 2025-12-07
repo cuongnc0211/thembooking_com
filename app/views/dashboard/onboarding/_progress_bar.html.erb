@@ -1,0 +1,49 @@
+<% steps = [
+  { number: 1, name: "You" },
+  { number: 2, name: "Business" },
+  { number: 3, name: "Hours" },
+  { number: 4, name: "Services" }
+] %>
+
+<div class="flex items-center justify-between">
+  <% steps.each_with_index do |step, index| %>
+    <% is_completed = step[:number] < current_step %>
+    <% is_current = step[:number] == current_step %>
+    <% is_accessible = step[:number] <= current_user.onboarding_step %>
+
+    <!-- Step Circle -->
+    <div class="flex flex-col items-center">
+      <% if is_accessible && !is_current %>
+        <%= link_to dashboard_onboarding_path(step: step[:number]) do %>
+          <div class="<%= step_circle_class(is_completed, is_current) %>">
+            <% if is_completed %>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+            <% else %>
+              <%= step[:number] %>
+            <% end %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="<%= step_circle_class(is_completed, is_current) %>">
+          <% if is_completed %>
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+          <% else %>
+            <%= step[:number] %>
+          <% end %>
+        </div>
+      <% end %>
+      <span class="mt-2 text-xs font-medium <%= is_current ? 'text-primary-600' : 'text-slate-500' %>">
+        <%= step[:name] %>
+      </span>
+    </div>
+
+    <!-- Connector Line (except after last step) -->
+    <% if index < steps.size - 1 %>
+      <div class="flex-1 h-0.5 mx-2 <%= step[:number] < current_step ? 'bg-primary-500' : 'bg-slate-200' %>"></div>
+    <% end %>
+  <% end %>
+</div>

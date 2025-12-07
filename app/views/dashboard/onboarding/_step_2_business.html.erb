@@ -1,0 +1,67 @@
+<%= form_with model: @business, url: dashboard_onboarding_path, method: :patch, class: "space-y-6" do |form| %>
+  <% if @business.errors.any? %>
+    <div class="bg-red-50 border border-red-100 text-red-700 px-4 py-3 rounded-xl" role="alert">
+      <ul class="list-disc list-inside">
+        <% @business.errors.full_messages.each do |message| %>
+          <li><%= h(message) %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Business Name -->
+  <div>
+    <%= form.label :name, "Business Name", class: "form-label" %>
+    <%= form.text_field :name, class: "form-input", placeholder: "e.g., Toc Dep Salon", required: true %>
+  </div>
+
+  <!-- Business Type -->
+  <div>
+    <%= form.label :business_type, "Type of Business", class: "form-label" %>
+    <%= form.select :business_type,
+        Business.business_types.keys.map { |t| [t.titleize, t] },
+        { prompt: "Select your business type" },
+        class: "form-input", required: true %>
+  </div>
+
+  <!-- Booking URL (Slug) -->
+  <div>
+    <%= form.label :slug, "Booking URL", class: "form-label" %>
+    <div class="mt-1 flex rounded-xl shadow-sm">
+      <span class="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-slate-200 bg-slate-50 text-slate-500 text-sm">
+        thembooking.com/
+      </span>
+      <%= form.text_field :slug, class: "flex-1 form-input rounded-l-none focus:ring-0", placeholder: "your-shop-name", required: true %>
+    </div>
+    <p class="mt-1 text-sm text-slate-500">Customers will use this link to book</p>
+  </div>
+
+  <!-- Phone -->
+  <div>
+    <%= form.label :phone, "Business Phone", class: "form-label" %>
+    <%= form.telephone_field :phone, class: "form-input", placeholder: "0901 234 567", required: true %>
+  </div>
+
+  <!-- Capacity -->
+  <div>
+    <%= form.label :capacity, "How many customers can you serve at once?", class: "form-label" %>
+    <%= form.number_field :capacity, class: "form-input", min: 1, max: 50, placeholder: "e.g., 3", required: true %>
+    <p class="mt-1 text-sm text-slate-500">Number of chairs, rooms, or stations</p>
+  </div>
+
+  <!-- Address -->
+  <div>
+    <%= form.label :address, "Address", class: "form-label" %>
+    <%= form.text_field :address, class: "form-input", placeholder: "123 Nguyen Hue, Q1, TP.HCM", required: true %>
+  </div>
+
+  <!-- Description (Optional) -->
+  <div>
+    <%= form.label :description, "Description (Optional)", class: "form-label" %>
+    <%= form.text_area :description, rows: 3, class: "form-input", placeholder: "Tell customers about your business..." %>
+  </div>
+
+  <div class="pt-4">
+    <%= form.submit "Continue", class: "btn-primary w-full cursor-pointer" %>
+  </div>
+<% end %>

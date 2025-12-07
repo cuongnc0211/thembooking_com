@@ -1,0 +1,79 @@
+<%= form_with url: dashboard_onboarding_path, method: :patch, class: "space-y-6", data: { controller: "onboarding-hours" } do |form| %>
+  <% if @business.errors[:operating_hours].any? %>
+    <div class="bg-red-50 border border-red-100 text-red-700 px-4 py-3 rounded-xl" role="alert">
+      <ul class="list-disc list-inside">
+        <% @business.errors[:operating_hours].each do |message| %>
+          <li><%= h(message) %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p class="text-sm text-slate-600 bg-blue-50 p-3 rounded-lg">
+    Set your basic hours now. You can add breaks and customize individual days later in Settings.
+  </p>
+
+  <!-- Weekdays (Mon-Fri) -->
+  <div class="border border-slate-200 rounded-xl p-4 space-y-3">
+    <div class="flex items-center justify-between">
+      <label class="flex items-center gap-3">
+        <%= check_box_tag "operating_hours[weekdays][enabled]", "1",
+            @operating_hours[:weekdays][:enabled],
+            class: "h-5 w-5 rounded border-slate-300 text-primary-600",
+            data: { action: "change->onboarding-hours#toggleDay", target: "weekdays" } %>
+        <span class="font-medium text-slate-900">Weekdays (Mon-Fri)</span>
+      </label>
+    </div>
+    <div class="flex items-center gap-3 ml-8" data-onboarding-hours-target="weekdaysTimes">
+      <%= time_field_tag "operating_hours[weekdays][open]", @operating_hours[:weekdays][:open],
+          class: "form-input w-32", disabled: !@operating_hours[:weekdays][:enabled] %>
+      <span class="text-slate-500">to</span>
+      <%= time_field_tag "operating_hours[weekdays][close]", @operating_hours[:weekdays][:close],
+          class: "form-input w-32", disabled: !@operating_hours[:weekdays][:enabled] %>
+    </div>
+  </div>
+
+  <!-- Saturday -->
+  <div class="border border-slate-200 rounded-xl p-4 space-y-3">
+    <div class="flex items-center justify-between">
+      <label class="flex items-center gap-3">
+        <%= check_box_tag "operating_hours[saturday][enabled]", "1",
+            @operating_hours[:saturday][:enabled],
+            class: "h-5 w-5 rounded border-slate-300 text-primary-600",
+            data: { action: "change->onboarding-hours#toggleDay", target: "saturday" } %>
+        <span class="font-medium text-slate-900">Saturday</span>
+      </label>
+    </div>
+    <div class="flex items-center gap-3 ml-8" data-onboarding-hours-target="saturdayTimes">
+      <%= time_field_tag "operating_hours[saturday][open]", @operating_hours[:saturday][:open],
+          class: "form-input w-32", disabled: !@operating_hours[:saturday][:enabled] %>
+      <span class="text-slate-500">to</span>
+      <%= time_field_tag "operating_hours[saturday][close]", @operating_hours[:saturday][:close],
+          class: "form-input w-32", disabled: !@operating_hours[:saturday][:enabled] %>
+    </div>
+  </div>
+
+  <!-- Sunday -->
+  <div class="border border-slate-200 rounded-xl p-4 space-y-3">
+    <div class="flex items-center justify-between">
+      <label class="flex items-center gap-3">
+        <%= check_box_tag "operating_hours[sunday][enabled]", "1",
+            @operating_hours[:sunday][:enabled],
+            class: "h-5 w-5 rounded border-slate-300 text-primary-600",
+            data: { action: "change->onboarding-hours#toggleDay", target: "sunday" } %>
+        <span class="font-medium text-slate-900">Sunday</span>
+      </label>
+    </div>
+    <div class="flex items-center gap-3 ml-8" data-onboarding-hours-target="sundayTimes">
+      <%= time_field_tag "operating_hours[sunday][open]", @operating_hours[:sunday][:open],
+          class: "form-input w-32", disabled: !@operating_hours[:sunday][:enabled] %>
+      <span class="text-slate-500">to</span>
+      <%= time_field_tag "operating_hours[sunday][close]", @operating_hours[:sunday][:close],
+          class: "form-input w-32", disabled: !@operating_hours[:sunday][:enabled] %>
+    </div>
+  </div>
+
+  <div class="pt-4">
+    <%= submit_tag "Continue", class: "btn-primary w-full cursor-pointer" %>
+  </div>
+<% end %>

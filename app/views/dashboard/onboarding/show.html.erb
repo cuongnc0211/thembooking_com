@@ -1,113 +1,34 @@
-<div class="onboarding-container">
-  <h1>Onboarding - Step <%= @step %> of 4</h1>
-  <h2><%= @step_config[:title] %></h2>
+<div class="min-h-screen bg-gradient-to-b from-primary-50 to-white py-8">
+  <div class="max-w-2xl mx-auto px-4">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-2xl font-bold text-slate-900">Welcome to ThemBooking</h1>
+      <p class="mt-2 text-slate-600">Let's set up your business in a few simple steps</p>
+    </div>
 
-  <% if @step == 1 && @user&.errors&.any? %>
-    <div class="errors"><%= @user.errors.full_messages.join(", ") %></div>
-  <% elsif @step == 2 && @business&.errors&.any? %>
-    <div class="errors"><%= @business.errors.full_messages.join(", ") %></div>
-  <% elsif @step == 3 && @business&.errors&.any? %>
-    <div class="errors"><%= @business.errors.full_messages.to_sentence %></div>
-  <% end %>
+    <!-- Progress Bar -->
+    <%= render "progress_bar", current_step: @step %>
 
-  <%= form_with url: dashboard_onboarding_path, method: :patch, local: true do |f| %>
-    <%= f.hidden_field :step, value: @step %>
+    <!-- Step Content -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mt-6">
+      <h2 class="text-lg font-semibold text-slate-900 mb-1">
+        Step <%= @step %>: <%= @step_config[:title] %>
+      </h2>
+      <p class="text-sm text-slate-500 mb-6"><%= step_description(@step) %></p>
 
-    <% case @step %>
-    <% when 1 %>
-      <!-- Step 1: User Info -->
-      <div class="form-group">
-        <%= label_tag "user[name]", "Name" %>
-        <%= text_field_tag "user[name]", @user.name, required: true %>
-      </div>
+      <%= turbo_frame_tag "onboarding-step" do %>
+        <%= render "step_#{@step}_#{@step_config[:name]}" %>
+      <% end %>
+    </div>
 
-      <div class="form-group">
-        <%= label_tag "user[phone]", "Phone" %>
-        <%= text_field_tag "user[phone]", @user.phone, required: true %>
-      </div>
-
-    <% when 2 %>
-      <!-- Step 2: Business -->
-      <div class="form-group">
-        <%= label_tag "business[name]", "Business Name" %>
-        <%= text_field_tag "business[name]", @business.name, required: true %>
-      </div>
-
-      <div class="form-group">
-        <%= label_tag "business[business_type]", "Business Type" %>
-        <%= select_tag "business[business_type]",
-            options_for_select(Business.business_types.keys.map { |k| [k.titleize, k] }, @business.business_type),
-            required: true %>
-      </div>
-
-      <div class="form-group">
-        <%= label_tag "business[slug]", "Booking URL Slug" %>
-        <%= text_field_tag "business[slug]", @business.slug, required: true %>
-      </div>
-
-      <div class="form-group">
-        <%= label_tag "business[phone]", "Business Phone" %>
-        <%= text_field_tag "business[phone]", @business.phone, required: true %>
-      </div>
-
-      <div class="form-group">
-        <%= label_tag "business[capacity]", "Capacity" %>
-        <%= number_field_tag "business[capacity]", @business.capacity, required: true %>
-      </div>
-
-      <div class="form-group">
-        <%= label_tag "business[address]", "Address" %>
-        <%= text_area_tag "business[address]", @business.address, required: true %>
-      </div>
-
-    <% when 3 %>
-      <!-- Step 3: Operating Hours -->
-      <div class="form-group">
-        <h3>Weekdays (Mon-Fri)</h3>
-        <%= check_box_tag "operating_hours[weekdays][enabled]", true, @operating_hours[:weekdays][:enabled] %>
-        <%= label_tag "operating_hours_weekdays_enabled", "Open" %>
-        <%= time_field_tag "operating_hours[weekdays][open]", @operating_hours[:weekdays][:open] %>
-        <%= time_field_tag "operating_hours[weekdays][close]", @operating_hours[:weekdays][:close] %>
-      </div>
-
-      <div class="form-group">
-        <h3>Saturday</h3>
-        <%= check_box_tag "operating_hours[saturday][enabled]", true, @operating_hours[:saturday][:enabled] %>
-        <%= label_tag "operating_hours_saturday_enabled", "Open" %>
-        <%= time_field_tag "operating_hours[saturday][open]", @operating_hours[:saturday][:open] %>
-        <%= time_field_tag "operating_hours[saturday][close]", @operating_hours[:saturday][:close] %>
-      </div>
-
-      <div class="form-group">
-        <h3>Sunday</h3>
-        <%= check_box_tag "operating_hours[sunday][enabled]", true, @operating_hours[:sunday][:enabled] %>
-        <%= label_tag "operating_hours_sunday_enabled", "Open" %>
-        <%= time_field_tag "operating_hours[sunday][open]", @operating_hours[:sunday][:open] %>
-        <%= time_field_tag "operating_hours[sunday][close]", @operating_hours[:sunday][:close] %>
-      </div>
-
-    <% when 4 %>
-      <!-- Step 4: Services -->
-      <div id="services-list">
-        <div class="form-group">
-          <%= label_tag "services[0][name]", "Service Name" %>
-          <%= text_field_tag "services[0][name]", "", required: true %>
-        </div>
-
-        <div class="form-group">
-          <%= label_tag "services[0][duration_minutes]", "Duration (minutes)" %>
-          <%= number_field_tag "services[0][duration_minutes]", 30, required: true %>
-        </div>
-
-        <div class="form-group">
-          <%= label_tag "services[0][price]", "Price (VND)" %>
-          <%= number_field_tag "services[0][price]", "", required: true %>
-        </div>
+    <!-- Step Navigation Info -->
+    <% if @step > 1 %>
+      <div class="mt-4 text-center">
+        <%= link_to dashboard_onboarding_path(step: @step - 1),
+            class: "text-sm text-slate-500 hover:text-slate-700" do %>
+          &larr; Back to <%= step_name(@step - 1) %>
+        <% end %>
       </div>
     <% end %>
-
-    <div class="form-actions">
-      <%= f.submit "Continue", class: "btn-primary" %>
-    </div>
-  <% end %>
+  </div>
 </div>
