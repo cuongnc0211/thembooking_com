@@ -5,18 +5,23 @@ module Dashboard
 
     layout "dashboard"
 
-    # Require business setup before accessing other dashboard pages
-    before_action :require_business_setup
+    # Require onboarding completion before accessing dashboard
+    before_action :require_onboarding_complete
 
     private
 
-    def require_business_setup
-      # Skip this check for BusinessesController (so users can create their business)
-      return if self.class.name == "Dashboard::BusinessesController"
+    def require_onboarding_complete
+      # Skip for OnboardingController (it handles its own access control)
+      return if skip_onboarding_check?
 
-      if current_user.business.nil?
-        redirect_to new_dashboard_business_path, alert: "Please set up your business first."
+      unless current_user.onboarding_completed?
+        redirect_to dashboard_onboarding_path
       end
+    end
+
+    def skip_onboarding_check?
+      # OnboardingController manages its own access control
+      is_a?(OnboardingController)
     end
   end
 end

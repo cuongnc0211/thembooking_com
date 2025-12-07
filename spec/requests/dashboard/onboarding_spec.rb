@@ -263,3 +263,105 @@ RSpec.describe "Dashboard::Onboarding", type: :request do
     end
   end
 end
+
+describe "before_action redirect for incomplete onboarding" do
+  def sign_in(user)
+    post session_path, params: { email_address: user.email_address, password: "password123" }
+  end
+
+  context "when onboarding incomplete" do
+    let(:user) { create(:user, onboarding_step: 2, name: "John", phone: "0901234567") }
+
+    before { sign_in(user) }
+
+    it "redirects from dashboard root to onboarding" do
+      get dashboard_root_path
+      expect(response).to redirect_to(dashboard_onboarding_path)
+    end
+
+    it "redirects from profile edit to onboarding" do
+      get edit_dashboard_profile_path
+      expect(response).to redirect_to(dashboard_onboarding_path)
+    end
+
+    it "redirects from services index to onboarding" do
+      get dashboard_services_path
+      expect(response).to redirect_to(dashboard_onboarding_path)
+    end
+
+    it "allows access to onboarding path" do
+      get dashboard_onboarding_path
+      expect(response).to have_http_status(:success)
+    end
+  end
+
+  context "when onboarding completed" do
+    let(:user) { create(:user, :fully_onboarded) }
+
+    before { sign_in(user) }
+
+    it "allows access to dashboard root" do
+      get dashboard_root_path
+      expect(response).to have_http_status(:success)
+    end
+
+    it "allows access to profile edit" do
+      get edit_dashboard_profile_path
+      expect(response).to have_http_status(:success)
+    end
+
+    it "redirects onboarding path to dashboard root" do
+      get dashboard_onboarding_path
+      expect(response).to redirect_to(dashboard_root_path)
+    end
+  end
+end
+
+describe "post-login redirect" do
+  def sign_in(user)
+    post session_path, params: { email_address: user.email_address, password: "password123" }
+  end
+
+  context "when onboarding incomplete" do
+    let(:user) { create(:user, onboarding_step: 1) }
+
+    it "redirects to onboarding after login" do
+      sign_in(user)
+      expect(response).to redirect_to(dashboard_onboarding_path)
+      follow_redirect!
+      expect(response).to have_http_status(:success)
+    end
+  end
+
+  context "when onboarding completed" do
+    let(:user) { create(:user, :fully_onboarded) }
+
+    it "redirects to dashboard after login" do
+      sign_in(user)
+      follow_redirect!
+      expect(response).to have_http_status(:success) # dashboard root
+    end
+  end
+end
+
+describe "resume onboarding after logout/login" do
+  let(:user) { create(:user, :with_business, onboarding_step: 3) }
+
+  it "resumes at the correct step" do
+    # First session
+    post session_path, params: { email_address: user.email_address, password: "password123" }
+    get dashboard_onboarding_path
+    expect(response.body).to include("Step 3")
+
+    # Logout
+    delete session_path
+
+    # New session
+    post session_path, params: { email_address: user.email_address, password: "password123" }
+    follow_redirect! # to onboarding
+    # No second redirect needed
+
+    get dashboard_onboarding_path
+    expect(response.body).to include("Step 3")
+  end
+end

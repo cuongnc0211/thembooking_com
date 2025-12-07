@@ -1,5 +1,5 @@
 module Dashboard
-  class OnboardingController < ApplicationController
+  class OnboardingController < BaseController
     before_action :redirect_if_completed
     before_action :set_step
     before_action :validate_step_access

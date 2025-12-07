@@ -1,27 +1,13 @@
 module Dashboard
   class BusinessesController < BaseController
     before_action :set_business, only: [ :show, :edit, :update ]
-    before_action :redirect_if_has_business, only: [ :new, :create ]
-    before_action :redirect_if_no_business, only: [ :show, :edit, :update ]
-
-    def new
-      @business = Business.new
-    end
-
-    def create
-      @business = current_user.build_business(business_params)
-
-      if @business.save
-        redirect_to dashboard_business_path, notice: "Business created successfully!"
-      else
-        render :new, status: :unprocessable_entity
-      end
-    end
 
     def show
+      redirect_to dashboard_onboarding_path if @business.nil?
     end
 
     def edit
+      redirect_to dashboard_onboarding_path if @business.nil?
     end
 
     def update
@@ -32,18 +18,12 @@ module Dashboard
       end
     end
 
+    # Note: new and create actions removed since business creation now happens through onboarding
+
     private
 
     def set_business
       @business = current_user.business
-    end
-
-    def redirect_if_has_business
-      redirect_to edit_dashboard_business_path if current_user.business.present?
-    end
-
-    def redirect_if_no_business
-      redirect_to new_dashboard_business_path if current_user.business.nil?
     end
 
     def business_params

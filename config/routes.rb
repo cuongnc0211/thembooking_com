@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     resource :onboarding, only: [ :show, :update ], controller: "onboarding"
 
     resource :profile, only: [ :edit, :update ]
-    resource :business, only: [ :new, :create, :show, :edit, :update ]
+    resource :business, only: [ :show, :edit, :update ]
     resources :services do
       member do
         post :move_up

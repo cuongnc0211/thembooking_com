@@ -14,7 +14,12 @@ class SessionsController < ApplicationController
       end
 
       start_new_session_for user
-      redirect_to after_authentication_url
+
+      if user.onboarding_completed?
+        redirect_to after_authentication_url, notice: "Signed in successfully."
+      else
+        redirect_to dashboard_onboarding_path
+      end
     else
       redirect_to new_session_path, alert: "Try another email address or password."
     end
