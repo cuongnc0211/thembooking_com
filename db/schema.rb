@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_30_121139) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_06_171152) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -149,6 +149,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_30_121139) do
     t.string "email_confirmation_token"
     t.datetime "email_confirmed_at"
     t.string "name"
+    t.datetime "onboarding_completed_at"
+    t.integer "onboarding_step", default: 1, null: false
     t.string "password_digest", null: false
     t.string "phone"
     t.boolean "profile_completed", default: false
@@ -157,6 +159,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_30_121139) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["email_confirmation_token"], name: "index_users_on_email_confirmation_token", unique: true
     t.index ["email_confirmed_at"], name: "index_users_on_email_confirmed_at"
+    t.index ["onboarding_completed_at"], name: "index_users_on_onboarding_completed_at"
+    t.index ["onboarding_step"], name: "index_users_on_onboarding_step"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

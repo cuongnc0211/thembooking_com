@@ -70,7 +70,7 @@ RSpec.describe Business, type: :model do
   describe "#booking_url" do
     it "returns the public booking URL" do
       business = build(:business, slug: "johns-barbershop")
-      expect(business.booking_url).to eq("johns-barbershop.thembooking.com")
+      expect(business.booking_url).to eq("thembooking.com/johns-barbershop")
     end
   end
 

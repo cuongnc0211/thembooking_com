@@ -20,6 +20,15 @@ class User < ApplicationRecord
   before_create :generate_confirmation_token
   after_create :send_confirmation_email
 
+  # Onboarding constants
+  ONBOARDING_STEPS = {
+    user_info: 1,
+    business: 2,
+    hours: 3,
+    services: 4,
+    completed: 5
+  }.freeze
+
   # Email confirmation methods
   def confirmed?
     email_confirmed_at.present?
@@ -38,6 +47,38 @@ class User < ApplicationRecord
   def confirmation_token_expired?
     return false if email_confirmation_sent_at.nil?
     email_confirmation_sent_at < 24.hours.ago
+  end
+
+  # Onboarding methods
+  def onboarding_completed?
+    onboarding_completed_at.present?
+  end
+
+  def current_onboarding_step_name
+    ONBOARDING_STEPS.key(onboarding_step)
+  end
+
+  def advance_onboarding!
+    return if onboarding_step >= 5
+
+    new_step = onboarding_step + 1
+    attrs = { onboarding_step: new_step }
+    attrs[:onboarding_completed_at] = Time.current if new_step == 5
+    update!(attrs)
+  end
+
+  def can_access_step?(step_number)
+    step_number <= onboarding_step
+  end
+
+  def onboarding_step_complete?(step_number)
+    case step_number
+    when 1 then name.present? && phone.present?
+    when 2 then business.present?
+    when 3 then business&.operating_hours.present?
+    when 4 then business&.services&.any?
+    else false
+    end
   end
 
   private
