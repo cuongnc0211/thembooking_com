@@ -9,6 +9,8 @@
     </div>
   <% end %>
 
+  <%= hidden_field_tag :current_step, @step %>
+
   <!-- Avatar (Optional) -->
   <div>
     <%= form.label :avatar, "Profile Photo (Optional)", class: "form-label" %>

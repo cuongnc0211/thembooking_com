@@ -6,29 +6,29 @@
       <p class="mt-2 text-slate-600">Let's set up your business in a few simple steps</p>
     </div>
 
-    <!-- Progress Bar -->
-    <%= render "progress_bar", current_step: @step %>
+    <%= turbo_frame_tag "onboarding-step" do %>
+      <!-- Progress Bar -->
+      <%= render "progress_bar", current_step: @step %>
 
-    <!-- Step Content -->
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mt-6">
-      <h2 class="text-lg font-semibold text-slate-900 mb-1">
-        Step <%= @step %>: <%= @step_config[:title] %>
-      </h2>
-      <p class="text-sm text-slate-500 mb-6"><%= step_description(@step) %></p>
+      <!-- Step Content -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mt-6">
+        <h2 class="text-lg font-semibold text-slate-900 mb-1">
+          Step <%= @step %>: <%= @step_config[:title] %>
+        </h2>
+        <p class="text-sm text-slate-500 mb-6"><%= step_description(@step) %></p>
 
-      <%= turbo_frame_tag "onboarding-step" do %>
         <%= render "step_#{@step}_#{@step_config[:name]}" %>
-      <% end %>
-    </div>
-
-    <!-- Step Navigation Info -->
-    <% if @step > 1 %>
-      <div class="mt-4 text-center">
-        <%= link_to dashboard_onboarding_path(step: @step - 1),
-            class: "text-sm text-slate-500 hover:text-slate-700" do %>
-          &larr; Back to <%= step_name(@step - 1) %>
-        <% end %>
       </div>
+
+      <!-- Step Navigation Info -->
+      <% if @step > 1 %>
+        <div class="mt-4 text-center">
+          <%= link_to dashboard_onboarding_path(step: @step - 1),
+              class: "text-sm text-slate-500 hover:text-slate-700" do %>
+            &larr; Back to <%= step_name(@step - 1) %>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>

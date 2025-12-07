@@ -19,7 +19,8 @@ module Dashboard
     def update
       if process_step
         if @step == 4
-          complete_onboarding
+          current_user.advance_onboarding!
+          redirect_to dashboard_root_path, notice: "Setup complete! Your booking page is ready.", status: :see_other
         else
           advance_to_next_step
         end
@@ -33,12 +34,12 @@ module Dashboard
     private
 
     def redirect_if_completed
-      redirect_to dashboard_root_path if current_user.onboarding_completed?
+      redirect_to dashboard_root_path, status: :see_other if current_user.onboarding_completed?
     end
 
     def set_step
-      @step = if params[:step].present?
-        params[:step].to_i.clamp(1, 4)
+      @step = if params[:step].present? || params[:current_step].present?
+        (params[:step] || params[:current_step]).to_i.clamp(1, 4)
       else
         current_user.onboarding_step.clamp(1, 4)
       end
@@ -47,7 +48,8 @@ module Dashboard
     def validate_step_access
       unless current_user.can_access_step?(@step)
         redirect_to dashboard_onboarding_path,
-          alert: "Complete previous steps first."
+          alert: "Complete previous steps first.",
+          status: :see_other
       end
     end
 
@@ -98,56 +100,33 @@ module Dashboard
       hours = expand_simplified_hours(hours_params)
       return false if hours.nil?
 
+      # TO DO: auto populate time slot if there is no time slot yet
+
       current_user.business.update(operating_hours: hours)
     end
 
     def process_services
       services_params_array = params[:services]
 
-      # Return false if no services provided
-      return false if services_params_array.nil?
-      return false if services_params_array.respond_to?(:empty?) && services_params_array.empty?
+      params_ids = services_params_array.map { |i| i[:id].to_i }
+      db_ids = current_user.business.services.pluck(:id)
 
-      # Handle both array format [{name: ...}] and hash format {0 => {name: ...}}
-      services_list = if services_params_array.is_a?(Hash)
-        services_params_array.values
-      else
-        services_params_array.to_a
+      Service.where(id: db_ids - params_ids).delete_all
+      services_params_array.each do |s_params|
+        if s_params[:id]
+          current_user.business.services.find_by(id: s_params[:id])&.update(service_params(s_params))
+        else
+          current_user.business.services.create(service_params(s_params))
+        end
       end
-
-      return false if services_list.empty?
-
-      # Track if we actually created any services
-      created_count = 0
-
-      services_list.each do |service_attrs|
-        # Skip if not a hash-like object
-        next unless service_attrs.is_a?(Hash) || service_attrs.respond_to?(:to_unsafe_h)
-
-        # Handle both symbol and string keys
-        attrs = service_attrs.respond_to?(:to_unsafe_h) ? service_attrs.to_unsafe_h : service_attrs
-        service = current_user.business.services.build(
-          name: attrs["name"] || attrs[:name],
-          duration_minutes: (attrs["duration_minutes"] || attrs[:duration_minutes]).to_i,
-          price_cents: ((attrs["price"] || attrs[:price]).to_f * 100).to_i,
-          currency: "VND"
-        )
-        return false unless service.save
-        created_count += 1
-      end
-
-      # Return false if we didn't create any services
-      created_count > 0
     end
 
     def advance_to_next_step
-      current_user.advance_onboarding!
-      redirect_to dashboard_onboarding_path
-    end
-
-    def complete_onboarding
-      current_user.advance_onboarding!
-      redirect_to dashboard_root_path, notice: "Setup complete! Your booking page is ready."
+      # Only advance if currently on this step (not editing previous steps)
+      if current_user.onboarding_step == @step
+        current_user.advance_onboarding!
+      end
+      redirect_to dashboard_onboarding_path(step: @step + 1), status: :see_other
     end
 
     # Params methods
@@ -168,6 +147,10 @@ module Dashboard
         saturday: [:enabled, :open, :close],
         sunday: [:enabled, :open, :close]
       )
+    end
+
+    def service_params(single_service_param)
+      single_service_param.permit(:name, :duration_minutes, :price)
     end
 
     # Simplified hours helpers
@@ -203,14 +186,14 @@ module Dashboard
 
     def expand_simplified_hours(simplified)
       # Handle both string and symbol keys
-      weekdays = simplified[:weekdays] || simplified["weekdays"]
-      saturday = simplified[:saturday] || simplified["saturday"]
-      sunday = simplified[:sunday] || simplified["sunday"]
+      weekdays = simplified[:weekdays]
+      saturday = simplified[:saturday]
+      sunday = simplified[:sunday]
 
       # Check if enabled - handle "1", "true", true, or 1
-      weekdays_enabled = [true, "true", "1", 1].include?(weekdays[:enabled]) || [true, "true", "1", 1].include?(weekdays["enabled"])
-      saturday_enabled = [true, "true", "1", 1].include?(saturday[:enabled]) || [true, "true", "1", 1].include?(saturday["enabled"])
-      sunday_enabled = [true, "true", "1", 1].include?(sunday[:enabled]) || [true, "true", "1", 1].include?(sunday["enabled"])
+      weekdays_enabled = weekdays && [true, "true", "1", 1].include?(weekdays[:enabled])
+      saturday_enabled = saturday && [true, "true", "1", 1].include?(saturday[:enabled])
+      sunday_enabled = sunday && [true, "true", "1", 1].include?(sunday[:enabled])
 
       # At least one day must be enabled
       unless weekdays_enabled || saturday_enabled || sunday_enabled

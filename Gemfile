@@ -79,3 +79,5 @@ end
 gem "resend"
 
 gem "mission_control-jobs"
+
+gem "capybara", "~> 3.40"

@@ -3,6 +3,7 @@ FactoryBot.define do
     email_address { Faker::Internet.email }
     password { "password123" }
     name { Faker::Name.name }
+    phone { Faker::PhoneNumber.phone_number.gsub(/[^0-9\-\+\s\(\)]/, "")[0..15] }
     email_confirmed_at { Time.current }
     onboarding_step { 1 }
     onboarding_completed_at { nil }

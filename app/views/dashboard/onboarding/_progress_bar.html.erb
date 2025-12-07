@@ -36,14 +36,14 @@
           <% end %>
         </div>
       <% end %>
-      <span class="mt-2 text-xs font-medium <%= is_current ? 'text-primary-600' : 'text-slate-500' %>">
+      <span class="mt-2 text-xs font-medium <%= step[:number] < current_user.onboarding_step ? 'text-primary-600' : 'text-slate-500' %>">
         <%= step[:name] %>
       </span>
     </div>
 
     <!-- Connector Line (except after last step) -->
     <% if index < steps.size - 1 %>
-      <div class="flex-1 h-0.5 mx-2 <%= step[:number] < current_step ? 'bg-primary-500' : 'bg-slate-200' %>"></div>
+      <div class="flex-1 h-0.5 mx-2 <%= step[:number] < current_user.onboarding_step ? 'bg-primary-500' : 'bg-slate-200' %>"></div>
     <% end %>
   <% end %>
 </div>

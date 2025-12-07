@@ -9,6 +9,8 @@
     </div>
   <% end %>
 
+  <%= hidden_field_tag :current_step, @step %>
+
   <!-- Business Name -->
   <div>
     <%= form.label :name, "Business Name", class: "form-label" %>

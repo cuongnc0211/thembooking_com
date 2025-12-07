@@ -9,6 +9,8 @@
     <% end %>
   </div>
 
+
+  <%= hidden_field_tag 'services[][id]', service.id %>
   <div>
     <label class="form-label">Service Name</label>
     <input type="text" name="services[][name]" value="<%= h(service.name) %>"
@@ -30,7 +32,7 @@
       <div class="relative">
         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">VND</span>
         <input type="number" name="services[][price]"
-            value="<%= (service.price.to_f / 100).round if service.price_cents && service.price_cents > 0 %>"
+            value="<%= service.price %>"
             class="form-input pl-12" placeholder="80000" min="0" step="1000" required>
       </div>
     </div>
