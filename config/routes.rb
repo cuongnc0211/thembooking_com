@@ -21,6 +21,9 @@ Rails.application.routes.draw do
   namespace :dashboard do
     root "businesses#show"
 
+    # Onboarding flow
+    resource :onboarding, only: [ :show, :update ], controller: "onboarding"
+
     resource :profile, only: [ :edit, :update ]
     resource :business, only: [ :new, :create, :show, :edit, :update ]
     resources :services do
