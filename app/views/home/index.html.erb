@@ -1,84 +1,302 @@
 <% if authenticated? && Current.user.business.nil? %>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-    <div class="bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-100 rounded-2xl p-8 relative overflow-hidden">
-      <div class="relative z-10">
-        <h3 class="text-xl font-display font-bold text-primary-900 mb-2"><%= t('views.home.index.setup_business_title') %></h3>
-        <p class="text-primary-700 mb-6 max-w-2xl">
-          <%= t('views.home.index.setup_business_message') %>
-        </p>
-        <%# TODO: Link to business setup when implemented %>
-        <button class="btn-primary shadow-lg shadow-primary-500/20" disabled>
-          <%= t('views.home.index.coming_soon') %>
-        </button>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 animate-fade-in-up">
+    <div class="glass overflow-hidden rounded-3xl relative p-8 sm:p-10">
+      <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div class="max-w-2xl">
+          <h3 class="text-2xl font-display font-bold text-slate-900 mb-3"><%= t('views.home.index.setup_business_title') %></h3>
+          <p class="text-slate-600 text-lg leading-relaxed">
+            <%= t('views.home.index.setup_business_message') %>
+          </p>
+        </div>
+        <div class="flex-shrink-0">
+          <%= link_to t('views.home.index.setup_business_cta'), new_dashboard_business_path, class: "btn-primary shadow-lg shadow-primary-500/30 px-8 py-4 text-lg" %>
+        </div>
       </div>
-      <div class="absolute top-0 right-0 -mt-16 -mr-16 w-64 h-64 bg-primary-200 rounded-full blur-3xl opacity-50"></div>
+      <div class="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-gradient-to-br from-primary-400/20 to-accent-400/20 rounded-full blur-3xl"></div>
     </div>
   </div>
 <% end %>
 
 <!-- Hero Section -->
-<div class="relative overflow-hidden pt-16 pb-24">
+<div class="relative overflow-hidden pt-20 pb-32 lg:pb-48">
   <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full z-0 pointer-events-none">
-    <div class="absolute top-20 left-10 w-72 h-72 bg-primary-300 rounded-full blur-[100px] opacity-30 animate-pulse"></div>
-    <div class="absolute bottom-20 right-10 w-96 h-96 bg-accent-300 rounded-full blur-[100px] opacity-30 animate-pulse delay-1000"></div>
+    <div class="absolute top-20 left-10 w-96 h-96 bg-primary-400/20 rounded-full blur-[100px] animate-float"></div>
+    <div class="absolute bottom-20 right-10 w-[30rem] h-[30rem] bg-accent-400/20 rounded-full blur-[100px] animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjAzL 
+    DIxMywgMjI1LCAwLjQpIi8+PC9zdmc+')] [mask-image:radial-gradient(ellipse_at_center,black_50%,transparent_100%)]"></div>
   </div>
 
-  <div class="relative z-10 max-w-4xl mx-auto text-center px-4">
-    <span class="inline-block py-1 px-3 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6 border border-primary-100">
-      <%= t('views.home.index.badge_text') %>
-    </span>
-    <h1 class="text-5xl md:text-7xl font-display font-bold tracking-tight text-slate-900 mb-8">
+  <div class="relative z-10 max-w-5xl mx-auto text-center px-4 sm:px-6 animate-fade-in-up">
+    <div class="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-white/50 backdrop-blur-sm border border-slate-200 shadow-sm mb-8 hover:scale-105 transition-transform duration-300 cursor-default">
+      <span class="flex h-2 w-2 rounded-full bg-primary-500"></span>
+      <span class="text-slate-600 text-sm font-medium">
+        <%= t('views.home.index.badge_text') %>
+      </span>
+    </div>
+    
+    <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight text-slate-900 mb-8 leading-[1.1]">
       <%= t('views.home.index.hero_title').html_safe %>
     </h1>
-    <p class="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+    
+    <p class="text-xl sm:text-2xl text-slate-600 mb-12 max-w-3xl mx-auto leading-relaxed font-light">
       <%= t('views.home.index.hero_subtitle') %>
     </p>
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
       <% if authenticated? %>
-        <%= link_to t('views.home.index.dashboard_button'), dashboard_root_path, class: "btn-primary w-full sm:w-auto text-lg px-8 py-4" %>
+        <%= link_to t('views.home.index.dashboard_button'), dashboard_root_path, class: "btn-primary w-full sm:w-auto text-lg px-10 py-4 shadow-xl shadow-primary-500/30 hover:shadow-primary-500/40" %>
       <% else %>
-        <%= link_to t('views.home.index.get_started'), new_registration_path, class: "btn-primary w-full sm:w-auto text-lg px-8 py-4 shadow-xl shadow-primary-500/20" %>
-        <%= link_to t('views.home.index.learn_more'), "#", class: "btn-secondary w-full sm:w-auto text-lg px-8 py-4" %>
+        <%= link_to t('views.home.index.get_started'), new_registration_path, class: "btn-primary w-full sm:w-auto text-lg px-10 py-4 shadow-xl shadow-primary-500/30 hover:shadow-primary-500/40" %>
+        <%= link_to t('views.home.index.learn_more'), "#features", class: "btn-secondary w-full sm:w-auto text-lg px-10 py-4 backdrop-blur-sm bg-white/80" %>
+      <% end %>
+    </div>
+
+    <!-- Trust Indicators -->
+    <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm font-medium text-slate-500">
+      <div class="flex items-center gap-2">
+        <div class="p-1 rounded-full bg-green-100 text-green-600">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        </div>
+        <span><%= t('views.home.index.trust_indicator_1') %></span>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="p-1 rounded-full bg-green-100 text-green-600">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        </div>
+        <span><%= t('views.home.index.trust_indicator_2') %></span>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="p-1 rounded-full bg-green-100 text-green-600">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        </div>
+        <span><%= t('views.home.index.trust_indicator_3') %></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Problem Statement Section -->
+<div class="bg-surface-50 py-24 relative" id="problems">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-20">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-slate-900 mb-6">
+        <%= t('views.home.index.problems_title') %>
+      </h2>
+      <p class="text-xl text-slate-600 max-w-2xl mx-auto font-light">
+        <%= t('views.home.index.problems_subtitle') %>
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <% (1..6).each do |i| %>
+        <div class="group bg-white rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default">
+          <div class="flex items-start gap-5">
+            <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 mb-2 group-hover:text-red-600 transition-colors"><%= t("views.home.index.problem_#{i}_title") %></h3>
+              <p class="text-slate-600 leading-relaxed"><%= t("views.home.index.problem_#{i}_description") %></p>
+            </div>
+          </div>
+        </div>
       <% end %>
     </div>
   </div>
 </div>
 
-<!-- Features Grid -->
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-    <!-- Feature 1 -->
-    <div class="card p-8 card-hover group">
-      <div class="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-        <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-      </div>
-      <h3 class="text-xl font-display font-bold text-slate-900 mb-3"><%= t('views.home.index.feature1_title') %></h3>
-      <p class="text-slate-600 leading-relaxed">
-        <%= t('views.home.index.feature1_description') %>
+<!-- Solution Overview Section -->
+<div class="py-32 relative overflow-hidden" id="features">
+  <!-- Decorative background elements -->
+  <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-primary-100/50 rounded-full blur-[120px] -z-10"></div>
+  <div class="absolute bottom-0 right-0 w-96 h-96 bg-accent-100/50 rounded-full blur-[120px] -z-10"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-20">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-slate-900 mb-6">
+        <%= t('views.home.index.solution_title') %>
+      </h2>
+      <p class="text-xl text-slate-600 max-w-2xl mx-auto font-light">
+        <%= t('views.home.index.solution_subtitle') %>
       </p>
     </div>
 
-    <!-- Feature 2 -->
-    <div class="card p-8 card-hover group">
-      <div class="w-12 h-12 bg-accent-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-        <svg class="w-6 h-6 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Feature 1: Real-time Queue -->
+      <div class="glass rounded-3xl p-8 hover:-translate-y-2 transition-transform duration-300 group">
+        <div class="w-16 h-16 bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+          <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </div>
+        <h3 class="text-xl font-display font-bold text-slate-900 mb-4"><%= t('views.home.index.feature_queue_title') %></h3>
+        <p class="text-slate-600 leading-relaxed">
+          <%= t('views.home.index.feature_queue_description') %>
+        </p>
       </div>
-      <h3 class="text-xl font-display font-bold text-slate-900 mb-3"><%= t('views.home.index.feature2_title') %></h3>
-      <p class="text-slate-600 leading-relaxed">
-        <%= t('views.home.index.feature2_description') %>
-      </p>
-    </div>
 
-    <!-- Feature 3 -->
-    <div class="card p-8 card-hover group">
-      <div class="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-        <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+      <!-- Feature 2: Online Booking -->
+      <div class="glass rounded-3xl p-8 hover:-translate-y-2 transition-transform duration-300 group">
+        <div class="w-16 h-16 bg-gradient-to-br from-accent-50 to-accent-100 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+          <svg class="w-8 h-8 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </div>
+        <h3 class="text-xl font-display font-bold text-slate-900 mb-4"><%= t('views.home.index.feature_booking_title') %></h3>
+        <p class="text-slate-600 leading-relaxed">
+          <%= t('views.home.index.feature_booking_description') %>
+        </p>
       </div>
-      <h3 class="text-xl font-display font-bold text-slate-900 mb-3"><%= t('views.home.index.feature3_title') %></h3>
-      <p class="text-slate-600 leading-relaxed">
-        <%= t('views.home.index.feature3_description') %>
-      </p>
+
+      <!-- Feature 3: Walk-in Management -->
+      <div class="glass rounded-3xl p-8 hover:-translate-y-2 transition-transform duration-300 group">
+        <div class="w-16 h-16 bg-gradient-to-br from-teal-50 to-teal-100 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+          <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        </div>
+        <h3 class="text-xl font-display font-bold text-slate-900 mb-4"><%= t('views.home.index.feature_walkin_title') %></h3>
+        <p class="text-slate-600 leading-relaxed">
+          <%= t('views.home.index.feature_walkin_description') %>
+        </p>
+      </div>
+
+      <!-- Feature 4: Capacity Management -->
+      <div class="glass rounded-3xl p-8 hover:-translate-y-2 transition-transform duration-300 group">
+        <div class="w-16 h-16 bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+          <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </div>
+        <h3 class="text-xl font-display font-bold text-slate-900 mb-4"><%= t('views.home.index.feature_capacity_title') %></h3>
+        <p class="text-slate-600 leading-relaxed">
+          <%= t('views.home.index.feature_capacity_description') %>
+        </p>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- How It Works Section -->
+<div class="bg-gradient-to-br from-primary-900 via-primary-800 to-accent-900 py-32 text-white overflow-hidden relative">
+  <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-30"></div>
+  
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-20">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-6">
+        <%= t('views.home.index.how_it_works_title') %>
+      </h2>
+      <p class="text-xl text-primary-100 max-w-2xl mx-auto font-light">
+        <%= t('views.home.index.how_it_works_subtitle') %>
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 relative">
+      <!-- Connecting Line (Desktop) -->
+      <div class="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-white/10"></div>
+
+      <% (1..4).each do |i| %>
+        <div class="text-center relative group">
+          <div class="relative mx-auto w-24 h-24 mb-8">
+            <div class="absolute inset-0 bg-white/10 rounded-full animate-ping opacity-20 group-hover:opacity-40 transition-opacity"></div>
+            <div class="relative w-24 h-24 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <%= i %>
+            </div>
+          </div>
+          <h3 class="text-xl font-display font-bold text-white mb-4"><%= t("views.home.index.step_#{i}_title") %></h3>
+          <p class="text-primary-100 leading-relaxed"><%= t("views.home.index.step_#{i}_description") %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Pricing Section -->
+<div class="py-32 bg-surface-50" id="pricing">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-20">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-slate-900 mb-6">
+        <%= t('views.home.index.pricing_title') %>
+      </h2>
+      <p class="text-xl text-slate-600 max-w-2xl mx-auto font-light">
+        <%= t('views.home.index.pricing_subtitle') %>
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-center">
+      <!-- Free Plan -->
+      <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300">
+        <h3 class="text-2xl font-display font-bold text-slate-900 mb-2"><%= t('views.home.index.plan_free_name') %></h3>
+        <div class="mb-8">
+          <span class="text-4xl font-bold text-slate-900"><%= t('views.home.index.plan_free_price') %></span>
+        </div>
+        <ul class="space-y-4 mb-8">
+          <% (1..4).each do |i| %>
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span class="text-slate-600"><%= t("views.home.index.plan_free_feature_#{i}") %></span>
+            </li>
+          <% end %>
+        </ul>
+        <% unless authenticated? %>
+          <%= link_to t('views.home.index.get_started'), new_registration_path, class: "btn-secondary w-full justify-center" %>
+        <% end %>
+      </div>
+
+      <!-- Pro Plan (Popular) -->
+      <div class="bg-slate-900 rounded-3xl p-10 shadow-2xl relative transform md:-translate-y-4 border border-slate-800">
+        <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary-500 to-accent-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+          <%= t('views.home.index.popular_badge') %>
+        </div>
+        <h3 class="text-3xl font-display font-bold text-white mb-2"><%= t('views.home.index.plan_pro_name') %></h3>
+        <div class="mb-8">
+          <span class="text-5xl font-bold text-white"><%= t('views.home.index.plan_pro_price') %></span>
+          <span class="text-slate-400">/<%= t('views.home.index.per_month') %></span>
+        </div>
+        <ul class="space-y-5 mb-10">
+          <% (1..6).each do |i| %>
+            <li class="flex items-start gap-3">
+              <div class="p-0.5 rounded-full bg-primary-500/20 text-primary-400">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              </div>
+              <span class="text-slate-300"><%= t("views.home.index.plan_pro_feature_#{i}") %></span>
+            </li>
+          <% end %>
+        </ul>
+        <% unless authenticated? %>
+          <%= link_to t('views.home.index.get_started'), new_registration_path, class: "btn-primary w-full justify-center py-4 text-lg shadow-glow" %>
+        <% end %>
+      </div>
+
+      <!-- Business Plan -->
+      <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300">
+        <h3 class="text-2xl font-display font-bold text-slate-900 mb-2"><%= t('views.home.index.plan_business_name') %></h3>
+        <div class="mb-8">
+          <span class="text-4xl font-bold text-slate-900"><%= t('views.home.index.plan_business_price') %></span>
+          <span class="text-slate-500">/<%= t('views.home.index.per_month') %></span>
+        </div>
+        <ul class="space-y-4 mb-8">
+          <% (1..7).each do |i| %>
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span class="text-slate-600"><%= t("views.home.index.plan_business_feature_#{i}") %></span>
+            </li>
+          <% end %>
+        </ul>
+        <% unless authenticated? %>
+          <%= link_to t('views.home.index.get_started'), new_registration_path, class: "btn-secondary w-full justify-center" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA Section -->
+<div class="relative py-24 overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-r from-primary-600 to-accent-600"></div>
+  <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==')] opacity-30"></div>
+  
+  <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 relative z-10">
+    <h2 class="text-4xl sm:text-5xl font-display font-bold text-white mb-8 leading-tight">
+      <%= t('views.home.index.cta_title') %>
+    </h2>
+    <p class="text-xl text-primary-100 mb-12 max-w-2xl mx-auto font-light">
+      <%= t('views.home.index.cta_subtitle') %>
+    </p>
+    <% unless authenticated? %>
+      <%= link_to t('views.home.index.get_started'), new_registration_path, class: "inline-flex items-center justify-center px-10 py-5 text-lg font-bold text-primary-700 bg-white rounded-2xl hover:bg-slate-50 transition-all duration-300 shadow-2xl hover:shadow-white/20 hover:-translate-y-1" %>
+    <% end %>
+  </div>
+</div>

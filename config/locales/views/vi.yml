@@ -4,13 +4,111 @@ vi:
       index:
         setup_business_title: "Thiết Lập Doanh Nghiệp"
         setup_business_message: "Bắt đầu với ThemBooking bằng cách tạo hồ sơ doanh nghiệp. Thêm tên doanh nghiệp, dịch vụ và bắt đầu nhận đặt chỗ trong vài phút."
+        setup_business_cta: "Tạo Doanh Nghiệp"
         coming_soon: "Sắp Có"
-        badge_text: "Mới: Rails 8.1 + Solid Trio"
-        hero_title: "Đặt chỗ <span class='text-gradient'>Đơn giản</span> và <span class='text-gradient'>Phong cách</span>."
-        hero_subtitle: "ThemBooking là cách hiện đại để quản lý lịch hẹn. Được xây dựng với công nghệ mới nhất để mang lại tốc độ, độ tin cậy và trải nghiệm người dùng cao cấp."
+        badge_text: "✨ Giải pháp đặt lịch hiện đại cho Việt Nam"
+        hero_title: "Quản lý lịch hẹn <span class='text-gradient'>dễ dàng</span> cho tiệm của bạn"
+        hero_subtitle: "Từ tiệm cắt tóc, spa đến salon - ThemBooking giúp bạn quản lý lịch hẹn, khách vãng lai, và hàng chờ một cách chuyên nghiệp. Giá cả phải chăng, dễ sử dụng."
         dashboard_button: "Đến Bảng Điều Khiển"
-        get_started: "Bắt Đầu Miễn Phí"
+        get_started: "Dùng Thử Miễn Phí"
         learn_more: "Tìm Hiểu Thêm"
+
+        # Trust Indicators
+        trust_indicator_1: "Không cần thẻ tín dụng"
+        trust_indicator_2: "Hỗ trợ tiếng Việt"
+        trust_indicator_3: "Thanh toán qua Sepay"
+
+        # Problems Section
+        problems_title: "Bạn có gặp những khó khăn này?"
+        problems_subtitle: "Chúng tôi hiểu nỗi đau của chủ tiệm dịch vụ khi quản lý lịch hẹn"
+
+        problem_1_title: "Khách hẹn không đến"
+        problem_1_description: "Khách đặt lịch nhưng không xuất hiện, làm lãng phí thời gian và mất doanh thu"
+
+        problem_2_title: "Khó cân bằng khách vãng lai và hẹn trước"
+        problem_2_description: "Không biết nhận thêm khách vãng lai hay từ chối vì đã có lịch hẹn"
+
+        problem_3_title: "Không có trang đặt lịch online"
+        problem_3_description: "Phải nhận lịch qua Zalo, điện thoại - mất thời gian và dễ nhầm lẫn"
+
+        problem_4_title: "Quản lý thủ công bằng sổ"
+        problem_4_description: "Ghi chép bằng giấy hoặc nhớ trong đầu, dễ quên và khó tra cứu"
+
+        problem_5_title: "Không biết sức chứa thực tế"
+        problem_5_description: "Không rõ cùng lúc có thể phục vụ được bao nhiêu khách, dẫn đến quá tải hoặc lãng phí"
+
+        problem_6_title: "Khách không biết giờ trống"
+        problem_6_description: "Khách phải gọi điện hỏi từng giờ, gây bất tiện cho cả hai bên"
+
+        # Solution Section
+        solution_title: "ThemBooking giải quyết mọi vấn đề"
+        solution_subtitle: "Hệ thống quản lý lịch hẹn toàn diện, được thiết kế riêng cho tiệm dịch vụ tại Việt Nam"
+
+        feature_queue_title: "Hàng Chờ Thời Gian Thực"
+        feature_queue_description: "Theo dõi hàng chờ trực tiếp, biết chính xác thời gian chờ của từng khách"
+
+        feature_booking_title: "Trang Đặt Lịch Online"
+        feature_booking_description: "Trang đặt lịch chuyên nghiệp với tên miền riêng, khách tự đặt 24/7"
+
+        feature_walkin_title: "Quản Lý Khách Vãng Lai"
+        feature_walkin_description: "Thêm khách vãng lai vào hệ thống nhanh chóng, quản lý cùng lịch hẹn"
+
+        feature_capacity_title: "Quản Lý Sức Chứa"
+        feature_capacity_description: "Thiết lập số ghế/phòng, hệ thống tự động tính toán giờ trống"
+
+        # How It Works
+        how_it_works_title: "Bắt đầu chỉ trong 5 phút"
+        how_it_works_subtitle: "Không cần kỹ thuật, không cần đào tạo - chỉ cần vài bước đơn giản"
+
+        step_1_title: "Tạo tài khoản"
+        step_1_description: "Đăng ký miễn phí chỉ với email và mật khẩu"
+
+        step_2_title: "Thiết lập tiệm"
+        step_2_description: "Nhập tên tiệm, địa chỉ, giờ mở cửa và số ghế/phòng"
+
+        step_3_title: "Thêm dịch vụ"
+        step_3_description: "Thêm các dịch vụ với giá và thời gian thực hiện"
+
+        step_4_title: "Nhận đặt chỗ"
+        step_4_description: "Chia sẻ link đặt lịch và bắt đầu nhận khách ngay"
+
+        # Pricing Section
+        pricing_title: "Bảng giá phải chăng"
+        pricing_subtitle: "Chọn gói phù hợp với quy mô tiệm của bạn. Không ràng buộc dài hạn."
+        per_month: "tháng"
+        popular_badge: "Phổ biến nhất"
+
+        plan_free_name: "Miễn Phí"
+        plan_free_price: "0đ"
+        plan_free_feature_1: "Tối đa 30 lịch hẹn/tháng"
+        plan_free_feature_2: "1 trang đặt lịch online"
+        plan_free_feature_3: "Quản lý khách vãng lai"
+        plan_free_feature_4: "Hỗ trợ cơ bản"
+
+        plan_pro_name: "Pro"
+        plan_pro_price: "99.000đ"
+        plan_pro_feature_1: "Không giới hạn lịch hẹn"
+        plan_pro_feature_2: "Trang đặt lịch tùy chỉnh"
+        plan_pro_feature_3: "Quản lý hàng chờ thời gian thực"
+        plan_pro_feature_4: "Nhắc lịch tự động (SMS)"
+        plan_pro_feature_5: "Báo cáo doanh thu"
+        plan_pro_feature_6: "Hỗ trợ ưu tiên"
+
+        plan_business_name: "Business"
+        plan_business_price: "299.000đ"
+        plan_business_feature_1: "Tất cả tính năng Pro"
+        plan_business_feature_2: "Quản lý nhân viên"
+        plan_business_feature_3: "Nhiều chi nhánh"
+        plan_business_feature_4: "Tích hợp thanh toán Sepay"
+        plan_business_feature_5: "Báo cáo chi tiết"
+        plan_business_feature_6: "API tùy chỉnh"
+        plan_business_feature_7: "Hỗ trợ 24/7"
+
+        # CTA Section
+        cta_title: "Sẵn sàng chuyên nghiệp hóa tiệm của bạn?"
+        cta_subtitle: "Tham gia cùng hàng trăm chủ tiệm đang sử dụng ThemBooking mỗi ngày"
+
+        # Old Features (kept for compatibility)
         feature1_title: "Cực Kỳ Nhanh"
         feature1_description: "Được hỗ trợ bởi Rails 8 và Solid Cache, trải nghiệm tải trang tức thì và tương tác mượt mà."
         feature2_title: "Công Nghệ Hiện Đại"

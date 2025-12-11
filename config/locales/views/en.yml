@@ -4,13 +4,111 @@ en:
       index:
         setup_business_title: "Set Up Your Business"
         setup_business_message: "Get started with ThemBooking by creating your business profile. Add your business name, services, and start accepting bookings in minutes."
+        setup_business_cta: "Create Business"
         coming_soon: "Coming Soon"
-        badge_text: "New: Rails 8.1 + Solid Trio"
-        hero_title: "Booking made <span class='text-gradient'>simple</span> and <span class='text-gradient'>beautiful</span>."
-        hero_subtitle: "ThemBooking is the modern way to manage appointments. Built with the latest tech stack for speed, reliability, and a premium user experience."
+        badge_text: "✨ Modern booking solution for Vietnam"
+        hero_title: "Manage appointments <span class='text-gradient'>effortlessly</span> for your business"
+        hero_subtitle: "From barbershops to spas and salons - ThemBooking helps you manage appointments, walk-ins, and queues professionally. Affordable and easy to use."
         dashboard_button: "Go to Dashboard"
-        get_started: "Get Started Free"
+        get_started: "Start Free Trial"
         learn_more: "Learn More"
+
+        # Trust Indicators
+        trust_indicator_1: "No credit card required"
+        trust_indicator_2: "Vietnamese support"
+        trust_indicator_3: "Sepay payments"
+
+        # Problems Section
+        problems_title: "Do you face these challenges?"
+        problems_subtitle: "We understand the pain points of service business owners when managing appointments"
+
+        problem_1_title: "No-shows"
+        problem_1_description: "Customers book appointments but don't show up, wasting time and losing revenue"
+
+        problem_2_title: "Balancing walk-ins and appointments"
+        problem_2_description: "Not sure whether to accept walk-ins or turn them away because of scheduled appointments"
+
+        problem_3_title: "No online booking page"
+        problem_3_description: "Receiving bookings via Zalo and phone calls - time-consuming and error-prone"
+
+        problem_4_title: "Manual paper tracking"
+        problem_4_description: "Writing in notebooks or relying on memory, easy to forget and hard to reference"
+
+        problem_5_title: "Unknown actual capacity"
+        problem_5_description: "Unclear how many customers can be served simultaneously, leading to overload or waste"
+
+        problem_6_title: "Customers can't see availability"
+        problem_6_description: "Customers have to call and ask for each time slot, inconvenient for both parties"
+
+        # Solution Section
+        solution_title: "ThemBooking solves all problems"
+        solution_subtitle: "Comprehensive appointment management system designed specifically for service businesses in Vietnam"
+
+        feature_queue_title: "Real-time Queue"
+        feature_queue_description: "Track queue in real-time, know exact wait time for each customer"
+
+        feature_booking_title: "Online Booking Page"
+        feature_booking_description: "Professional booking page with custom URL, customers book 24/7"
+
+        feature_walkin_title: "Walk-in Management"
+        feature_walkin_description: "Add walk-ins to system quickly, manage alongside appointments"
+
+        feature_capacity_title: "Capacity Management"
+        feature_capacity_description: "Set up chairs/rooms, system automatically calculates available slots"
+
+        # How It Works
+        how_it_works_title: "Get started in just 5 minutes"
+        how_it_works_subtitle: "No technical skills needed, no training required - just a few simple steps"
+
+        step_1_title: "Create account"
+        step_1_description: "Sign up free with just email and password"
+
+        step_2_title: "Set up business"
+        step_2_description: "Enter business name, address, hours and capacity"
+
+        step_3_title: "Add services"
+        step_3_description: "Add services with pricing and duration"
+
+        step_4_title: "Accept bookings"
+        step_4_description: "Share booking link and start receiving customers"
+
+        # Pricing Section
+        pricing_title: "Affordable pricing"
+        pricing_subtitle: "Choose the plan that fits your business size. No long-term commitment."
+        per_month: "month"
+        popular_badge: "Most popular"
+
+        plan_free_name: "Free"
+        plan_free_price: "Free"
+        plan_free_feature_1: "Up to 30 bookings/month"
+        plan_free_feature_2: "1 online booking page"
+        plan_free_feature_3: "Walk-in management"
+        plan_free_feature_4: "Basic support"
+
+        plan_pro_name: "Pro"
+        plan_pro_price: "99,000₫"
+        plan_pro_feature_1: "Unlimited bookings"
+        plan_pro_feature_2: "Custom booking page"
+        plan_pro_feature_3: "Real-time queue management"
+        plan_pro_feature_4: "Automated SMS reminders"
+        plan_pro_feature_5: "Revenue reports"
+        plan_pro_feature_6: "Priority support"
+
+        plan_business_name: "Business"
+        plan_business_price: "299,000₫"
+        plan_business_feature_1: "All Pro features"
+        plan_business_feature_2: "Staff management"
+        plan_business_feature_3: "Multiple locations"
+        plan_business_feature_4: "Sepay payment integration"
+        plan_business_feature_5: "Detailed analytics"
+        plan_business_feature_6: "Custom API"
+        plan_business_feature_7: "24/7 support"
+
+        # CTA Section
+        cta_title: "Ready to professionalize your business?"
+        cta_subtitle: "Join hundreds of business owners using ThemBooking every day"
+
+        # Old Features (kept for compatibility)
         feature1_title: "Lightning Fast"
         feature1_description: "Powered by Rails 8 and Solid Cache, experience instant page loads and snappy interactions."
         feature2_title: "Modern Stack"
