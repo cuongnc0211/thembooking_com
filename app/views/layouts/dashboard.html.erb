@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full scroll-smooth">
   <head>
     <title><%= content_for(:title) || "Dashboard - ThemBooking" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -22,29 +22,68 @@
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    
+    <style>
+      .animate-blob { animation: blob 7s infinite; }
+      .animation-delay-2000 { animation-delay: 2s; }
+      .animation-delay-4000 { animation-delay: 4s; }
+      @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+      }
+    </style>
   </head>
 
-  <body data-controller="sidebar" class="bg-surface-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+  <body data-controller="sidebar" class="bg-gray-50/50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-primary-500 selection:text-white relative overflow-x-hidden">
+    <!-- Decorative Ambient Background -->
+    <div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+      <div class="absolute top-[-10%] left-[-10%] w-[40rem] h-[40rem] bg-indigo-200/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
+      <div class="absolute top-[-10%] right-[-10%] w-[40rem] h-[40rem] bg-cyan-200/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+      <div class="absolute bottom-[-20%] left-[20%] w-[40rem] h-[40rem] bg-fuchsia-200/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-4000"></div>
+    </div>
+
     <%= render 'layouts/nav_bar' %>
 
-    <!-- Main Layout Container -->
-    <div class="relative min-h-screen flex flex-col">
+    <!-- Main Layout: Sidebar + Content -->
+    <div class="flex flex-col min-h-screen pt-16">
       <!-- Mobile Overlay -->
-      <div data-sidebar-target="overlay" data-action="click->sidebar#close" class="fixed inset-0 bg-slate-900/50 z-40 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
+      <div data-sidebar-target="overlay" data-action="click->sidebar#close" class="fixed inset-0 bg-slate-900/40 z-40 hidden md:hidden backdrop-blur-sm transition-opacity duration-300"></div>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12 w-full flex-grow">
-        <div class="flex min-h-[calc(100vh-8rem)] gap-8 relative">
-          <%= render 'layouts/dashboard/side_bar' %>
+      <div class="flex flex-1 w-full mx-auto max-w-[1920px]">
+        <!-- Sidebar -->
+        <%= render 'layouts/dashboard/side_bar' %>
 
-          <!-- Main Content -->
-          <main class="flex-1 min-w-0">
-            <!-- Flash Messages (Toast Style) -->
+        <!-- Main Content Area - Padded left to account for fixed sidebar -->
+        <main class="flex-1 min-w-0 md:pl-64 px-4 sm:px-6 lg:px-8 py-8 md:py-10 transition-all duration-300">
+          <div class="max-w-7xl mx-auto w-full animate-in slide-in-from-bottom-2 fade-in duration-500">
+            <!-- Flash Messages (Premium Glass Toast) -->
             <% if flash.any? %>
-              <div class="fixed top-24 right-4 z-50 flex flex-col gap-2 w-full max-w-sm pointer-events-none">
+              <div class="fixed top-20 right-4 z-[60] flex flex-col gap-3 w-full max-w-sm pointer-events-none">
                 <% flash.each do |name, msg| %>
-                  <div class="pointer-events-auto transform transition-all duration-300 hover:scale-105 <%= flash_class(name) %> bg-white border border-slate-100 shadow-lg rounded-xl p-4 flex items-start gap-3 animate-in slide-in-from-right-5 fade-in">
-                    <div class="flex-1 text-sm font-medium text-slate-700"><%= msg %></div>
-                    <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600">
+                  <% 
+                    base_classes = "pointer-events-auto transform transition-all duration-300 hover:scale-[1.02] backdrop-blur-md shadow-xl rounded-2xl p-4 flex items-start gap-3 animate-in slide-in-from-right-8 fade-in border"
+                    type_classes = case name.to_s
+                      when 'notice', 'success' then "bg-white/90 border-emerald-100 text-emerald-800 ring-1 ring-emerald-500/10"
+                      when 'alert', 'error' then "bg-white/90 border-rose-100 text-rose-800 ring-1 ring-rose-500/10"
+                      else "bg-white/90 border-slate-200 text-slate-800"
+                    end
+                  %>
+                  <div class="<%= base_classes %> <%= type_classes %>">
+                    <div class="flex-shrink-0 mt-0.5">
+                      <% if name.to_s == 'alert' || name.to_s == 'error' %>
+                        <svg class="h-5 w-5 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                      <% else %>
+                         <svg class="h-5 w-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                         </svg>
+                      <% end %>
+                    </div>
+                    <div class="flex-1 text-sm font-medium"><%= msg %></div>
+                    <button onclick="this.parentElement.remove()" class="flex-shrink-0 ml-4 text-slate-400 hover:text-slate-600 transition-colors">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                   </div>
@@ -53,8 +92,8 @@
             <% end %>
 
             <%= yield %>
-          </main>
-        </div>
+          </div>
+        </main>
       </div>
     </div>
   </body>
