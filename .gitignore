@@ -53,3 +53,6 @@ claude.md
 /.claude/
 /.opencode/
 /plans/*
+repomix-output.xml
+reports/*
+xml
