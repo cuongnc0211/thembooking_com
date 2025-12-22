@@ -5,6 +5,8 @@ class Business < ApplicationRecord
   has_many :slots, dependent: :destroy
   has_one_attached :logo
 
+  accepts_nested_attributes_for :services, allow_destroy: true, reject_if: :all_blank
+
   # Constants
   WEEKDAYS = %w[monday tuesday wednesday thursday friday saturday sunday].freeze
 

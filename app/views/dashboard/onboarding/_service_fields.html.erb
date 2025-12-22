@@ -1,7 +1,13 @@
+<% service_id = form.object.id %>
 <div class="border border-slate-200 rounded-xl p-4 space-y-4 mb-4" data-onboarding-services-target="serviceRow">
+  <%= form.hidden_field :id %>
+  <% if service_id.present? %>
+    <%= form.hidden_field :_destroy, value: "0" %>
+  <% end %>
+
   <div class="flex justify-between items-center">
-    <h4 class="font-medium text-slate-700">Service <%= index.is_a?(Integer) ? index + 1 : "" %></h4>
-    <% if index != 0 %>
+    <h4 class="font-medium text-slate-700">Service</h4>
+    <% if service_id.present? || form.options[:child_index] != "services_attributes" %>
       <button type="button" class="text-red-600 hover:text-red-700 text-sm"
           data-action="click->onboarding-services#removeService">
         Remove
@@ -9,31 +15,38 @@
     <% end %>
   </div>
 
-
-  <%= hidden_field_tag 'services[][id]', service.id %>
   <div>
-    <label class="form-label">Service Name</label>
-    <input type="text" name="services[][name]" value="<%= h(service.name) %>"
-        class="form-input" placeholder="e.g., Haircut, Massage" required>
+    <%= form.label :name, "Service Name", class: "form-label" %>
+    <%= form.text_field :name, class: "form-input", placeholder: "e.g., Haircut, Massage", required: true %>
   </div>
 
   <div class="grid grid-cols-2 gap-4">
     <div>
-      <label class="form-label">Duration</label>
-      <select name="services[][duration_minutes]" class="form-input" required>
-        <option value="">Select</option>
-        <% [[15, "15 min"], [30, "30 min"], [45, "45 min"], [60, "1 hour"], [90, "1.5 hours"], [120, "2 hours"]].each do |value, label| %>
-          <option value="<%= value %>" <%= 'selected' if service.duration_minutes == value %>><%= label %></option>
-        <% end %>
-      </select>
+      <%= form.label :duration_minutes, "Duration", class: "form-label" %>
+      <%= form.select :duration_minutes,
+          options_for_select([
+            ["Select", ""],
+            ["15 min", 15],
+            ["30 min", 30],
+            ["45 min", 45],
+            ["1 hour", 60],
+            ["1.5 hours", 90],
+            ["2 hours", 120]
+          ], form.object.duration_minutes),
+          {},
+          { class: "form-input", required: true } %>
     </div>
     <div>
-      <label class="form-label">Price (VND)</label>
+      <%= form.label :price, "Price (VND)", class: "form-label" %>
       <div class="relative">
         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">VND</span>
-        <input type="number" name="services[][price]"
-            value="<%= service.price %>"
-            class="form-input pl-12" placeholder="80000" min="0" step="1000" required>
+        <%= form.number_field :price,
+            value: form.object.price_cents || form.object.price || nil,
+            class: "form-input pl-12",
+            placeholder: "80000",
+            min: 0,
+            step: 1000,
+            required: true %>
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-<%= form_with url: dashboard_onboarding_path, method: :patch, class: "space-y-6",
+<%= form_with model: @business, url: dashboard_onboarding_path, method: :patch, class: "space-y-6",
     data: { controller: "onboarding-services", turbo: false } do |form| %>
 
   <p class="text-sm text-slate-600 bg-blue-50 p-3 rounded-lg">
@@ -8,8 +8,8 @@
   <%= hidden_field_tag :current_step, @step %>
 
   <div id="services-container" data-onboarding-services-target="container">
-    <% @services.each_with_index do |service, index| %>
-      <%= render "service_fields", service: service, index: index %>
+    <%= form.fields_for :services do |service_form| %>
+      <%= render "service_fields", form: service_form %>
     <% end %>
   </div>
 
@@ -24,5 +24,44 @@
 <% end %>
 
 <template data-onboarding-services-target="template">
-  <%= render "service_fields", service: Service.new, index: "INDEX_PLACEHOLDER" %>
+  <div class="border border-slate-200 rounded-xl p-4 space-y-4 mb-4" data-onboarding-services-target="serviceRow">
+    <input type="hidden" name="business[services_attributes][NEW_RECORD][id]" id="business_services_attributes_NEW_RECORD_id">
+
+    <div class="flex justify-between items-center">
+      <h4 class="font-medium text-slate-700">Service</h4>
+      <button type="button" class="text-red-600 hover:text-red-700 text-sm"
+          data-action="click->onboarding-services#removeService">
+        Remove
+      </button>
+    </div>
+
+    <div>
+      <label class="form-label">Service Name</label>
+      <input type="text" name="business[services_attributes][NEW_RECORD][name]"
+          class="form-input" placeholder="e.g., Haircut, Massage" required>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="form-label">Duration</label>
+        <select name="business[services_attributes][NEW_RECORD][duration_minutes]" class="form-input" required>
+          <option value="">Select</option>
+          <option value="15">15 min</option>
+          <option value="30">30 min</option>
+          <option value="45">45 min</option>
+          <option value="60">1 hour</option>
+          <option value="90">1.5 hours</option>
+          <option value="120">2 hours</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Price (VND)</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">VND</span>
+          <input type="number" name="business[services_attributes][NEW_RECORD][price]"
+              class="form-input pl-12" placeholder="80000" min="0" step="1000" required>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

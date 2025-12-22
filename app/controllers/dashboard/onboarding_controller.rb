@@ -106,18 +106,22 @@ module Dashboard
     end
 
     def process_services
-      services_params_array = params[:services]
+      business = current_user.business || current_user.build_business
 
-      params_ids = services_params_array.map { |i| i[:id].to_i }
-      db_ids = current_user.business.services.pluck(:id)
-
-      Service.where(id: db_ids - params_ids).delete_all
-      services_params_array.each do |s_params|
-        if s_params[:id]
-          current_user.business.services.find_by(id: s_params[:id])&.update(service_params(s_params))
-        else
-          current_user.business.services.create(service_params(s_params))
+      # Process services params to convert price to price_cents
+      services_params = business_services_params
+      if services_params[:services_attributes]
+        services_params[:services_attributes].each do |_, service_attrs|
+          process_price_cents(service_attrs) if service_attrs[:price].present?
         end
+      end
+
+      business.assign_attributes(services_params)
+
+      if business.save
+        true
+      else
+        false
       end
     end
 
@@ -141,6 +145,12 @@ module Dashboard
       )
     end
 
+    def business_services_params
+      params.require(:business).permit(
+        services_attributes: [:id, :name, :duration_minutes, :price, :_destroy]
+      )
+    end
+
     def hours_params
       params.require(:operating_hours).permit(
         weekdays: [:enabled, :open, :close],
@@ -149,8 +159,15 @@ module Dashboard
       )
     end
 
-    def service_params(single_service_param)
-      single_service_param.permit(:name, :duration_minutes, :price)
+    # Convert price from VND to price_cents
+    # Note: VND has no subunits, so 1 VND = 1 cent
+    def process_price_cents(service_params)
+      return service_params unless service_params[:price].present?
+
+      price_in_vnd = service_params[:price].to_s.delete(',').to_i
+      service_params.merge(price_cents: price_in_vnd).tap do |params|
+        params.delete(:price)
+      end
     end
 
     # Simplified hours helpers
