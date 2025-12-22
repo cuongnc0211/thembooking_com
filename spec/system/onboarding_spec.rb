@@ -287,6 +287,13 @@ RSpec.describe "Onboarding Flow", type: :system do
     end
   end
 
+  # Note: JavaScript toggle behavior tests would require selenium-webdriver gem
+  # The toggle functionality is implemented via Stimulus controller
+  # Manual testing required to verify:
+  # 1. Unchecking Saturday/Sunday disables their time fields
+  # 2. Expanding weekdays and unchecking individual days (Mon-Fri) disables their time fields
+  # 3. Re-checking re-enables the time fields
+
   describe "error handling" do
     it "handles business slug conflicts gracefully" do
       # Create existing business with same slug

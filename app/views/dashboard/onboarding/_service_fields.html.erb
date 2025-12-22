@@ -1,15 +1,13 @@
-<% service_id = form.object.id %>
-<div class="border border-slate-200 rounded-xl p-4 space-y-4 mb-4" data-onboarding-services-target="serviceRow">
+<div class="border border-slate-200 rounded-xl p-4 space-y-4 mb-4 nested-form-wrapper" data-new-record="<%= form.object.new_record? %>">
   <%= form.hidden_field :id %>
-  <% if service_id.present? %>
-    <%= form.hidden_field :_destroy, value: "0" %>
-  <% end %>
+  <%= form.hidden_field :_destroy %>
 
   <div class="flex justify-between items-center">
     <h4 class="font-medium text-slate-700">Service</h4>
-    <% if service_id.present? || form.options[:child_index] != "services_attributes" %>
+
+    <% unless base_record%>
       <button type="button" class="text-red-600 hover:text-red-700 text-sm"
-          data-action="click->onboarding-services#removeService">
+          data-action="click->nested-form#remove">
         Remove
       </button>
     <% end %>
@@ -24,16 +22,8 @@
     <div>
       <%= form.label :duration_minutes, "Duration", class: "form-label" %>
       <%= form.select :duration_minutes,
-          options_for_select([
-            ["Select", ""],
-            ["15 min", 15],
-            ["30 min", 30],
-            ["45 min", 45],
-            ["1 hour", 60],
-            ["1.5 hours", 90],
-            ["2 hours", 120]
-          ], form.object.duration_minutes),
-          {},
+          Service.duration_options_for_select,
+          { include_blank: "Select" },
           { class: "form-input", required: true } %>
     </div>
     <div>

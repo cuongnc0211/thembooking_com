@@ -13,7 +13,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # config.cache_store = :solid_cache_store
-  # config.active_job.queue_adapter = :solid_queue
+  config.active_job.queue_adapter = :solid_queue
   # config.action_cable.adapter = :solid_cable
 
   # Make code changes take effect immediately without server restart.

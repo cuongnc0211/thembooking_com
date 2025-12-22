@@ -12,26 +12,73 @@
   <%= hidden_field_tag :current_step, @step %>
 
   <p class="text-sm text-slate-600 bg-blue-50 p-3 rounded-lg">
-    Set your basic hours now. You can add breaks and customize individual days later in Settings.
+    Set your basic hours now. You can add breaks later in Settings.
   </p>
 
-  <!-- Weekdays (Mon-Fri) -->
+  <!-- Weekdays Section with Expansion -->
   <div class="border border-slate-200 rounded-xl p-4 space-y-3">
+    <!-- Header with Expand Button -->
     <div class="flex items-center justify-between">
       <label class="flex items-center gap-3">
         <%= check_box_tag "operating_hours[weekdays][enabled]", "1",
             @operating_hours[:weekdays][:enabled],
             class: "h-5 w-5 rounded border-slate-300 text-primary-600",
-            data: { action: "change->onboarding-hours#toggleDay", target: "weekdays" } %>
+            data: {
+              action: "change->onboarding-hours#toggleDay",
+              target: "weekdays",
+              "onboarding-hours-target": "weekdaysCheckbox"
+            } %>
         <span class="font-medium text-slate-900">Weekdays (Mon-Fri)</span>
       </label>
+
+      <button type="button"
+              class="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1"
+              data-action="click->onboarding-hours#toggleWeekdayExpansion"
+              data-onboarding-hours-target="weekdayExpandButton">
+        <span>Customize individual days</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
     </div>
-    <div class="flex items-center gap-3 ml-8" data-onboarding-hours-target="weekdaysTimes">
-      <%= time_field_tag "operating_hours[weekdays][open]", @operating_hours[:weekdays][:open],
-          class: "form-input w-32", disabled: !@operating_hours[:weekdays][:enabled] %>
+
+    <!-- Unified Hours (Default View) -->
+    <div class="flex items-center gap-3 ml-8"
+         data-onboarding-hours-target="weekdaysUnified">
+      <%= time_field_tag "operating_hours[weekdays][open]",
+          @operating_hours[:weekdays][:open],
+          class: "form-input w-32",
+          disabled: !@operating_hours[:weekdays][:enabled] %>
       <span class="text-slate-500">to</span>
-      <%= time_field_tag "operating_hours[weekdays][close]", @operating_hours[:weekdays][:close],
-          class: "form-input w-32", disabled: !@operating_hours[:weekdays][:enabled] %>
+      <%= time_field_tag "operating_hours[weekdays][close]",
+          @operating_hours[:weekdays][:close],
+          class: "form-input w-32",
+          disabled: !@operating_hours[:weekdays][:enabled] %>
+    </div>
+
+    <!-- Individual Days (Hidden by Default) -->
+    <div class="hidden ml-8 space-y-3"
+         data-onboarding-hours-target="weekdaysExpanded">
+
+      <% %w[monday tuesday wednesday thursday friday].each do |day| %>
+        <div class="flex items-center gap-3" data-onboarding-hours-target="<%= day %>Container">
+          <%= check_box_tag "operating_hours[#{day}][enabled]", "1", true,
+              class: "h-5 w-5 rounded border-slate-300 text-primary-600",
+              data: {
+                action: "change->onboarding-hours#toggleIndividualDay",
+                day: day
+              } %>
+          <span class="font-medium text-slate-700 w-24 capitalize"><%= day %></span>
+          <%= time_field_tag "operating_hours[#{day}][open]",
+              @operating_hours[:weekdays][:open] || "09:00",
+              class: "form-input w-28" %>
+          <span class="text-slate-500">to</span>
+          <%= time_field_tag "operating_hours[#{day}][close]",
+              @operating_hours[:weekdays][:close] || "19:00",
+              class: "form-input w-28" %>
+        </div>
+      <% end %>
+
     </div>
   </div>
 
