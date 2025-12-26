@@ -20,7 +20,8 @@
       name: s.name,
       description: s.description,
       duration_minutes: s.duration_minutes,
-      price_cents: s.price.cents
+      price_cents: s.price.to_i,
+      price_format: s.price.format
     }
   }.to_json %>"
   data-turbo="false"

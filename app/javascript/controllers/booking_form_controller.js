@@ -214,12 +214,12 @@ export default class extends Controller {
   }
 
   // Helper: Format currency (Vietnamese Dong)
-  formatCurrency(cents) {
-    const amount = cents / 100
+  formatCurrency(priceInVND) {
+    // VND has no subunits (no cents), use amount directly
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND"
-    }).format(amount)
+    }).format(priceInVND)
   }
 
   // Helper: Format time string (converts "09:00" to "9:00 AM")

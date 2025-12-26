@@ -68,7 +68,7 @@
                   <% end %>
                 </div>
                 <div class="text-right flex-shrink-0">
-                  <div class="font-semibold text-slate-900"><%= number_to_currency(service.price.to_f / 100, unit: "₫", separator: ".", delimiter: ",", format: "%n %u") %></div>
+                  <div class="font-semibold text-slate-900"><%= number_to_currency(service.price.to_f, unit: "₫", separator: ".", delimiter: ",", format: "%n %u") %></div>
                   <div class="text-sm text-slate-500"><%= service.duration_minutes %> min</div>
                 </div>
               </div>

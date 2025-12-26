@@ -16,8 +16,9 @@ export default function ServiceSelector({
     }
   }
 
-  const formatPrice = (cents) => {
-    return (cents / 100).toLocaleString('vi-VN') + ' ₫'
+  const formatPrice = (priceInVND) => {
+    console.log(`[ServiceSelector] formatPrice received:`, priceInVND)
+    return (priceInVND).toLocaleString('vi-VN') + ' ₫'
   }
 
   return (

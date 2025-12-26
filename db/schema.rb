@@ -84,7 +84,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_06_171152) do
 
   create_table "businesses", force: :cascade do |t|
     t.string "address"
-    t.integer "business_type", default: 0, null: false
+    t.string "business_type", default: "barber", null: false
     t.integer "capacity", default: 1, null: false
     t.datetime "created_at", null: false
     t.string "currency", limit: 3, default: "VND", null: false

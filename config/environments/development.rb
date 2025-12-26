@@ -14,6 +14,7 @@ Rails.application.configure do
 
   # config.cache_store = :solid_cache_store
   config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.connects_to = { database: { writing: :queue } }
   # config.action_cable.adapter = :solid_cable
 
   # Make code changes take effect immediately without server restart.

@@ -7,7 +7,7 @@ class AddConstraintsToBusiness < ActiveRecord::Migration[8.1]
     change_column_null :businesses, :business_type, false
 
     # Add default values
-    change_column_default :businesses, :business_type, from: nil, to: 0
+    change_column_default :businesses, :business_type, from: nil, to: 'barber'
     change_column_default :businesses, :capacity, from: nil, to: 1
     change_column_default :businesses, :operating_hours, from: nil, to: {}
     change_column_default :businesses, :landing_page_config, from: nil, to: {}

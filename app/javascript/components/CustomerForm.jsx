@@ -123,7 +123,7 @@ export default function CustomerForm({
             <div key={service.id} className="flex justify-between text-sm">
               <span className="text-slate-700">{service.name}</span>
               <span className="text-slate-900 font-medium">
-                {(service.price_cents / 100).toLocaleString('vi-VN')} ₫
+                {(service.price_cents).toLocaleString('vi-VN')} ₫
               </span>
             </div>
           ))}
@@ -136,7 +136,7 @@ export default function CustomerForm({
               <div className="text-sm text-slate-600">{totalDuration} minutes</div>
             </div>
             <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              {(totalPrice / 100).toLocaleString('vi-VN')} ₫
+              {(totalPrice).toLocaleString('vi-VN')} ₫
             </div>
           </div>
 

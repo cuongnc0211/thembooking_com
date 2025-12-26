@@ -9,14 +9,9 @@ class Business < ApplicationRecord
 
   # Constants
   WEEKDAYS = %w[monday tuesday wednesday thursday friday saturday sunday].freeze
+  BUSINESS_TYPES = %w[barber salon spa nail other]
 
-  enum :business_type, {
-    barber: 0,
-    salon: 1,
-    spa: 2,
-    nail: 3,
-    other: 4
-  }
+  enum :business_type, BUSINESS_TYPES.zip(BUSINESS_TYPES).to_h
 
   # Callbacks
   after_initialize :set_default_operating_hours, if: :need_init_operating_hours
