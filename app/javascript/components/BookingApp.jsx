@@ -96,7 +96,7 @@ export default function BookingApp({ businessSlug, business, services }) {
               { num: 3, label: 'Details' }
             ].map((step, idx) => (
               <React.Fragment key={step.num}>
-                <div className={`flex items-center gap-2 ${currentStep >= step.num ? 'opacity-100' : 'opacity-40'}`}>
+                <div className={`flex flex-col items-center gap-1 text-center ${currentStep >= step.num ? 'opacity-100' : 'opacity-40'}`}>
                   <div className={`
                     w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm
                     ${currentStep >= step.num
