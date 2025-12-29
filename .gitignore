@@ -45,6 +45,7 @@ claude.md
 
 # Ignore Kamal secrets
 /.kamal/secrets
+.kamal/secrets.*
 .kamal/secrets
 
 /node_modules
@@ -56,3 +57,5 @@ claude.md
 repomix-output.xml
 reports/*
 xml
+
+DEPLOYMENT_GUIDE.md

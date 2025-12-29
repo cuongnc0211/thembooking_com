@@ -1,0 +1,30 @@
+# Staging environment configuration
+# Deploy with: kamal deploy -d staging
+
+# Server configuration
+servers:
+  web:
+    hosts:
+      - 188.166.253.216
+    proxy: true
+  worker:
+    hosts:
+      - 188.166.253.216
+    cmd: bin/jobs
+
+# Traefik proxy configuration with Let's Encrypt SSL
+proxy:
+  host: staging.thembooking.com
+  app_port: 3000
+  ssl: true
+  healthcheck:
+    path: /up
+    interval: 10
+
+# Staging-specific environment variables
+env:
+  clear:
+    RAILS_ENV: staging
+    RAILS_LOG_LEVEL: debug  # Verbose logging for staging
+    WEB_CONCURRENCY: 1      # Single Puma worker (smaller droplet)
+    JOB_CONCURRENCY: 2      # 2 job workers
