@@ -203,6 +203,33 @@ en:
           current_password_placeholder: "Enter your current password to confirm changes"
           current_password_required: "Required to save changes"
 
+      open_hours:
+        show:
+          operating_hours_title: "Operating Hours"
+          edit_hours: "Edit Hours"
+          closed: "Closed"
+          breaks_label: "Breaks:"
+        new:
+          title: "Set Up Operating Hours"
+          subtitle: "Configure your business operating hours"
+        edit:
+          title: "Edit Operation Hours"
+          subtitle: "The system only receive booking within your Operation hours"
+        flash:
+          updated: "Operating hours updated successfully!"
+          created: "Operating hours created successfully!"
+        form:
+          operating_hours_title: "Operating Hours"
+          operating_hours_subtitle: "Set your operating hours and break times for each day"
+          day_open: "to"
+          day_closed: "Closed"
+          breaks_title: "Break Times"
+          break_add: "+ Add Break Time"
+          break_remove: "Remove"
+          break_start_placeholder: "Start"
+          break_end_placeholder: "End"
+          submit_create: "Create Operating Hours"
+          submit_update: "Save Changes"
       businesses:
         new:
           title: "Create Your Business Profile"

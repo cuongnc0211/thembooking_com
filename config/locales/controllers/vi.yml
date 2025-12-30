@@ -1,0 +1,9 @@
+vi:
+  controllers:
+    dashboard:
+      open_hours:
+        flash:
+          updated: 'Cập nhật giờ làm việc thành công'
+          update_failed: 'Cập nhật giờ làm việc thất bại'
+          create_business_first: 'Vui lòng tạo hồ sơ Doanh nghiệp/Tiệm của bạn trước.'
+

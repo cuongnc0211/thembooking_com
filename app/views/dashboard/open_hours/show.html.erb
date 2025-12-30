@@ -1,0 +1,41 @@
+<div class="max-w-4xl mx-auto mt-8 px-4">
+  <!-- Operating Hours -->
+  <div class="mt-8 card p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-semibold"><%= t('views.dashboard.open_hours.show.operating_hours_title') %></h3>
+      <%= link_to t('views.dashboard.open_hours.show.edit_hours'), edit_dashboard_open_hour_path, class: "text-sm text-primary-600 hover:text-primary-700" %>
+    </div>
+
+    <div class="space-y-3">
+      <% Business::WEEKDAYS.each do |day| %>
+        <% day_hours = @business.hours_for(day) %>
+        <% if day_hours %>
+          <div class="flex items-start justify-between py-2 border-b border-slate-100 last:border-0">
+            <div class="flex-1">
+              <span class="font-medium text-slate-700 capitalize inline-block w-28"><%= t("time.day_names_short.#{day}") %></span>
+              <% if day_hours["closed"] %>
+                <span class="text-slate-400 italic"><%= t('views.dashboard.open_hours.show.closed') %></span>
+              <% else %>
+                <span class="text-slate-900">
+                  <%= day_hours["open"] %> - <%= day_hours["close"] %>
+                </span>
+
+                <% breaks = day_hours["breaks"] || [] %>
+                <% if breaks.any? %>
+                  <div class="ml-28 mt-1">
+                    <span class="text-xs text-slate-500 uppercase"><%= t('views.dashboard.open_hours.show.breaks_label') %></span>
+                    <% breaks.each do |break_period| %>
+                      <span class="text-sm text-slate-600 ml-2">
+                        <%= break_period["start"] %> - <%= break_period["end"] %>
+                      </span>
+                    <% end %>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

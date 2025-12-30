@@ -203,6 +203,33 @@ vi:
           current_password_placeholder: "Nhập mật khẩu hiện tại để xác nhận"
           current_password_required: "Bắt buộc để lưu thay đổi"
 
+      open_hours:
+        show:
+          operating_hours_title: "Giờ Làm Việc"
+          edit_hours: "Chỉnh Sửa"
+          closed: "Đóng Cửa"
+          breaks_label: "Giờ Nghỉ:"
+        new:
+          title: "Thiết Lập Giờ Làm Việc"
+          subtitle: "Cài đặt khung giờ hoạt động cho doanh nghiệp của bạn"
+        edit:
+          title: "Cài đặt thời gian làm việc"
+          subtitle: "Hệ thống sẽ chỉ nhận đặt chỗ trong khung giờ làm việc của bạn"
+        flash:
+          updated: "Giờ làm việc đã được cập nhật thành công!"
+          created: "Giờ làm việc đã được tạo thành công!"
+        form:
+          operating_hours_title: "Giờ Làm Việc"
+          operating_hours_subtitle: "Thiết lập giờ làm việc và giờ nghỉ cho từng ngày"
+          day_open: "đến"
+          day_closed: "Đóng Cửa"
+          breaks_title: "Giờ Nghỉ"
+          break_add: "+ Thêm Giờ Nghỉ"
+          break_remove: "Xóa"
+          break_start_placeholder: "Bắt đầu"
+          break_end_placeholder: "Kết thúc"
+          submit_create: "Tạo Giờ Làm Việc"
+          submit_update: "Lưu Thay Đổi"
       businesses:
         new:
           title: "Tạo Hồ Sơ Doanh Nghiệp"

@@ -1,0 +1,123 @@
+<%= form_with model: business, url: dashboard_open_hour_path, method: :patch, class: "space-y-6" do |form| %>
+  <% if business.errors.any? %>
+    <div class="bg-red-50 border border-red-100 text-red-700 px-4 py-3 rounded-xl">
+      <ul class="list-disc list-inside">
+        <% business.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Operating Hours Section -->
+  <div class="space-y-4" data-controller="operating-hours">
+    <h3 class="text-lg font-semibold text-slate-900"><%= t('views.dashboard.open_hours.form.operating_hours_title') %></h3>
+    <p class="text-sm text-slate-500"><%= t('views.dashboard.open_hours.form.operating_hours_subtitle') %></p>
+
+    <% Business::WEEKDAYS.each do |day| %>
+      <% day_hours = business.operating_hours&.dig(day) || {} %>
+      <% is_closed = day_hours["closed"] || false %>
+      <% breaks = day_hours["breaks"] || [] %>
+
+      <div class="border border-slate-200 rounded-lg p-4 space-y-3">
+        <!-- Day Header with Open/Close Times -->
+        <div class="flex items-center gap-4">
+          <label class="w-28 text-sm font-medium text-slate-700 capitalize"><%= t("time.day_names_short.#{day}") %></label>
+
+          <%= time_field_tag "business[operating_hours][#{day}][open]",
+                day_hours["open"],
+                class: "form-input w-32",
+                disabled: is_closed,
+                data: { operating_hours_target: "#{day}Open" } %>
+
+          <span class="text-slate-500"><%= t('views.dashboard.open_hours.form.day_open') %></span>
+
+          <%= time_field_tag "business[operating_hours][#{day}][close]",
+                day_hours["close"],
+                class: "form-input w-32",
+                disabled: is_closed,
+                data: { operating_hours_target: "#{day}Close" } %>
+
+          <%= check_box_tag "business[operating_hours][#{day}][closed]",
+                "1",
+                is_closed,
+                class: "ml-4 h-4 w-4 rounded border-slate-300",
+                data: {
+                  operating_hours_target: "#{day}Closed",
+                  action: "change->operating-hours#toggleDay",
+                  day: day
+                } %>
+
+          <label for="business_operating_hours_<%= day %>_closed" class="ml-2 text-sm text-slate-600"><%= t('views.dashboard.open_hours.form.day_closed') %></label>
+        </div>
+
+        <!-- Break Times -->
+        <div class="ml-32 space-y-2" data-operating-hours-target="<%= day %>Breaks">
+          <label class="text-xs font-medium text-slate-600 uppercase"><%= t('views.dashboard.open_hours.form.breaks_title') %></label>
+
+          <div class="space-y-2">
+            <% breaks.each_with_index do |break_period, index| %>
+              <div class="flex items-center gap-2" data-operating-hours-target="breakRow">
+                <%= time_field_tag "business[operating_hours][#{day}][breaks][][start]",
+                      break_period["start"],
+                      class: "form-input w-28 text-sm",
+                      placeholder: t('views.dashboard.open_hours.form.break_start_placeholder'),
+                      disabled: is_closed %>
+
+                <span class="text-slate-400 text-sm">to</span>
+
+                <%= time_field_tag "business[operating_hours][#{day}][breaks][][end]",
+                      break_period["end"],
+                      class: "form-input w-28 text-sm",
+                      placeholder: t('views.dashboard.open_hours.form.break_end_placeholder'),
+                      disabled: is_closed %>
+
+                <button type="button"
+                        class="text-red-600 hover:text-red-700 text-sm"
+                        data-action="click->operating-hours#removeBreak">
+                  <%= t('views.dashboard.open_hours.form.break_remove') %>
+                </button>
+              </div>
+            <% end %>
+          </div>
+
+          <button type="button"
+                  class="text-sm text-primary-600 hover:text-primary-700"
+                  data-action="click->operating-hours#addBreak"
+                  data-day="<%= day %>"
+                  <%= 'disabled' if is_closed %>>
+            <%= t('views.dashboard.open_hours.form.break_add') %>
+          </button>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Break Template (hidden, used by Stimulus) -->
+    <template data-operating-hours-target="breakTemplate">
+      <div class="flex items-center gap-2" data-operating-hours-target="breakRow">
+        <input type="time"
+               name="business[operating_hours][DAY_PLACEHOLDER][breaks][][start]"
+               class="form-input w-28 text-sm"
+               placeholder="<%= t('views.dashboard.open_hours.form.break_start_placeholder') %>">
+
+        <span class="text-slate-400 text-sm">to</span>
+
+        <input type="time"
+               name="business[operating_hours][DAY_PLACEHOLDER][breaks][][end]"
+               class="form-input w-28 text-sm"
+               placeholder="<%= t('views.dashboard.open_hours.form.break_end_placeholder') %>">
+
+        <button type="button"
+                class="text-red-600 hover:text-red-700 text-sm"
+                data-action="click->operating-hours#removeBreak">
+          <%= t('views.dashboard.open_hours.form.break_remove') %>
+        </button>
+      </div>
+    </template>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="flex justify-end pt-4 border-slate-100">
+    <%= form.submit business.persisted? ? t('views.dashboard.open_hours.form.submit_update') : t('views.dashboard.open_hours.form.submit_create'), class: "btn-primary cursor-pointer" %>
+  </div>
+<% end %>

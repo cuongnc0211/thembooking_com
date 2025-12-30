@@ -36,6 +36,13 @@
           <%= t('navigation.business_profile') %>
         <% end %>
 
+        <%= link_to edit_dashboard_open_hour_path, class: "flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group #{request.path == edit_dashboard_open_hour_path ? 'bg-primary-50/80 text-primary-700 shadow-sm ring-1 ring-primary-200/50' : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'}" do %>
+          <svg class="mr-3 h-5 w-5 transition-colors #{request.path == edit_dashboard_open_hour_path ? 'text-primary-600' : 'text-slate-400 group-hover:text-primary-500' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <%= t('navigation.operating_hours') %>
+        <% end %>
+
         <%= link_to dashboard_services_path, class: "flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group #{request.path == dashboard_services_path ? 'bg-primary-50/80 text-primary-700 shadow-sm ring-1 ring-primary-200/50' : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'}" do %>
           <svg class="mr-3 h-5 w-5 transition-colors #{request.path == dashboard_services_path ? 'text-primary-600' : 'text-slate-400 group-hover:text-primary-500' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>

@@ -1,0 +1,8 @@
+en:
+  controllers:
+    dashboard:
+      open_hours:
+        flash:
+          updated: 'Update operation hours successfully'
+          update_failed: 'Update operation hours failed'
+          create_business_first: 'Please create your Business profile first'

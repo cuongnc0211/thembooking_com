@@ -1,0 +1,8 @@
+<div class="max-w-4xl mx-auto mt-8 px-4">
+  <h1 class="text-3xl font-bold mb-2"><%= t('views.dashboard.open_hours.edit.title') %></h1>
+  <p class="text-gray-600 mb-6"><%= t('views.dashboard.open_hours.edit.subtitle') %></p>
+
+  <div class="card p-6">
+    <%= render "form", business: @business %>
+  </div>
+</div>

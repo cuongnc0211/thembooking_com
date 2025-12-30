@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
     resource :profile, only: [ :edit, :update ]
     resource :business, only: [ :show, :edit, :update ]
+    resource :open_hour, only: [ :show, :edit, :update ]
     resources :services do
       member do
         post :move_up
