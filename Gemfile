@@ -42,6 +42,9 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 1.2"
 
+# Cloud storage for Active Storage (Cloudflare R2 via S3 API)
+gem "aws-sdk-s3", "~> 1.0", require: false
+
 # Money and currency handling
 gem "money-rails", "~> 1.15"
 

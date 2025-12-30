@@ -55,8 +55,8 @@ Rails.application.configure do
   # ---------------------------------------------------------------------------
   # Active Storage
   # ---------------------------------------------------------------------------
-  # Default to local for staging; override via ACTIVE_STORAGE_SERVICE=s3 (or others in storage.yml)
-  config.active_storage.service = ENV.fetch("ACTIVE_STORAGE_SERVICE", "local").to_sym
+  # Use Cloudflare R2 for staging; can override via ACTIVE_STORAGE_SERVICE env var
+  config.active_storage.service = ENV.fetch("ACTIVE_STORAGE_SERVICE", "staging_r2").to_sym
 
   # ---------------------------------------------------------------------------
   # Action Mailer (safe by default)
