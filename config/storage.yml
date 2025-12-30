@@ -23,6 +23,8 @@ staging_r2:
   bucket: thembooking-test
   region: auto
   force_path_style: true
+  upload:
+    checksum_algorithm: null
 
 # Production environment R2 bucket
 production_r2:
@@ -33,3 +35,5 @@ production_r2:
   bucket: them-booking-prod
   region: auto
   force_path_style: true
+  upload:
+    checksum_algorithm: null
