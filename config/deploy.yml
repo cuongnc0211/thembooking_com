@@ -5,13 +5,14 @@
 service: thembooking
 
 # Container image name
-image: cuongnguyenfu/thembooking
+image: thembooking-registry/thembooking
 
 # Docker registry configuration
 registry:
-  username: cuongnguyenfu
+  server: registry.digitalocean.com
+  username: oauth2
   password:
-    - KAMAL_REGISTRY_PASSWORD
+    - DO_REGISTRY_TOKEN
 
 # Shared environment variables across all environments
 env:
