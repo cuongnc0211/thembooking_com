@@ -376,6 +376,8 @@ GEM
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
     rspec-support (3.13.6)
+    rspec_junit_formatter (0.6.0)
+      rspec-core (>= 2, < 4, != 2.12.0)
     rubocop (1.82.1)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -518,6 +520,7 @@ DEPENDENCIES
   rails (~> 8.1.1)
   resend
   rspec-rails
+  rspec_junit_formatter
   rubocop-rails-omakase
   shoulda-matchers
   solid_cable

@@ -35,6 +35,11 @@ rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
 RSpec.configure do |config|
+  # Force English locale for tests (ensures consistent error messages)
+  config.before(:each) do
+    I18n.locale = :en
+  end
+
   # Include FactoryBot methods
   config.include FactoryBot::Syntax::Methods
 

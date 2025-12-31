@@ -45,11 +45,14 @@ RSpec.describe "Locales", type: :request do
 
     context "when providing invalid locale" do
       it "falls back to default locale (en)" do
+        # Start fresh with no session locale
         patch locale_path, params: { locale: "fr" }
         expect(session[:locale]).to be_nil
       end
 
       it "does not set invalid locale" do
+        # First clear any existing locale, then try invalid
+        patch locale_path, params: { locale: "en" }  # Set to en first
         patch locale_path, params: { locale: "invalid" }
         get root_path
         expect(I18n.locale).to eq(:en)
