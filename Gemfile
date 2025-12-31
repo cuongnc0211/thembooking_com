@@ -67,6 +67,7 @@ group :development, :test do
   gem "faker"
   gem "shoulda-matchers"
   gem "pry"
+  gem 'dotenv'
 end
 
 group :development do
