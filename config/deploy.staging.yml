@@ -15,7 +15,7 @@ servers:
 # Traefik proxy configuration with Let's Encrypt SSL
 proxy:
   host: staging.thembooking.com
-  app_port: 3000
+  app_port: 80
   ssl: true
   healthcheck:
     path: /up
