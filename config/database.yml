@@ -44,18 +44,34 @@ development:
 test:
   primary: &primary_test
     <<: *default
+    <% if ENV["DATABASE_URL"].present? %>
+    url: <%= ENV["DATABASE_URL"] %>
+    <% else %>
     database: thembooking_test
+    <% end %>
   cache:
     <<: *default
+    <% if ENV["CACHE_DATABASE_URL"].present? || ENV["DATABASE_URL"].present? %>
+    url: <%= ENV["CACHE_DATABASE_URL"] || ENV["DATABASE_URL"]&.sub(/\/[^\/]+$/, '/thembooking_test_cache') %>
+    <% else %>
     database: thembooking_test_cache
+    <% end %>
     migrations_paths: db/cache_migrate
   queue:
     <<: *default
+    <% if ENV["QUEUE_DATABASE_URL"].present? || ENV["DATABASE_URL"].present? %>
+    url: <%= ENV["QUEUE_DATABASE_URL"] || ENV["DATABASE_URL"]&.sub(/\/[^\/]+$/, '/thembooking_test_queue') %>
+    <% else %>
     database: thembooking_test_queue
+    <% end %>
     migrations_paths: db/queue_migrate
   cable:
     <<: *default
+    <% if ENV["CABLE_DATABASE_URL"].present? || ENV["DATABASE_URL"].present? %>
+    url: <%= ENV["CABLE_DATABASE_URL"] || ENV["DATABASE_URL"]&.sub(/\/[^\/]+$/, '/thembooking_test_cable') %>
+    <% else %>
     database: thembooking_test_cable
+    <% end %>
     migrations_paths: db/cable_migrate
 
 # As with config/credentials.yml, you never want to store sensitive information,

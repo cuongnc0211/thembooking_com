@@ -96,6 +96,9 @@ jobs:
     env:
       RAILS_ENV: test
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/thembooking_test
+      CACHE_DATABASE_URL: postgres://postgres:postgres@localhost:5432/thembooking_test_cache
+      QUEUE_DATABASE_URL: postgres://postgres:postgres@localhost:5432/thembooking_test_queue
+      CABLE_DATABASE_URL: postgres://postgres:postgres@localhost:5432/thembooking_test_cable
       REDIS_URL: redis://localhost:6379/0
 
     steps:
@@ -107,8 +110,9 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Set up database
+      - name: Set up databases
         run: |
+          bin/rails db:create
           bin/rails db:schema:load
 
       - name: Run RSpec tests
