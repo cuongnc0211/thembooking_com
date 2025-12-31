@@ -16,7 +16,7 @@
     <%= form.label :avatar, "Profile Photo (Optional)", class: "form-label" %>
     <div class="mt-2 flex items-center gap-4">
       <% if @user.avatar.attached? %>
-        <%= image_tag @user.avatar, class: "h-16 w-16 rounded-full object-cover" %>
+        <%= image_tag @user.avatar.url, class: "h-16 w-16 rounded-full object-cover" %>
       <% else %>
         <div class="h-16 w-16 rounded-full bg-slate-100 flex items-center justify-center">
           <svg class="h-8 w-8 text-slate-400" fill="currentColor" viewBox="0 0 24 24">

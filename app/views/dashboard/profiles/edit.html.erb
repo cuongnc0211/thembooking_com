@@ -18,7 +18,7 @@
 
       <div class="flex items-center space-x-6">
         <% if @user.avatar.attached? %>
-          <%= image_tag @user.avatar.variant(resize_to_limit: [200, 200]), class: "h-24 w-24 rounded-full object-cover border-4 border-slate-50 shadow-sm", data: { image_preview_target: "preview" } %>
+          <%= image_tag @user.avatar.variant(resize_to_limit: [200, 200]).url, class: "h-24 w-24 rounded-full object-cover border-4 border-slate-50 shadow-sm", data: { image_preview_target: "preview" } %>
         <% else %>
           <div class="relative h-24 w-24">
             <div class="h-24 w-24 rounded-full bg-primary-100 flex items-center justify-center border-4 border-slate-50 shadow-sm">

@@ -10,7 +10,7 @@ module ApplicationHelper
 
   def user_avatar(user, size: 40)
     if user.avatar.attached?
-      image_tag user.avatar.variant(resize_to_limit: [ size, size ]),
+      image_tag user.avatar.variant(resize_to_limit: [ size, size ]).url,
                 class: "rounded-full object-cover",
                 style: "width: #{size}px; height: #{size}px;"
     else
