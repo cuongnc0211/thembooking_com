@@ -163,6 +163,9 @@ GEM
       raabro (~> 1.4)
     globalid (1.3.0)
       activesupport (>= 6.1)
+    honeybadger (6.2.0)
+      logger
+      ostruct
     httparty (0.23.2)
       csv
       mini_mime (>= 1.0.0)
@@ -498,6 +501,7 @@ DEPENDENCIES
   dotenv
   factory_bot_rails
   faker
+  honeybadger (~> 6.2)
   image_processing (~> 1.2)
   importmap-rails
   jsbundling-rails

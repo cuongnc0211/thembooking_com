@@ -85,3 +85,5 @@ gem "resend"
 gem "mission_control-jobs"
 
 gem "capybara", "~> 3.40"
+
+gem "honeybadger", "~> 6.2"
