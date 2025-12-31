@@ -27,8 +27,8 @@ class Service < ApplicationRecord
                    length: { maximum: 100 },
                    uniqueness: { scope: :business_id, case_sensitive: false }
 
-  # validates :duration_minutes, presence: true,
-  #                              inclusion: { in: DURATION_OPTIONS.map { |o| o[:value] } }
+  validates :duration_minutes, presence: true,
+                               inclusion: { in: DURATION_OPTIONS.map { |o| o[:value] } }
 
   validates :price_cents, presence: true,
                           numericality: { only_integer: true, greater_than: 0 }
