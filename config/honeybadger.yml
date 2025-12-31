@@ -1,30 +1,74 @@
 ---
-# For more options, see https://docs.honeybadger.io/lib/ruby/gem-reference/configuration
-
-api_key: 'hbp_FqfWnCJSLrKzi3fbX1CF9lLConAqzb1A09xR'
-
-# The environment your app is running in.
+api_key: <%= ENV["HONEYBADGER_API_KEY"] %>
 env: "<%= Rails.env %>"
-
-# The absolute path to your project folder.
 root: "<%= Rails.root.to_s %>"
 
-# Honeybadger won't report errors in these environments.
-development_environments:
-- test
-- development
-- cucumber
-
-# By default, Honeybadger won't report errors in the development_environments.
-# You can override this by explicitly setting report_data to true.
-# report_data: true
-
-# The current Git revision of your project. Defaults to the last commit hash.
-# revision: null
-
-# Enable verbose debug logging (useful for troubleshooting).
+# Core settings
 debug: false
-
-# Enable Honeybadger Insights
 insights:
   enabled: true
+
+# Git revision tracking (for deployment correlation)
+revision: <%= ENV['GIT_REVISION'] || `git rev-parse --short HEAD`.strip %>
+
+# Development environments (no reporting)
+development_environments:
+  - test
+  - development
+  - cucumber
+
+# Request data filtering (CRITICAL for privacy)
+request:
+  filter_keys:
+    - password
+    - password_confirmation
+    - secret
+    - token
+    - api_key
+    - credit_card
+    - ssn
+    - phone  # Vietnamese phone numbers are sensitive
+    - email  # Already captured in context
+
+# Exception filtering (ignore noise)
+exceptions:
+  ignore:
+    - ActionController::RoutingError  # 404s are noise
+    - ActiveRecord::RecordNotFound    # Expected in normal flow
+    - ActionController::InvalidAuthenticityToken  # CSRF - monitor via other means
+    - ActionController::UnknownFormat
+    - AbstractController::ActionNotFound
+
+# Breadcrumbs (debugging trail)
+breadcrumbs:
+  enabled: true
+  active_support_notifications:
+    enabled: true
+    # Track critical Rails events
+    include:
+      - sql.active_record       # DB queries
+      - process_action.action_controller  # Controller actions
+      - perform.active_job      # Job execution
+      - deliver.action_mailer   # Email sending
+  logging:
+    enabled: false  # Disable to reduce noise
+
+# Environment-specific overrides
+env:
+  development:
+    report_data: false
+
+  test:
+    report_data: false
+
+  staging:
+    report_data: true
+    # More verbose for staging debugging
+    breadcrumbs:
+      logging:
+        enabled: true
+
+  production:
+    report_data: true
+    # Production-only: track source code context
+    source_radius: 3  # 3 lines before/after error
