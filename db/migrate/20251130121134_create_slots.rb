@@ -11,7 +11,7 @@ class CreateSlots < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :slots, [:business_id, :start_time], unique: true, name: "index_slots_on_business_and_start_time"
-    add_index :slots, [:business_id, :date], name: "index_slots_on_business_and_date"
+    add_index :slots, [ :business_id, :start_time ], unique: true, name: "index_slots_on_business_and_start_time"
+    add_index :slots, [ :business_id, :date ], name: "index_slots_on_business_and_date"
   end
 end

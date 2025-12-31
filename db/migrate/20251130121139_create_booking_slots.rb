@@ -7,6 +7,6 @@ class CreateBookingSlots < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :booking_slots, [:booking_id, :slot_id], unique: true, name: "index_booking_slots_on_booking_and_slot"
+    add_index :booking_slots, [ :booking_id, :slot_id ], unique: true, name: "index_booking_slots_on_booking_and_slot"
   end
 end

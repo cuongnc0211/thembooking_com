@@ -28,7 +28,7 @@ RSpec.describe Bookings::CreateBooking do
       it "creates a booking with all services" do
         service = described_class.new(
           business: business,
-          service_ids: [service1.id, service2.id],
+          service_ids: [ service1.id, service2.id ],
           scheduled_at: scheduled_at,
           customer_params: customer_params
         )
@@ -47,7 +47,7 @@ RSpec.describe Bookings::CreateBooking do
       it "sets status to pending and source to online" do
         service = described_class.new(
           business: business,
-          service_ids: [service1.id],
+          service_ids: [ service1.id ],
           scheduled_at: scheduled_at,
           customer_params: customer_params
         )
@@ -62,7 +62,7 @@ RSpec.describe Bookings::CreateBooking do
       it "returns success result with booking" do
         service = described_class.new(
           business: business,
-          service_ids: [service1.id],
+          service_ids: [ service1.id ],
           scheduled_at: scheduled_at,
           customer_params: customer_params
         )
@@ -80,7 +80,7 @@ RSpec.describe Bookings::CreateBooking do
         invalid_params = customer_params.merge(customer_name: nil)
         service = described_class.new(
           business: business,
-          service_ids: [service1.id],
+          service_ids: [ service1.id ],
           scheduled_at: scheduled_at,
           customer_params: invalid_params
         )
@@ -95,7 +95,7 @@ RSpec.describe Bookings::CreateBooking do
         invalid_params = customer_params.merge(customer_phone: "123") # Invalid format
         service = described_class.new(
           business: business,
-          service_ids: [service1.id],
+          service_ids: [ service1.id ],
           scheduled_at: scheduled_at,
           customer_params: invalid_params
         )
@@ -110,7 +110,7 @@ RSpec.describe Bookings::CreateBooking do
         past_time = 1.hour.ago
         service = described_class.new(
           business: business,
-          service_ids: [service1.id],
+          service_ids: [ service1.id ],
           scheduled_at: past_time,
           customer_params: customer_params
         )
@@ -143,7 +143,7 @@ RSpec.describe Bookings::CreateBooking do
       it "returns error" do
         service = described_class.new(
           business: business,
-          service_ids: [other_service.id],
+          service_ids: [ other_service.id ],
           scheduled_at: scheduled_at,
           customer_params: customer_params
         )
@@ -157,7 +157,7 @@ RSpec.describe Bookings::CreateBooking do
       it "does not create a booking" do
         service = described_class.new(
           business: business,
-          service_ids: [other_service.id],
+          service_ids: [ other_service.id ],
           scheduled_at: scheduled_at,
           customer_params: customer_params
         )
@@ -178,7 +178,7 @@ RSpec.describe Bookings::CreateBooking do
 
         service = described_class.new(
           business: business,
-          service_ids: [service1.id],
+          service_ids: [ service1.id ],
           scheduled_at: scheduled_at,
           customer_params: customer_params
         )
@@ -200,7 +200,7 @@ RSpec.describe Bookings::CreateBooking do
 
         service = described_class.new(
           business: business,
-          service_ids: [service1.id],
+          service_ids: [ service1.id ],
           scheduled_at: scheduled_at,
           customer_params: customer_params
         )
@@ -221,7 +221,7 @@ RSpec.describe Bookings::CreateBooking do
         # Should still be able to book (capacity: 2, active bookings: 0)
         service = described_class.new(
           business: business,
-          service_ids: [service1.id],
+          service_ids: [ service1.id ],
           scheduled_at: scheduled_at,
           customer_params: customer_params
         )
@@ -240,7 +240,7 @@ RSpec.describe Bookings::CreateBooking do
         # Capacity is 2, so this should succeed
         service = described_class.new(
           business: business,
-          service_ids: [service1.id],
+          service_ids: [ service1.id ],
           scheduled_at: Time.zone.parse("2025-11-27 10:15"),
           customer_params: customer_params
         )
@@ -255,7 +255,7 @@ RSpec.describe Bookings::CreateBooking do
         # Third attempt should fail (capacity exceeded)
         third_service = described_class.new(
           business: business,
-          service_ids: [service1.id],
+          service_ids: [ service1.id ],
           scheduled_at: Time.zone.parse("2025-11-27 10:25"),
           customer_params: customer_params
         )
@@ -270,7 +270,7 @@ RSpec.describe Bookings::CreateBooking do
         # Use invalid service ID to trigger failure
         service = described_class.new(
           business: business,
-          service_ids: [999999], # Non-existent ID
+          service_ids: [ 999999 ], # Non-existent ID
           scheduled_at: scheduled_at,
           customer_params: customer_params
         )

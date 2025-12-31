@@ -7,6 +7,6 @@ class CreateBookingServices < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :booking_services, [:booking_id, :service_id], unique: true
+    add_index :booking_services, [ :booking_id, :service_id ], unique: true
   end
 end

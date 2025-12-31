@@ -125,25 +125,25 @@ RSpec.describe Service, type: :model do
     it "returns array of [label, value] pairs for select options" do
       options = Service.duration_options_for_select
       expect(options).to be_an(Array)
-      expect(options).to include(["15 min", 15])
-      expect(options).to include(["30 min", 30])
-      expect(options).to include(["45 min", 45])
-      expect(options).to include(["1 hour", 60])
-      expect(options).to include(["1.5 hours", 90])
-      expect(options).to include(["2 hours", 120])
+      expect(options).to include([ "15 min", 15 ])
+      expect(options).to include([ "30 min", 30 ])
+      expect(options).to include([ "45 min", 45 ])
+      expect(options).to include([ "1 hour", 60 ])
+      expect(options).to include([ "1.5 hours", 90 ])
+      expect(options).to include([ "2 hours", 120 ])
     end
 
     it "returns options in correct order" do
       options = Service.duration_options_for_select
-      expect(options.first).to eq(["15 min", 15])
-      expect(options.last).to eq(["2 hours", 120])
+      expect(options.first).to eq([ "15 min", 15 ])
+      expect(options.last).to eq([ "2 hours", 120 ])
     end
   end
 
   describe "DURATION_OPTIONS constant" do
     it "defines all valid duration values" do
       expect(Service::DURATION_OPTIONS).to be_frozen
-      expect(Service::DURATION_OPTIONS.map { |o| o[:value] }).to eq([15, 30, 45, 60, 90, 120])
+      expect(Service::DURATION_OPTIONS.map { |o| o[:value] }).to eq([ 15, 30, 45, 60, 90, 120 ])
     end
 
     it "includes labels for each duration" do

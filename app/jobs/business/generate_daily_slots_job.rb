@@ -3,7 +3,7 @@ class Business::GenerateDailySlotsJob < ApplicationJob
 
   def perform(business_id)
     business = Business.find_by(id: business_id)
-    
+
     begin
       result = Slots::GenerateForBusiness.new(business: business).call
 

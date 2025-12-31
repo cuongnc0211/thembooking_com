@@ -37,7 +37,7 @@ class Booking < ApplicationRecord
   attr_accessor :skip_future_validation
 
   # Scopes
-  scope :active, -> { where(status: [:confirmed, :in_progress]) }
+  scope :active, -> { where(status: [ :confirmed, :in_progress ]) }
   scope :for_date, ->(date) { where("DATE(scheduled_at) = ?", date) }
   scope :by_time, -> { order(scheduled_at: :asc) }
   scope :overlapping, ->(start_time, end_time) {

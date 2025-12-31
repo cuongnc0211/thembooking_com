@@ -143,7 +143,7 @@ RSpec.describe Slots::GenerateForBusiness do
               "open" => "09:00",
               "close" => "15:00",
               "closed" => false,
-              "breaks" => [{ "start" => "12:00", "end" => "13:00" }]
+              "breaks" => [ { "start" => "12:00", "end" => "13:00" } ]
             },
             "tuesday" => { "closed" => true },
             "wednesday" => { "closed" => true },

@@ -206,7 +206,7 @@ RSpec.describe Booking, type: :model do
       service1 = create(:service, business: business, name: "Haircut", duration_minutes: 30)
       service2 = create(:service, business: business, name: "Beard Trim", duration_minutes: 15)
 
-      booking.services << [service1, service2]
+      booking.services << [ service1, service2 ]
 
       expect(booking.total_duration_minutes).to eq(45)
     end

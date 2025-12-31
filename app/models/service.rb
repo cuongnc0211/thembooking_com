@@ -13,7 +13,7 @@ class Service < ApplicationRecord
 
   # Helper method for select options
   def self.duration_options_for_select
-    DURATION_OPTIONS.map { |opt| [opt[:label], opt[:value]] }
+    DURATION_OPTIONS.map { |opt| [ opt[:label], opt[:value] ] }
   end
 
   # Money integration

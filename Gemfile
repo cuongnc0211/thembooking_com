@@ -67,7 +67,7 @@ group :development, :test do
   gem "faker"
   gem "shoulda-matchers"
   gem "pry"
-  gem 'dotenv'
+  gem "dotenv"
 end
 
 group :development do
@@ -77,7 +77,7 @@ group :development do
   # Preview email in browser instead of sending
   gem "letter_opener"
 
-  gem 'bullet'
+  gem "bullet"
 end
 
 gem "resend"

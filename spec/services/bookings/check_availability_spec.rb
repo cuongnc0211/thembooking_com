@@ -27,7 +27,7 @@ RSpec.describe Bookings::CheckAvailability do
         date = Date.new(2025, 11, 27) # Wednesday
         service = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           date: date
         )
 
@@ -44,7 +44,7 @@ RSpec.describe Bookings::CheckAvailability do
         date = Date.new(2025, 11, 27) # Wednesday
         service = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           date: date
         )
 
@@ -61,7 +61,7 @@ RSpec.describe Bookings::CheckAvailability do
         # Total duration: 30 + 15 = 45 minutes
         service = described_class.new(
           business: business,
-          service_ids: [service_30min.id, service_15min.id],
+          service_ids: [ service_30min.id, service_15min.id ],
           date: date
         )
 
@@ -77,7 +77,7 @@ RSpec.describe Bookings::CheckAvailability do
         # Service ends at 17:00 (close time)
         service = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           date: date
         )
 
@@ -103,7 +103,7 @@ RSpec.describe Bookings::CheckAvailability do
 
         service = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           date: date
         )
 
@@ -127,7 +127,7 @@ RSpec.describe Bookings::CheckAvailability do
 
         service = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           date: date
         )
 
@@ -152,7 +152,7 @@ RSpec.describe Bookings::CheckAvailability do
         date = Date.new(2025, 11, 29) # Saturday
         service = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           date: date
         )
 
@@ -181,7 +181,7 @@ RSpec.describe Bookings::CheckAvailability do
           date = Date.new(2025, 11, 26) # Today (Wednesday)
           service = described_class.new(
             business: business,
-            service_ids: [service_30min.id],
+            service_ids: [ service_30min.id ],
             date: date
           )
 
@@ -206,7 +206,7 @@ RSpec.describe Bookings::CheckAvailability do
         date = Date.new(2025, 11, 27) # Thursday
         service = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           date: date
         )
 
@@ -242,7 +242,7 @@ RSpec.describe Bookings::CheckAvailability do
         date = Date.new(2025, 11, 27) # Thursday
         service = described_class.new(
           business: business,
-          service_ids: [long_service.id],
+          service_ids: [ long_service.id ],
           date: date
         )
 

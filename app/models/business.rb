@@ -110,12 +110,12 @@ class Business < ApplicationRecord
     return if operating_hours.present?
 
     self.operating_hours = {
-      "monday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [{ "start": "12:00", "end": "13:00" }] },
-      "tuesday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [{ "start": "12:00", "end": "13:00" }] },
-      "wednesday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [{ "start": "12:00", "end": "13:00" }] },
-      "thursday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [{ "start": "12:00", "end": "13:00" }] },
-      "friday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [{ "start": "12:00", "end": "13:00" }] },
-      "saturday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [{ "start": "12:00", "end": "13:00" }] },
+      "monday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [ { "start": "12:00", "end": "13:00" } ] },
+      "tuesday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [ { "start": "12:00", "end": "13:00" } ] },
+      "wednesday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [ { "start": "12:00", "end": "13:00" } ] },
+      "thursday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [ { "start": "12:00", "end": "13:00" } ] },
+      "friday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [ { "start": "12:00", "end": "13:00" } ] },
+      "saturday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [ { "start": "12:00", "end": "13:00" } ] },
       "sunday" => { "open" => nil, "close" => nil, "closed" => true, "breaks" => [] }
     }
   end

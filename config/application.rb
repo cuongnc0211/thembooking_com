@@ -40,8 +40,8 @@ module Thembooking
     config.generators.system_tests = nil
 
     # I18n configuration
-    config.i18n.available_locales = [:en, :vi]
+    config.i18n.available_locales = [ :en, :vi ]
     config.i18n.default_locale = :en
-    config.i18n.fallbacks = [I18n.default_locale]
+    config.i18n.fallbacks = [ I18n.default_locale ]
   end
 end

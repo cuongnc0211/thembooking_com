@@ -42,7 +42,7 @@ Rails.application.configure do
   # ---------------------------------------------------------------------------
   # Logging
   # ---------------------------------------------------------------------------
-  config.log_tags = [:request_id]
+  config.log_tags = [ :request_id ]
   config.logger = ActiveSupport::TaggedLogging.logger(STDOUT)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
@@ -96,7 +96,7 @@ Rails.application.configure do
   # Active Record
   # ---------------------------------------------------------------------------
   config.active_record.dump_schema_after_migration = false
-  config.active_record.attributes_for_inspect = [:id]
+  config.active_record.attributes_for_inspect = [ :id ]
 
   # ---------------------------------------------------------------------------
   # Host Authorization (avoid staging surprises)

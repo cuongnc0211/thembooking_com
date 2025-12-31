@@ -243,7 +243,7 @@ RSpec.describe Bookings::CheckAvailability, type: :service do
               "open" => "09:00",
               "close" => "18:00",
               "closed" => false,
-              "breaks" => [{ "start" => "12:00", "end" => "13:00" }]
+              "breaks" => [ { "start" => "12:00", "end" => "13:00" } ]
             }
           }
         )

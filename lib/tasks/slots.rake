@@ -31,7 +31,7 @@ namespace :slots do
   end
 
   desc "Generate slots for a specific business and date"
-  task :generate, [:business_id, :date] => :environment do |_t, args|
+  task :generate, [ :business_id, :date ] => :environment do |_t, args|
     unless args[:business_id]
       puts "❌ Error: business_id is required"
       puts "Usage: rails slots:generate[BUSINESS_ID,DATE]"

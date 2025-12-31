@@ -1,5 +1,5 @@
 class LocalesController < ApplicationController
-  skip_before_action :require_authentication, only: [:update]
+  skip_before_action :require_authentication, only: [ :update ]
 
   def update
     locale = params[:locale]&.to_sym

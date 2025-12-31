@@ -305,7 +305,7 @@ RSpec.describe Business, type: :model do
           expect(hours["open"]).to eq("09:00")
           expect(hours["close"]).to eq("17:00")
           expect(hours["closed"]).to be false
-          expect(hours["breaks"]).to eq([{ "start" => "12:00", "end" => "13:00" }])
+          expect(hours["breaks"]).to eq([ { "start" => "12:00", "end" => "13:00" } ])
         end
 
         it "returns nil for invalid day" do

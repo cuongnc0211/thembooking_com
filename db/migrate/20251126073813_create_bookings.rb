@@ -17,8 +17,8 @@ class CreateBookings < ActiveRecord::Migration[8.1]
     end
 
     # Add indexes for common queries
-    add_index :bookings, [:business_id, :scheduled_at]
-    add_index :bookings, [:business_id, :status]
+    add_index :bookings, [ :business_id, :scheduled_at ]
+    add_index :bookings, [ :business_id, :status ]
     add_index :bookings, :customer_email
     add_index :bookings, :customer_phone
   end

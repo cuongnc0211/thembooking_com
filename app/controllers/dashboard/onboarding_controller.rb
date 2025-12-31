@@ -64,7 +64,7 @@ module Dashboard
         @operating_hours = build_simplified_hours(@business&.operating_hours)
       when 4
         @business = current_user.business || current_user.build_business
-        @services = @business.services.any? ? @business.services : [Service.new]
+        @services = @business.services.any? ? @business.services : [ Service.new ]
       end
     end
 
@@ -147,15 +147,15 @@ module Dashboard
 
     def business_services_params
       params.require(:business).permit(
-        services_attributes: [:id, :name, :duration_minutes, :price, :_destroy]
+        services_attributes: [ :id, :name, :duration_minutes, :price, :_destroy ]
       )
     end
 
     def hours_params
       params.require(:operating_hours).permit(
-        weekdays: [:enabled, :open, :close],
-        saturday: [:enabled, :open, :close],
-        sunday: [:enabled, :open, :close]
+        weekdays: [ :enabled, :open, :close ],
+        saturday: [ :enabled, :open, :close ],
+        sunday: [ :enabled, :open, :close ]
       )
     end
 
@@ -164,7 +164,7 @@ module Dashboard
     def process_price_cents(service_params)
       return service_params unless service_params[:price].present?
 
-      price_in_vnd = service_params[:price].to_s.delete(',').to_i
+      price_in_vnd = service_params[:price].to_s.delete(",").to_i
       service_params.merge(price_cents: price_in_vnd).tap do |params|
         params.delete(:price)
       end
@@ -208,9 +208,9 @@ module Dashboard
       sunday = simplified[:sunday]
 
       # Check if enabled - handle "1", "true", true, or 1
-      weekdays_enabled = weekdays && [true, "true", "1", 1].include?(weekdays[:enabled])
-      saturday_enabled = saturday && [true, "true", "1", 1].include?(saturday[:enabled])
-      sunday_enabled = sunday && [true, "true", "1", 1].include?(sunday[:enabled])
+      weekdays_enabled = weekdays && [ true, "true", "1", 1 ].include?(weekdays[:enabled])
+      saturday_enabled = saturday && [ true, "true", "1", 1 ].include?(saturday[:enabled])
+      sunday_enabled = sunday && [ true, "true", "1", 1 ].include?(sunday[:enabled])
 
       # At least one day must be enabled
       unless weekdays_enabled || saturday_enabled || sunday_enabled

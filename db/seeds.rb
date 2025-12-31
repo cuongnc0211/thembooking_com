@@ -51,7 +51,7 @@ SERVICES.each_with_index do |name, index|
   service = Service.build(
     business: business,
     name: name,
-    duration_minutes: [30, 45, 60].sample,
+    duration_minutes: [ 30, 45, 60 ].sample,
     description: "Dịch vụ #{name}",
     position: index + 1,
     price: Money.from_cents((5..10).to_a.sample * 10_000, :VND)

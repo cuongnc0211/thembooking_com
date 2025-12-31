@@ -55,7 +55,7 @@ RSpec.describe "Bookings", type: :request do
     context "with valid parameters" do
       it "returns available time slots as JSON" do
         get "/#{business.slug}/availability",
-            params: { service_ids: [service1.id], date: date.to_s }
+            params: { service_ids: [ service1.id ], date: date.to_s }
 
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(%r{application/json})
@@ -66,7 +66,7 @@ RSpec.describe "Bookings", type: :request do
 
       it "calculates availability based on multiple services" do
         get "/#{business.slug}/availability",
-            params: { service_ids: [service1.id, service2.id], date: date.to_s }
+            params: { service_ids: [ service1.id, service2.id ], date: date.to_s }
 
         expect(response).to have_http_status(:ok)
 
@@ -79,7 +79,7 @@ RSpec.describe "Bookings", type: :request do
         saturday = Date.new(2025, 11, 29) # Saturday (closed)
 
         get "/#{business.slug}/availability",
-            params: { service_ids: [service1.id], date: saturday.to_s }
+            params: { service_ids: [ service1.id ], date: saturday.to_s }
 
         expect(response).to have_http_status(:ok)
 
@@ -102,7 +102,7 @@ RSpec.describe "Bookings", type: :request do
       it "returns 404 for non-existent business" do
         expect {
           get "/non-existent-business/availability",
-              params: { service_ids: [service1.id], date: date.to_s }
+              params: { service_ids: [ service1.id ], date: date.to_s }
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -112,7 +112,7 @@ RSpec.describe "Bookings", type: :request do
     let(:scheduled_at) { Time.zone.parse("2025-11-27 10:00") }
     let(:booking_params) do
       {
-        service_ids: [service1.id, service2.id],
+        service_ids: [ service1.id, service2.id ],
         scheduled_at: scheduled_at.iso8601,
         booking: {
           customer_name: "Nguyen Van A",
@@ -205,7 +205,7 @@ RSpec.describe "Bookings", type: :request do
       let(:other_service) { create(:service, business: other_business) }
 
       it "returns error and does not create booking" do
-        invalid_params = booking_params.merge(service_ids: [other_service.id])
+        invalid_params = booking_params.merge(service_ids: [ other_service.id ])
 
         expect {
           post "/#{business.slug}/bookings", params: invalid_params
@@ -226,7 +226,7 @@ RSpec.describe "Bookings", type: :request do
   describe "GET /:business_slug/bookings/:id (show)" do
     let(:booking) do
       booking = create(:booking, business: business, customer_name: "Nguyen Van A")
-      booking.services << [service1, service2]
+      booking.services << [ service1, service2 ]
       booking
     end
 

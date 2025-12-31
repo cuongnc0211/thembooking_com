@@ -8,7 +8,7 @@ RSpec.describe GenerateDailySlotsJob, type: :job do
 
     before do
       # Set up operating hours for businesses
-      [business1, business2, business3].each do |business|
+      [ business1, business2, business3 ].each do |business|
         business.update!(
           operating_hours: {
             "monday" => { "open" => "09:00", "close" => "12:00", "closed" => false, "breaks" => [] },

@@ -504,7 +504,7 @@ RSpec.describe "Dashboard::Bookings", type: :request do
             customer_phone: "0123456789",
             customer_email: "walkin@example.com",
             notes: "Quick haircut",
-            service_ids: [service1.id]
+            service_ids: [ service1.id ]
           }
         }
       end
@@ -549,7 +549,7 @@ RSpec.describe "Dashboard::Bookings", type: :request do
         end
 
         it "works with multiple services" do
-          params = valid_params.deep_merge(booking: { service_ids: [service1.id, service2.id] })
+          params = valid_params.deep_merge(booking: { service_ids: [ service1.id, service2.id ] })
           post dashboard_bookings_path, params: params
           expect(Booking.last.services.count).to eq(2)
         end
@@ -710,7 +710,7 @@ RSpec.describe "Dashboard::Bookings", type: :request do
           customer_phone: "0987654321",
           customer_email: "updated@example.com",
           notes: "Updated notes",
-          service_ids: [service1.id, service2.id]
+          service_ids: [ service1.id, service2.id ]
         }
       }
     end

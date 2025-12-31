@@ -3,7 +3,7 @@
 # Cloudflare R2 doesn't fully support AWS SDK default checksum behavior
 # Apply compatibility settings for all R2 environments (development, staging, production)
 if Rails.env.development? || Rails.env.staging? || Rails.env.production?
-  require 'aws-sdk-s3'
+  require "aws-sdk-s3"
 
   # Base R2 compatibility settings
   r2_config = {

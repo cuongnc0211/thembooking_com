@@ -31,7 +31,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
       it "creates a booking linked to appropriate slots" do
         result = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           start_time: scheduled_at,
           customer_params: customer_params
         ).call
@@ -54,7 +54,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
 
         result = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           start_time: scheduled_at,
           customer_params: customer_params
         ).call
@@ -73,7 +73,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
         expect {
           described_class.new(
             business: business,
-            service_ids: [service_30min.id],
+            service_ids: [ service_30min.id ],
             start_time: scheduled_at,
             customer_params: customer_params
           ).call
@@ -83,7 +83,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
       it "works for services requiring multiple slots (60 min = 4 slots)" do
         result = described_class.new(
           business: business,
-          service_ids: [service_60min.id],
+          service_ids: [ service_60min.id ],
           start_time: scheduled_at,
           customer_params: customer_params
         ).call
@@ -98,7 +98,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
         # 30min + 60min = 90min total = 6 slots
         result = described_class.new(
           business: business,
-          service_ids: [service_30min.id, service_60min.id],
+          service_ids: [ service_30min.id, service_60min.id ],
           start_time: scheduled_at,
           customer_params: customer_params
         ).call
@@ -124,7 +124,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
       it "returns error when slots have no capacity" do
         result = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           start_time: scheduled_at,
           customer_params: customer_params
         ).call
@@ -137,7 +137,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
         expect {
           described_class.new(
             business: business,
-            service_ids: [service_30min.id],
+            service_ids: [ service_30min.id ],
             start_time: scheduled_at,
             customer_params: customer_params
           ).call
@@ -150,7 +150,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
 
         described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           start_time: scheduled_at,
           customer_params: customer_params
         ).call
@@ -169,7 +169,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
         # First booking should succeed
         result1 = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           start_time: scheduled_at,
           customer_params: customer_params
         ).call
@@ -179,7 +179,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
         # Second booking should fail (slot capacity now 0)
         result2 = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           start_time: scheduled_at,
           customer_params: customer_params.merge(customer_name: "Different Customer")
         ).call
@@ -200,7 +200,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
 
         described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           start_time: scheduled_at,
           customer_params: customer_params
         ).call
@@ -219,7 +219,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
 
         result = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           start_time: future_time,
           customer_params: customer_params
         ).call
@@ -240,7 +240,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
         # 30min service needs 2 consecutive slots, but only first is available
         result = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           start_time: scheduled_at,
           customer_params: customer_params
         ).call
@@ -260,7 +260,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
 
         result = described_class.new(
           business: business,
-          service_ids: [service_30min.id],
+          service_ids: [ service_30min.id ],
           start_time: scheduled_at,
           customer_params: invalid_params
         ).call
@@ -278,7 +278,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
         expect {
           described_class.new(
             business: business,
-            service_ids: [service_30min.id],
+            service_ids: [ service_30min.id ],
             start_time: scheduled_at,
             customer_params: invalid_params
           ).call
@@ -293,7 +293,7 @@ RSpec.describe Bookings::CreateBooking, type: :service do
 
         result = described_class.new(
           business: business,
-          service_ids: [other_service.id],
+          service_ids: [ other_service.id ],
           start_time: scheduled_at,
           customer_params: customer_params
         ).call
