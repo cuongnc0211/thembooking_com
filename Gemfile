@@ -66,6 +66,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "shoulda-matchers"
+  gem "rspec_junit_formatter"  # JUnit XML output for CI
   gem "pry"
   gem "dotenv"
 end
