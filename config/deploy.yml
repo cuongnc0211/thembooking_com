@@ -19,6 +19,8 @@ env:
   secret:
     - RAILS_MASTER_KEY
     - DATABASE_URL
+    - DO_REGISTRY_TOKEN
+    - HONEYBADGER_API_KEY
   clear:
     PORT: 3000
     RAILS_LOG_TO_STDOUT: "1"
