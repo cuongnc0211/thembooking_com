@@ -83,6 +83,28 @@ RSpec.configure do |config|
 
   # Infer spec type from file location
   config.infer_spec_type_from_file_location!
+
+  # System test configuration
+  config.before(:each, type: :system) do
+    driven_by :selenium_chrome_headless
+  end
+
+  # Screenshot on failure (debugging)
+  config.after(:each, type: :system) do |example|
+    if example.exception
+      timestamp = Time.now.strftime('%Y%m%d-%H%M%S')
+      filename = "#{example.full_description.parameterize}-#{timestamp}"
+
+      # Create screenshots directory if it doesn't exist
+      FileUtils.mkdir_p('tmp/screenshots')
+
+      page.save_screenshot("tmp/screenshots/#{filename}.png")
+      File.write("tmp/screenshots/#{filename}.html", page.html)
+
+      puts "\n📸 Screenshot saved: tmp/screenshots/#{filename}.png"
+      puts "📄 HTML saved: tmp/screenshots/#{filename}.html"
+    end
+  end
 end
 
 Shoulda::Matchers.configure do |config|

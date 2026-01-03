@@ -69,6 +69,11 @@ group :development, :test do
   gem "rspec_junit_formatter"  # JUnit XML output for CI
   gem "pry"
   gem "dotenv"
+
+  # System testing
+  gem "selenium-webdriver", "~> 4.26" # Use newer version with better Selenium Manager
+  gem "database_cleaner-active_record"
+  gem "launchy" # Debug tool for opening browser/pages
 end
 
 group :development do
