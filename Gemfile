@@ -43,7 +43,7 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 # Cloud storage for Active Storage (Cloudflare R2 via S3 API)
-gem "aws-sdk-s3", "~> 1.0", require: false
+gem "aws-sdk-s3", "~> 1.211", require: false
 
 # Money and currency handling
 gem "money-rails", "~> 1.15"
