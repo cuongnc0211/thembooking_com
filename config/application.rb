@@ -29,6 +29,7 @@ module Thembooking
     config.autoload_lib(ignore: %w[assets tasks])
 
     config.hosts << "staging.thembooking.com"
+    config.hosts << "web-production-39ed.up.railway.app"
 
     # Configuration for the application, engines, and railties goes here.
     #
