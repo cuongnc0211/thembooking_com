@@ -9,7 +9,7 @@
 #   end
 
 puts "======creating user======="
-user = User.find_or_create_by!(email_address: 'user_1@example.com') do |u|
+user = User.find_or_create_by!(email_address: 'demo@thembooking.com') do |u|
   u.password = '123123123'
   u.email_confirmed_at = Time.zone.now
 end
