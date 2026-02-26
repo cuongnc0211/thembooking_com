@@ -21,7 +21,8 @@ class ApplicationController < ActionController::Base
   private
 
   def set_time_zone(&block)
-    Time.use_zone(Current.user.time_zone, &block)
+    @timezone = Current.user.time_zone.presence || "Asia/Ho_Chi_Minh"
+    Time.use_zone(@timezone, &block)
   end
 
   def set_locale
