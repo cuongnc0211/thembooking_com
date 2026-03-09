@@ -57,6 +57,8 @@ en:
         feature_capacity_description: "Set up chairs/rooms, system automatically calculates available slots"
         feature_landing_title: "Free Shop Landing Page"
         feature_landing_description: "Every shop gets its own page with services, pricing and a booking button. Completely free"
+        feature_insights_title: "Business Insights"
+        feature_insights_description: "Track revenue, peak hours and top services at a glance. Make smarter decisions with real data"
 
         # How It Works
         how_it_works_title: "Get started in just 5 minutes"

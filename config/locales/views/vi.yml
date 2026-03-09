@@ -57,6 +57,8 @@ vi:
         feature_capacity_description: "Thiết lập số ghế/phòng, hệ thống tự động tính toán giờ trống"
         feature_landing_title: "Trang Giới Thiệu Tiệm Miễn Phí"
         feature_landing_description: "Mỗi tiệm có trang web riêng với dịch vụ, bảng giá và nút đặt lịch. Miễn phí hoàn toàn"
+        feature_insights_title: "Báo Cáo Kinh Doanh"
+        feature_insights_description: "Nắm rõ doanh thu, giờ cao điểm và dịch vụ nổi bật. Ra quyết định thông minh dựa trên dữ liệu thực tế"
 
         # How It Works
         how_it_works_title: "Bắt đầu chỉ trong 5 phút"
