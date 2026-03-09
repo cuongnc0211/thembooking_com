@@ -1,0 +1,194 @@
+{
+  "numStartups": 1,
+  "installMethod": "native",
+  "autoUpdates": false,
+  "tipsHistory": {
+    "new-user-warmup": 1,
+    "plan-mode-for-complex-tasks": 1,
+    "terminal-setup": 1,
+    "memory-command": 1,
+    "theme-command": 1,
+    "prompt-queue": 1
+  },
+  "cachedGrowthBookFeatures": {
+    "tengu_herring_clock": false,
+    "tengu_event_sampling_config": {},
+    "tengu_frond_boric": {},
+    "tengu_log_segment_events": false,
+    "tengu_log_datadog_events": true,
+    "enhanced_telemetry_beta": false,
+    "tengu_cicada_nap_ms": 0,
+    "tengu_miraculo_the_bard": false,
+    "tengu_miraculo_the_bard2": false,
+    "tengu_kairos_cron": true,
+    "tengu_paper_halyard": false,
+    "tengu_quiet_hollow": true,
+    "tengu_marble_anvil": true,
+    "tengu_tool_pear": false,
+    "tengu_scarf_coffee": false,
+    "tengu_chomp_inflection": false,
+    "tengu_penguins_off": null,
+    "tengu_granite_whisper": false,
+    "tengu_desktop_upsell": {
+      "enable_shortcut_tip": false,
+      "enable_startup_dialog": false
+    },
+    "tengu_streaming_text": false,
+    "tengu_amber_quartz": false,
+    "tengu-top-of-feed-tip": {
+      "tip": "",
+      "color": ""
+    },
+    "tengu_marble_whisper": false,
+    "tengu_turtle_carbon": true,
+    "tengu_pr_status_cli": true,
+    "tengu_ccr_bridge": true,
+    "tengu_keybinding_customization_release": true,
+    "tengu_post_compact_survey": false,
+    "tengu_claudeai_mcp_connectors": true,
+    "tengu_scratch": false,
+    "tengu_1p_event_batch_config": {
+      "scheduledDelayMillis": 10000,
+      "maxExportBatchSize": 400,
+      "maxQueueSize": 8192
+    },
+    "tengu_grey_wool": true,
+    "tengu_auto_mode_config": {
+      "enabled": "disabled",
+      "twoStageClassifier": true
+    },
+    "tengu_disable_bypass_permissions_mode": false,
+    "tengu_pid_based_version_locking": true,
+    "tengu_thinkback": false,
+    "tengu_tangerine_ladder_boost": true,
+    "tengu_pebble_leaf_prune": false,
+    "tengu_immediate_model_command": false,
+    "tengu_marble_lantern_disabled": false,
+    "tengu_glacier_2xr": false,
+    "tengu_basalt_3kr": false,
+    "tengu_swinburne_dune": false,
+    "tengu_coral_fern": false,
+    "tengu_summarize_tool_results": true,
+    "tengu_bergotte_lantern": false,
+    "tengu_sotto_voce": true,
+    "tengu_system_prompt_global_cache": true,
+    "tengu_streaming_tool_execution2": true,
+    "tengu_moth_copse": false,
+    "tengu_tool_search_unsupported_models": [
+      "haiku"
+    ],
+    "tengu_defer_all_bn4": false,
+    "tengu_fgts": false,
+    "tengu_tst_hint_m7r": false,
+    "tengu_attribution_header": true,
+    "tengu_prompt_cache_1h_config": {
+      "allowlist": [
+        "repl_main_thread*",
+        "sdk",
+        "auto_mode"
+      ]
+    },
+    "tengu_session_memory": false
+  },
+  "firstStartTime": "2026-03-09T04:25:34.304Z",
+  "opusProMigrationComplete": true,
+  "sonnet1m45MigrationComplete": true,
+  "userID": "428abdf6f75f6f0428e79d0d24cfa2a06d063422e6dd5051c17b0387204a57f6",
+  "changelogLastFetched": 1773030334669,
+  "oauthAccount": {
+    "accountUuid": "099842d0-e393-40e6-86f5-634cd60e7275",
+    "emailAddress": "cuongnguyenfu.ss@gmail.com",
+    "organizationUuid": "d96ce47c-25c6-4c8f-a4c6-c8ea267f8c42",
+    "hasExtraUsageEnabled": false,
+    "billingType": "stripe_subscription",
+    "accountCreatedAt": "2025-12-06T15:15:22.009118Z",
+    "subscriptionCreatedAt": "2025-12-06T15:19:46.036022Z",
+    "displayName": "Cuong",
+    "organizationRole": "admin",
+    "workspaceRole": null,
+    "organizationName": "cuongnguyenfu.ss@gmail.com's Organization"
+  },
+  "claudeCodeFirstTokenDate": "2025-12-06T16:15:04.062791Z",
+  "hasCompletedOnboarding": true,
+  "lastOnboardingVersion": "2.1.71",
+  "projects": {
+    "/Users/cuongnguyenfu/working_space/side_projects/thembooking_com": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "exampleFiles": [
+        "routes.rb",
+        "Gemfile",
+        "application.html.erb",
+        "business.rb",
+        "schema.rb"
+      ],
+      "exampleFilesGeneratedAt": 1773030366054,
+      "hasCompletedProjectOnboarding": true,
+      "lastCost": 0,
+      "lastAPIDuration": 0,
+      "lastAPIDurationWithoutRetries": 0,
+      "lastToolDuration": 0,
+      "lastDuration": 123000,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 0,
+      "lastTotalOutputTokens": 0,
+      "lastTotalCacheCreationInputTokens": 0,
+      "lastTotalCacheReadInputTokens": 0,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 1.57,
+      "lastFpsLow1Pct": 151.32,
+      "lastModelUsage": {},
+      "lastSessionId": "edd38fe6-286f-48fa-8dd4-ec6be3513f27",
+      "lastSessionMetrics": {
+        "frame_duration_ms_count": 191,
+        "frame_duration_ms_min": 0.03175000000919681,
+        "frame_duration_ms_max": 9.169208999999682,
+        "frame_duration_ms_avg": 0.9370109005232904,
+        "frame_duration_ms_p50": 0.5005420000015874,
+        "frame_duration_ms_p95": 3.8012085000009392,
+        "frame_duration_ms_p99": 6.536333000008017,
+        "hook_duration_ms_count": 2,
+        "hook_duration_ms_min": 578,
+        "hook_duration_ms_max": 1021,
+        "hook_duration_ms_avg": 799.5,
+        "hook_duration_ms_p50": 799.5,
+        "hook_duration_ms_p95": 998.8499999999999,
+        "hook_duration_ms_p99": 1016.5699999999999
+      }
+    }
+  },
+  "githubRepoPaths": {
+    "cuongnc0211/thembooking_com": [
+      "/Users/cuongnguyenfu/working_space/side_projects/thembooking_com"
+    ]
+  },
+  "lastReleaseNotesSeen": "2.1.71",
+  "groveConfigCache": {
+    "099842d0-e393-40e6-86f5-634cd60e7275": {
+      "grove_enabled": true,
+      "timestamp": 1773030366127
+    }
+  },
+  "clientDataCache": {
+    "data": {},
+    "timestamp": 1773030366214
+  },
+  "penguinModeOrgEnabled": false,
+  "autoUpdatesProtectedForNative": true,
+  "officialMarketplaceAutoInstallAttempted": true,
+  "officialMarketplaceAutoInstalled": true,
+  "skillUsage": {
+    "ck:ask": {
+      "usageCount": 1,
+      "lastUsedAt": 1773030444967
+    }
+  }
+}
