@@ -55,6 +55,8 @@ vi:
 
         feature_capacity_title: "Quản Lý Sức Chứa"
         feature_capacity_description: "Thiết lập số ghế/phòng, hệ thống tự động tính toán giờ trống"
+        feature_landing_title: "Trang Giới Thiệu Tiệm Miễn Phí"
+        feature_landing_description: "Mỗi tiệm có trang web riêng với dịch vụ, bảng giá và nút đặt lịch. Miễn phí hoàn toàn"
 
         # How It Works
         how_it_works_title: "Bắt đầu chỉ trong 5 phút"

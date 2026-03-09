@@ -55,6 +55,8 @@ en:
 
         feature_capacity_title: "Capacity Management"
         feature_capacity_description: "Set up chairs/rooms, system automatically calculates available slots"
+        feature_landing_title: "Free Shop Landing Page"
+        feature_landing_description: "Every shop gets its own page with services, pricing and a booking button. Completely free"
 
         # How It Works
         how_it_works_title: "Get started in just 5 minutes"
