@@ -2,8 +2,8 @@
 
 @theme {
   /* Typography */
-  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
 
   /* Color Palette - Premium & Vibrant */
   --color-primary-50: #eff6ff;
@@ -69,6 +69,31 @@
 /* Custom Utilities */
 @utility glass {
   @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-glass;
+}
+
+/* Dark landing page utilities */
+@utility aurora-bg {
+  background:
+    radial-gradient(ellipse 80% 80% at 50% -20%, rgba(37, 99, 235, 0.35), transparent),
+    radial-gradient(ellipse 50% 50% at 80% 50%, rgba(249, 115, 22, 0.15), transparent),
+    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(59, 130, 246, 0.2), transparent);
+}
+
+@utility dark-glass-card {
+  @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl;
+}
+
+@utility gradient-text-hero {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, #60a5fa 0%, #2563eb 50%, #f97316 100%);
+}
+
+@utility badge-pill {
+  @apply inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium;
+}
+
+@utility block-card-dark {
+  @apply bg-white/5 border border-white/10 rounded-2xl transition-all duration-300 hover:bg-white/8 hover:border-white/20;
 }
 
 @utility glass-dark {

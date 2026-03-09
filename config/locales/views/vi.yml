@@ -104,6 +104,60 @@ vi:
         plan_business_feature_6: "API tùy chỉnh"
         plan_business_feature_7: "Hỗ trợ 24/7"
 
+        # Hero dark version
+        hero_title_dark: "Quản lý lịch hẹn <span class='gradient-text-hero'>thông minh</span> cho tiệm của bạn"
+
+        # Mockup UI labels
+        mockup_shop_name: "Tiệm Hoa Lan"
+        mockup_date: "Hôm nay, 9 Tháng 3"
+        mockup_open: "Đang mở"
+        mockup_today: "Lịch hẹn hôm nay"
+        mockup_customer_1: "Minh Nguyễn"
+        mockup_service_1: "Cắt tóc • 9:00 SA"
+        mockup_customer_2: "Thu Anh"
+        mockup_service_2: "Gội đầu • 9:30 SA"
+        mockup_customer_3: "Hải Long"
+        mockup_service_3: "Cắt + Gội • 10:00 SA"
+        mockup_status_confirmed: "Xác nhận"
+        mockup_status_in_service: "Đang làm"
+        mockup_status_waiting: "Chờ"
+        mockup_queue: "Hàng chờ"
+        mockup_queue_count: "3 khách"
+        mockup_metric_bookings_label: "Lịch hẹn tháng này"
+        mockup_metric_bookings: "248"
+        mockup_metric_bookings_trend: "+12% so tháng trước"
+        mockup_metric_noshow_label: "Tỷ lệ no-show"
+        mockup_metric_noshow: "-68%"
+        mockup_metric_noshow_sub: "So với quản lý thủ công"
+
+        # Service Types Section
+        service_types_badge: "Dành cho mọi tiệm dịch vụ"
+        service_types_title: "Phù hợp với tiệm của bạn"
+        service_types_subtitle: "Dù bạn kinh doanh loại hình gì, ThemBooking đều có giải pháp phù hợp"
+        service_type_1_name: "Tiệm cắt tóc & Barber"
+        service_type_1_tag: "Phổ biến"
+        service_type_1_description: "Quản lý hàng chờ, nhận đặt lịch online, theo dõi thợ và khách vãng lai trong thời gian thực"
+        service_type_2_name: "Spa & Massage"
+        service_type_2_tag: "Cao cấp"
+        service_type_2_description: "Quản lý lịch theo phòng, dịch vụ theo thời gian, nhắc nhở khách tự động trước buổi hẹn"
+        service_type_3_name: "Nail Salon & Thẩm mỹ"
+        service_type_3_tag: "Linh hoạt"
+        service_type_3_description: "Hiển thị dịch vụ và bảng giá đẹp, cho khách tự đặt 24/7 qua trang riêng của tiệm"
+
+        # Features section badge
+        features_badge: "Tính năng"
+        features_mid_cta_title: "Sẵn sàng dùng thử miễn phí?"
+        features_mid_cta_subtitle: "Thiết lập xong trong 5 phút. Không cần thẻ tín dụng."
+
+        # How it works badge
+        how_it_works_badge: "Bắt đầu dễ dàng"
+
+        # Pricing badge
+        pricing_badge: "Bảng giá"
+
+        # Testimonials badge
+        testimonials_badge: "Khách hàng nói gì"
+
         # Stats Section
         stat_1_number: "500+"
         stat_1_label: "Tiệm đang sử dụng"
