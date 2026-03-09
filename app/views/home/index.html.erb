@@ -99,7 +99,7 @@
       </div>
 
       <%# Right: UI Mockup %>
-      <div class="relative hidden lg:block animate-fade-in-up" style="animation-delay: 0.2s;">
+      <div class="hidden lg:flex flex-col gap-4 animate-fade-in-up" style="animation-delay: 0.2s;">
         <%# Main dashboard card %>
         <div class="dark-glass-card p-5 shadow-2xl">
           <%# Dashboard header %>
@@ -166,22 +166,19 @@
           </div>
         </div>
 
-        <%# Floating metric: total bookings %>
-        <div class="absolute -top-5 -right-5 dark-glass-card p-4 shadow-xl">
-          <p class="text-slate-400 text-xs mb-1"><%= t('views.home.index.mockup_metric_bookings_label') %></p>
-          <p class="text-white font-display font-bold text-2xl"><%= t('views.home.index.mockup_metric_bookings') %></p>
-          <p class="text-green-400 text-xs mt-0.5"><%= t('views.home.index.mockup_metric_bookings_trend') %></p>
+        <%# Metric cards row %>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="dark-glass-card p-4">
+            <p class="text-slate-400 text-xs mb-1"><%= t('views.home.index.mockup_metric_bookings_label') %></p>
+            <p class="text-white font-display font-bold text-2xl"><%= t('views.home.index.mockup_metric_bookings') %></p>
+            <p class="text-green-400 text-xs mt-1"><%= t('views.home.index.mockup_metric_bookings_trend') %></p>
+          </div>
+          <div class="dark-glass-card p-4">
+            <p class="text-slate-400 text-xs mb-1"><%= t('views.home.index.mockup_metric_noshow_label') %></p>
+            <p class="text-white font-display font-bold text-2xl"><%= t('views.home.index.mockup_metric_noshow') %></p>
+            <p class="text-primary-400 text-xs mt-1"><%= t('views.home.index.mockup_metric_noshow_sub') %></p>
+          </div>
         </div>
-
-        <%# Floating metric: no-show reduced %>
-        <div class="absolute -bottom-5 -left-5 dark-glass-card p-4 shadow-xl">
-          <p class="text-slate-400 text-xs mb-1"><%= t('views.home.index.mockup_metric_noshow_label') %></p>
-          <p class="text-white font-display font-bold text-2xl"><%= t('views.home.index.mockup_metric_noshow') %></p>
-          <p class="text-primary-400 text-xs mt-0.5"><%= t('views.home.index.mockup_metric_noshow_sub') %></p>
-        </div>
-
-        <%# Decorative glow behind card %>
-        <div class="absolute inset-0 bg-primary-500/5 rounded-3xl blur-3xl -z-10 scale-110"></div>
       </div>
     </div>
   </div>
