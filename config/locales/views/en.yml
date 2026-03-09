@@ -104,6 +104,35 @@ en:
         plan_business_feature_6: "Custom API"
         plan_business_feature_7: "24/7 support"
 
+        # Stats Section
+        stat_1_number: "500+"
+        stat_1_label: "Businesses using ThemBooking"
+        stat_2_number: "20K+"
+        stat_2_label: "Bookings per month"
+        stat_3_number: "99%"
+        stat_3_label: "Customer satisfaction"
+        stat_4_number: "5 min"
+        stat_4_label: "To get set up"
+
+        # Testimonials Section
+        testimonials_title: "What business owners say"
+        testimonials_subtitle: "Hundreds of Vietnamese businesses already trust us"
+
+        testimonial_1_quote: "Since using ThemBooking, I save nearly 2 hours a day because I no longer take bookings through Zalo. Customers book online themselves, I just need to confirm."
+        testimonial_1_name: "Nguyen Thi Hoa"
+        testimonial_1_business: "Hoa Lan Nail Salon, Hanoi"
+        testimonial_1_initials: "NH"
+
+        testimonial_2_quote: "The queue management feature helps me balance pre-booked and walk-in customers. No more weekend chaos like before."
+        testimonial_2_name: "Tran Van Minh"
+        testimonial_2_business: "Minh Barber Shop, Ho Chi Minh City"
+        testimonial_2_initials: "TM"
+
+        testimonial_3_quote: "Only 99k/month with full features. I tried Fresha but it was too complex and expensive. ThemBooking fits my small salon much better."
+        testimonial_3_name: "Le Thi Thu"
+        testimonial_3_business: "Thu Thuy Spa, Da Nang"
+        testimonial_3_initials: "LT"
+
         # CTA Section
         cta_title: "Ready to professionalize your business?"
         cta_subtitle: "Join hundreds of business owners using ThemBooking every day"

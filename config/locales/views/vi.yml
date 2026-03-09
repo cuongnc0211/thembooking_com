@@ -104,6 +104,35 @@ vi:
         plan_business_feature_6: "API tùy chỉnh"
         plan_business_feature_7: "Hỗ trợ 24/7"
 
+        # Stats Section
+        stat_1_number: "500+"
+        stat_1_label: "Tiệm đang sử dụng"
+        stat_2_number: "20K+"
+        stat_2_label: "Lịch hẹn/tháng"
+        stat_3_number: "99%"
+        stat_3_label: "Khách hàng hài lòng"
+        stat_4_number: "5 phút"
+        stat_4_label: "Thiết lập xong"
+
+        # Testimonials Section
+        testimonials_title: "Chủ tiệm nói gì về ThemBooking?"
+        testimonials_subtitle: "Hàng trăm doanh nghiệp Việt Nam đã tin dùng chúng tôi"
+
+        testimonial_1_quote: "Từ khi dùng ThemBooking, tôi tiết kiệm được gần 2 tiếng mỗi ngày vì không còn phải nhận lịch qua Zalo nữa. Khách tự đặt online, tôi chỉ cần xác nhận."
+        testimonial_1_name: "Nguyễn Thị Hoa"
+        testimonial_1_business: "Tiệm nail Hoa Lan, Hà Nội"
+        testimonial_1_initials: "NH"
+
+        testimonial_2_quote: "Tính năng quản lý hàng chờ giúp tôi cân bằng được khách đặt trước và khách vãng lai. Không còn cảnh quá tải cuối tuần như trước nữa."
+        testimonial_2_name: "Trần Văn Minh"
+        testimonial_2_business: "Barber Shop Minh, TP.HCM"
+        testimonial_2_initials: "TM"
+
+        testimonial_3_quote: "Giá chỉ 99k/tháng mà được đầy đủ tính năng. Tôi đã thử Fresha nhưng quá phức tạp và đắt. ThemBooking phù hợp với quy mô tiệm nhỏ của tôi hơn nhiều."
+        testimonial_3_name: "Lê Thị Thu"
+        testimonial_3_business: "Spa Thu Thủy, Đà Nẵng"
+        testimonial_3_initials: "LT"
+
         # CTA Section
         cta_title: "Sẵn sàng chuyên nghiệp hóa tiệm của bạn?"
         cta_subtitle: "Tham gia cùng hàng trăm chủ tiệm đang sử dụng ThemBooking mỗi ngày"
