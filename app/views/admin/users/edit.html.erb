@@ -1,0 +1,62 @@
+<% admin_breadcrumbs(link_to("Users", admin_users_path), link_to(@user.name, admin_user_path(@user)), "Edit") %>
+
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-gray-900">Edit User</h1>
+  <p class="text-sm text-gray-500 mt-1"><%= @user.email_address %></p>
+</div>
+
+<div class="bg-white rounded-xl border border-gray-200 p-6 max-w-2xl">
+  <%# Validation errors %>
+  <% if @user.errors.any? %>
+    <div class="mb-6 rounded-lg bg-red-50 border border-red-200 p-4">
+      <h3 class="text-sm font-medium text-red-800 mb-2">
+        <%= pluralize(@user.errors.count, "error") %> prevented this user from being saved:
+      </h3>
+      <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @user, url: admin_user_path(@user), method: :patch, local: true, class: "space-y-5" do |f| %>
+
+    <div>
+      <%= f.label :name, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :name, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :email_address, "Email", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.email_field :email_address, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :phone, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.telephone_field :phone, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :time_zone, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.select :time_zone,
+          ActiveSupport::TimeZone.all.map { |tz| [ tz.to_s, tz.name ] },
+          { include_blank: "— Select time zone —" },
+          class: "block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :onboarding_completed_at, "Onboarding Completed At", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.datetime_local_field :onboarding_completed_at,
+          value: @user.onboarding_completed_at&.strftime("%Y-%m-%dT%H:%M"),
+          class: "block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+      <p class="mt-1 text-xs text-gray-400">Leave blank if onboarding is not yet completed.</p>
+    </div>
+
+    <div class="flex items-center gap-3 pt-2">
+      <%= f.submit "Save Changes", class: "px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg cursor-pointer" %>
+      <%= link_to "Cancel", admin_user_path(@user), class: "px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg" %>
+    </div>
+
+  <% end %>
+</div>

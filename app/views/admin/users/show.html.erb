@@ -1,0 +1,115 @@
+<% admin_breadcrumbs(link_to("Users", admin_users_path), @user.name) %>
+
+<div class="mb-6 flex items-center justify-between">
+  <h1 class="text-2xl font-bold text-gray-900"><%= @user.name %></h1>
+  <div class="flex gap-2">
+    <%= link_to "Edit", edit_admin_user_path(@user),
+        class: "px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg" %>
+    <%= link_to "Delete", admin_user_path(@user),
+        data: { turbo_method: :delete, turbo_confirm: "Delete this user? This cannot be undone." },
+        class: "px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg" %>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+  <%# Profile card %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Profile</h2>
+    <% if @user.avatar.attached? %>
+      <div class="mb-4">
+        <%= image_tag @user.avatar, class: "h-16 w-16 rounded-full object-cover" %>
+      </div>
+    <% end %>
+    <dl class="space-y-3 text-sm">
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Name</dt>
+        <dd class="text-gray-900 font-medium"><%= @user.name %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Email</dt>
+        <dd class="text-gray-900"><%= @user.email_address %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Phone</dt>
+        <dd class="text-gray-900"><%= @user.phone.presence || "—" %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Time Zone</dt>
+        <dd class="text-gray-900"><%= @user.time_zone.presence || "—" %></dd>
+      </div>
+    </dl>
+  </div>
+
+  <%# Status card %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Status</h2>
+    <dl class="space-y-3 text-sm">
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Email Confirmed</dt>
+        <dd>
+          <% if @user.confirmed? %>
+            <span class="bg-green-100 text-green-800 rounded-full px-2 py-0.5 text-xs font-medium">
+              Yes — <%= @user.email_confirmed_at.strftime("%b %d, %Y") %>
+            </span>
+          <% else %>
+            <span class="bg-red-100 text-red-800 rounded-full px-2 py-0.5 text-xs font-medium">No</span>
+          <% end %>
+        </dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Onboarding Step</dt>
+        <dd class="text-gray-900">
+          Step <%= @user.onboarding_step %> — <%= @user.current_onboarding_step_name.to_s.humanize %>
+        </dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Onboarding Completed</dt>
+        <dd>
+          <% if @user.onboarding_completed? %>
+            <span class="bg-green-100 text-green-800 rounded-full px-2 py-0.5 text-xs font-medium">
+              <%= @user.onboarding_completed_at.strftime("%b %d, %Y") %>
+            </span>
+          <% else %>
+            <span class="bg-yellow-100 text-yellow-800 rounded-full px-2 py-0.5 text-xs font-medium">Pending</span>
+          <% end %>
+        </dd>
+      </div>
+    </dl>
+  </div>
+
+  <%# Business card %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Business</h2>
+    <% if @user.business %>
+      <dl class="space-y-3 text-sm">
+        <div class="flex justify-between">
+          <dt class="text-gray-500">Name</dt>
+          <dd class="text-gray-900 font-medium"><%= @user.business.name %></dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-gray-500">Total Bookings</dt>
+          <dd class="text-gray-900"><%= @user.business&.bookings&.count || 0 %></dd>
+        </div>
+      </dl>
+    <% else %>
+      <p class="text-sm text-gray-400">No business created yet.</p>
+    <% end %>
+  </div>
+
+  <%# Meta card %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Meta</h2>
+    <dl class="space-y-3 text-sm">
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Created</dt>
+        <dd class="text-gray-900"><%= @user.created_at.strftime("%b %d, %Y %H:%M") %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Updated</dt>
+        <dd class="text-gray-900"><%= @user.updated_at.strftime("%b %d, %Y %H:%M") %></dd>
+      </div>
+    </dl>
+  </div>
+
+</div>
