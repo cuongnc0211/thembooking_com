@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     delete "sign_out", to: "sessions#destroy", as: :sign_out
 
     resources :users, except: [ :new, :create ]
+    resources :businesses, except: [ :new, :create ]
   end
 
   # Dashboard namespace (requires authentication)
