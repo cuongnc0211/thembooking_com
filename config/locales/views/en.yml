@@ -55,6 +55,10 @@ en:
 
         feature_capacity_title: "Capacity Management"
         feature_capacity_description: "Set up chairs/rooms, system automatically calculates available slots"
+        feature_landing_title: "Free Shop Landing Page"
+        feature_landing_description: "Every shop gets its own page with services, pricing and a booking button. Completely free"
+        feature_insights_title: "Business Insights"
+        feature_insights_description: "Track revenue, peak hours and top services at a glance. Make smarter decisions with real data"
 
         # How It Works
         how_it_works_title: "Get started in just 5 minutes"
@@ -103,6 +107,89 @@ en:
         plan_business_feature_5: "Detailed analytics"
         plan_business_feature_6: "Custom API"
         plan_business_feature_7: "24/7 support"
+
+        # Hero dark version
+        hero_title_dark: "Smart appointment management <span class='gradient-text-hero'>made simple</span> for your business"
+
+        # Mockup UI labels
+        mockup_shop_name: "Hoa Lan Salon"
+        mockup_date: "Today, March 9"
+        mockup_open: "Open now"
+        mockup_today: "Today's appointments"
+        mockup_customer_1: "Minh Nguyen"
+        mockup_service_1: "Haircut • 9:00 AM"
+        mockup_customer_2: "Thu Anh"
+        mockup_service_2: "Hair wash • 9:30 AM"
+        mockup_customer_3: "Hai Long"
+        mockup_service_3: "Cut + Wash • 10:00 AM"
+        mockup_status_confirmed: "Confirmed"
+        mockup_status_in_service: "In service"
+        mockup_status_waiting: "Waiting"
+        mockup_queue: "Walk-in queue"
+        mockup_queue_count: "3 customers"
+        mockup_metric_bookings_label: "Bookings this month"
+        mockup_metric_bookings: "248"
+        mockup_metric_bookings_trend: "+12% vs last month"
+        mockup_metric_noshow_label: "No-show rate"
+        mockup_metric_noshow: "-68%"
+        mockup_metric_noshow_sub: "vs manual management"
+
+        # Service Types Section
+        service_types_badge: "For every service business"
+        service_types_title: "Built for your business type"
+        service_types_subtitle: "Whatever service you offer, ThemBooking has the right solution for you"
+        service_type_1_name: "Barbershop & Hair Salon"
+        service_type_1_tag: "Popular"
+        service_type_1_description: "Manage walk-in queues, accept online bookings, track staff and walk-ins in real time"
+        service_type_2_name: "Spa & Massage"
+        service_type_2_tag: "Premium"
+        service_type_2_description: "Room-based scheduling, time-slot services, automated customer reminders before appointments"
+        service_type_3_name: "Nail Salon & Beauty"
+        service_type_3_tag: "Flexible"
+        service_type_3_description: "Beautiful service menus and pricing pages, let customers self-book 24/7 via your own booking link"
+
+        # Features section badge
+        features_badge: "Features"
+        features_mid_cta_title: "Ready to try it free?"
+        features_mid_cta_subtitle: "Set up in 5 minutes. No credit card required."
+
+        # How it works badge
+        how_it_works_badge: "Getting started"
+
+        # Pricing badge
+        pricing_badge: "Pricing"
+
+        # Testimonials badge
+        testimonials_badge: "What customers say"
+
+        # Stats Section
+        stat_1_number: "500+"
+        stat_1_label: "Businesses using ThemBooking"
+        stat_2_number: "20K+"
+        stat_2_label: "Bookings per month"
+        stat_3_number: "99%"
+        stat_3_label: "Customer satisfaction"
+        stat_4_number: "5 min"
+        stat_4_label: "To get set up"
+
+        # Testimonials Section
+        testimonials_title: "What business owners say"
+        testimonials_subtitle: "Hundreds of Vietnamese businesses already trust us"
+
+        testimonial_1_quote: "Since using ThemBooking, I save nearly 2 hours a day because I no longer take bookings through Zalo. Customers book online themselves, I just need to confirm."
+        testimonial_1_name: "Nguyen Thi Hoa"
+        testimonial_1_business: "Hoa Lan Nail Salon, Hanoi"
+        testimonial_1_initials: "NH"
+
+        testimonial_2_quote: "The queue management feature helps me balance pre-booked and walk-in customers. No more weekend chaos like before."
+        testimonial_2_name: "Tran Van Minh"
+        testimonial_2_business: "Minh Barber Shop, Ho Chi Minh City"
+        testimonial_2_initials: "TM"
+
+        testimonial_3_quote: "Only 99k/month with full features. I tried Fresha but it was too complex and expensive. ThemBooking fits my small salon much better."
+        testimonial_3_name: "Le Thi Thu"
+        testimonial_3_business: "Thu Thuy Spa, Da Nang"
+        testimonial_3_initials: "LT"
 
         # CTA Section
         cta_title: "Ready to professionalize your business?"

@@ -21,7 +21,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag 'application', "data-turbo-track": "reload" %>
@@ -31,7 +31,7 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="bg-surface-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+  <body class="<%= content_for?(:body_class) ? yield(:body_class) : 'bg-surface-50 text-slate-800' %> font-sans antialiased min-h-screen flex flex-col">
     <%= render 'layouts/nav_bar' %>
 
     <!-- Flash Messages (Toast Style) -->
@@ -54,6 +54,9 @@
     </main>
 
     <!-- Footer -->
+    <% if content_for?(:footer_override) %>
+      <%= yield :footer_override %>
+    <% else %>
     <footer class="bg-white border-t border-slate-100 mt-auto">
       <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -93,5 +96,6 @@
         </div>
       </div>
     </footer>
+    <% end %>
   </body>
 </html>
