@@ -16,6 +16,15 @@ Rails.application.routes.draw do
   get "/confirm_email/:token", to: "email_confirmations#show", as: :confirm_email
   post "/resend_confirmation", to: "email_confirmations#resend", as: :resend_confirmation
 
+  # Admin namespace (ThemBooking staff only)
+  namespace :admin do
+    root "dashboard#index"
+
+    get "sign_in", to: "sessions#new", as: :sign_in
+    post "sign_in", to: "sessions#create"
+    delete "sign_out", to: "sessions#destroy", as: :sign_out
+  end
+
   # Dashboard namespace (requires authentication)
   namespace :dashboard do
     root "businesses#show"

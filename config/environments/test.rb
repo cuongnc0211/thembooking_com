@@ -4,6 +4,9 @@
 # and recreated between test runs. Don't rely on the data there!
 
 Rails.application.configure do
+  # Allow the default test host used by Rails integration tests / RSpec request specs
+  config.hosts << "www.example.com"
+
   config.after_initialize do
     if defined?(Bullet)
       Bullet.enable        = true
