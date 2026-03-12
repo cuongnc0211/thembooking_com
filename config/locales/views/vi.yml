@@ -380,6 +380,22 @@ vi:
           submit_create: "Tạo Doanh Nghiệp"
           submit_update: "Lưu Thay Đổi"
 
+      business_closures:
+        index:
+          title: "Ngày Nghỉ"
+          subtitle: "Đánh dấu các ngày tiệm đóng cửa (ví dụ: ngày lễ). Khách hàng sẽ không thể đặt lịch vào những ngày này."
+          add_title: "Thêm Ngày Nghỉ"
+          date_label: "Ngày"
+          reason_label: "Lý do (không bắt buộc)"
+          reason_placeholder: "vd: Nghỉ Lễ"
+          add_button: "Thêm"
+          no_closures: "Không có ngày nghỉ sắp tới."
+          col_date: "Ngày"
+          col_reason: "Lý Do"
+        flash:
+          created: "Đã thêm ngày nghỉ."
+          removed: "Đã xóa ngày nghỉ."
+
       services:
         index:
           title: "Dịch Vụ"

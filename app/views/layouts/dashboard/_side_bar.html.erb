@@ -57,6 +57,13 @@
           <%= t('navigation.bookings') %>
         <% end %>
 
+        <%= link_to dashboard_business_closures_path, class: "flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group #{request.path.start_with?('/dashboard/business_closures') ? 'bg-primary-50/80 text-primary-700 shadow-sm ring-1 ring-primary-200/50' : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'}" do %>
+          <svg class="mr-3 h-5 w-5 transition-colors #{request.path.start_with?('/dashboard/business_closures') ? 'text-primary-600' : 'text-slate-400 group-hover:text-primary-500' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+          </svg>
+          <%= t('navigation.closed_dates') %>
+        <% end %>
+
         <div class="mt-8 mb-2 px-4">
            <div class="h-px bg-slate-100"></div>
         </div>

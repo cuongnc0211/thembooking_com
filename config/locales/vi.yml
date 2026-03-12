@@ -49,7 +49,9 @@ vi:
     services: "Dịch vụ"
     operating_hours: "Giờ làm việc"
     bookings: "Đặt chỗ"
+    closed_dates: "Ngày Nghỉ"
     language: "Ngôn ngữ"
+    menu: "Menu"
 
   footer:
     tagline: "Giải pháp đặt chỗ hiện đại cho doanh nghiệp hiện đại. Tối ưu hóa lịch hẹn và phát triển doanh nghiệp của bạn."

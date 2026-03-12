@@ -1,0 +1,68 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="flex justify-between items-center mb-2">
+    <h1 class="text-3xl font-bold"><%= t('views.dashboard.business_closures.index.title') %></h1>
+  </div>
+  <p class="text-slate-500 mb-6"><%= t('views.dashboard.business_closures.index.subtitle') %></p>
+
+  <%# Add new closure form %>
+  <%= form_with model: @closure, url: dashboard_business_closures_path do |f| %>
+    <% if @closure.errors.any? %>
+      <div class="mb-4 rounded-xl bg-rose-50 border border-rose-200 p-4 text-sm text-rose-700">
+        <%= @closure.errors.full_messages.join(", ") %>
+      </div>
+    <% end %>
+
+    <div class="card p-6 mb-6">
+      <h2 class="text-base font-semibold text-slate-700 mb-4"><%= t('views.dashboard.business_closures.index.add_title') %></h2>
+      <div class="flex flex-col sm:flex-row gap-4 items-end">
+        <div>
+          <%= f.label :date, t('views.dashboard.business_closures.index.date_label'), class: "block text-sm font-medium text-slate-700 mb-1" %>
+          <%= f.date_field :date, class: "block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500", min: Date.current %>
+        </div>
+        <div class="flex-1">
+          <%= f.label :reason, t('views.dashboard.business_closures.index.reason_label'), class: "block text-sm font-medium text-slate-700 mb-1" %>
+          <%= f.text_field :reason, class: "block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500", placeholder: t('views.dashboard.business_closures.index.reason_placeholder') %>
+        </div>
+        <%= f.submit t('views.dashboard.business_closures.index.add_button'), class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded cursor-pointer whitespace-nowrap" %>
+      </div>
+    </div>
+  <% end %>
+
+  <%# Closures list %>
+  <% if @closures.empty? %>
+    <div class="card p-6 text-center">
+      <p class="text-slate-500"><%= t('views.dashboard.business_closures.index.no_closures') %></p>
+    </div>
+  <% else %>
+    <div class="card overflow-hidden">
+      <table class="min-w-full divide-y divide-slate-200">
+        <thead class="bg-slate-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"><%= t('views.dashboard.business_closures.index.col_date') %></th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"><%= t('views.dashboard.business_closures.index.col_reason') %></th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"><%= t('common.actions_title') %></th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-slate-200">
+          <% @closures.each do |closure| %>
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                <%= closure.date.strftime("%d %b %Y") %>
+              </td>
+              <td class="px-6 py-4 text-sm text-slate-500">
+                <%= closure.reason.presence || "—" %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <%= button_to t('common.actions.remove'),
+                      dashboard_business_closure_path(closure),
+                      method: :delete,
+                      data: { turbo_confirm: t('common.confirm_delete') },
+                      class: "text-red-600 hover:text-red-900 cursor-pointer" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>

@@ -53,6 +53,7 @@ Rails.application.routes.draw do
         patch :no_show
       end
     end
+    resources :business_closures, only: [ :index, :create, :destroy ]
   end
 
   # Home

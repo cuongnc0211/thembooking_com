@@ -2,7 +2,7 @@ class Business < ApplicationRecord
   belongs_to :user
   has_many :services, dependent: :destroy
   has_many :bookings, dependent: :destroy
-  has_many :slots, dependent: :destroy
+  has_many :business_closures, dependent: :destroy
   has_one_attached :logo
 
   accepts_nested_attributes_for :services, allow_destroy: true, reject_if: :all_blank

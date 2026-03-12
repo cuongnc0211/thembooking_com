@@ -2,8 +2,9 @@ class Booking < ApplicationRecord
   belongs_to :business
   has_many :booking_services, dependent: :destroy
   has_many :services, through: :booking_services
-  has_many :booking_slots, dependent: :destroy
-  has_many :slots, through: :booking_slots
+
+  # Validations (end_time must always be set explicitly by the caller)
+  validates :end_time, presence: true
 
   # Turbo Streams - Broadcast changes to business-specific stream
   after_create_commit :broadcast_booking_created
@@ -41,22 +42,12 @@ class Booking < ApplicationRecord
   scope :for_date, ->(date) { where("DATE(scheduled_at) = ?", date) }
   scope :by_time, -> { order(scheduled_at: :asc) }
   scope :overlapping, ->(start_time, end_time) {
-    joins(:booking_services, :services)
-      .group("bookings.id")
-      .having(
-        "bookings.scheduled_at < ? AND " \
-        "bookings.scheduled_at + (SUM(services.duration_minutes) || ' minutes')::interval > ?",
-        end_time, start_time
-      )
+    where("scheduled_at < ? AND end_time > ?", end_time, start_time)
   }
 
   # Methods
   def total_duration_minutes
     services.sum(:duration_minutes)
-  end
-
-  def end_time
-    scheduled_at + total_duration_minutes.minutes
   end
 
   private

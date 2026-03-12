@@ -1,54 +1,105 @@
 module Bookings
   class CheckAvailability
+    AVAILABILITY_STEP = 15.minutes
+    ACTIVE_STATUSES = %w[pending confirmed in_progress].freeze
+
     def initialize(business:, service: nil, service_ids: nil, date:)
       @business = business
       @service = service
       @service_ids = service_ids ? Array(service_ids) : nil
-      @date = date
+      @date = date.is_a?(String) ? Date.parse(date) : date
     end
 
     def call
-      # Get all slots for the date, ordered by start_time
-      slots_for_day = @business.slots.for_date(@date).order(:start_time).to_a
+      return [] if business_closed_on_date?
 
-      return [] if slots_for_day.empty?
+      day_hours = operating_hours_for_date
+      return [] if day_hours.nil? || day_hours["closed"]
 
-      # Calculate how many consecutive slots needed
-      slots_needed = calculate_slots_needed
+      total_duration = calculate_total_duration
+      return [] if total_duration.zero?
 
-      # Find all available start times
-      available_start_times = []
-
-      slots_for_day.each_cons(slots_needed) do |consecutive_slots|
-        if all_consecutive_available?(consecutive_slots)
-          available_start_times << consecutive_slots.first.start_time
-        end
-      end
-
-      available_start_times
+      candidates = generate_candidate_times(day_hours, total_duration)
+      candidates.select { |start_time| available_at?(start_time, total_duration) }
     end
 
     private
 
-    def calculate_slots_needed
-      total_duration = if @service
+    def business_closed_on_date?
+      @business.business_closures.exists?(date: @date)
+    end
+
+    def operating_hours_for_date
+      day_name = @date.strftime("%A").downcase
+      @business.operating_hours&.dig(day_name)
+    end
+
+    def calculate_total_duration
+      if @service
         @service.duration_minutes
-      elsif @service_ids
-        Service.where(id: @service_ids).sum(:duration_minutes)
+      elsif @service_ids.present?
+        Service.where(id: @service_ids, business: @business).sum(:duration_minutes)
       else
         0
       end
-
-      (total_duration / 15.0).ceil
     end
 
-    def all_consecutive_available?(slots)
-      # Check if all slots have capacity > 0
-      return false if slots.any? { |slot| slot.capacity <= 0 }
+    # Generate all candidate start times within operating hours, excluding breaks
+    def generate_candidate_times(hours, duration_minutes)
+      open_time  = parse_time_on_date(hours["open"])
+      close_time = parse_time_on_date(hours["close"])
+      breaks     = parse_breaks(hours["breaks"] || [])
 
-      # Check if slots are actually consecutive (no gaps)
-      slots.each_cons(2).all? do |slot1, slot2|
-        slot2.start_time == slot1.end_time
+      candidates = []
+      # For today, skip slots that have already started
+      earliest = @date == Date.current ? [ open_time, Time.current ].max : open_time
+      # Round up to the next 15-min boundary so we don't show a slot mid-way through
+      if earliest > open_time
+        remainder = earliest.min % AVAILABILITY_STEP.in_minutes
+        earliest += (AVAILABILITY_STEP.in_minutes - remainder).minutes if remainder > 0
+      end
+      current = earliest
+
+      # Stop when the booking would extend past closing time
+      while current + duration_minutes.minutes <= close_time
+        candidates << current unless during_any_break?(current, duration_minutes, breaks)
+        current += AVAILABILITY_STEP
+      end
+
+      candidates
+    end
+
+    # Returns true if the time window [start, start+duration) overlaps any break
+    def during_any_break?(start_time, duration_minutes, breaks)
+      end_time = start_time + duration_minutes.minutes
+      breaks.any? do |b|
+        # Overlap: start < break_end AND end > break_start
+        start_time < b[:end] && end_time > b[:start]
+      end
+    end
+
+    # Check if business has capacity at candidate start_time
+    def available_at?(start_time, duration_minutes)
+      end_time = start_time + duration_minutes.minutes
+
+      overlap_count = @business.bookings
+        .where(status: ACTIVE_STATUSES)
+        .where("scheduled_at < ? AND end_time > ?", end_time, start_time)
+        .count
+
+      overlap_count < @business.capacity
+    end
+
+    def parse_time_on_date(time_str)
+      Time.zone.parse("#{@date} #{time_str}")
+    end
+
+    def parse_breaks(breaks_array)
+      breaks_array.map do |b|
+        {
+          start: parse_time_on_date(b["start"]),
+          end:   parse_time_on_date(b["end"])
+        }
       end
     end
   end

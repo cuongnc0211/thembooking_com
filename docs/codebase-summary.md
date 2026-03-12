@@ -61,9 +61,10 @@ thembooking_com/
 #### 3. Database Schema (✅ Complete)
 - **Core Models**:
   - `User`: Business owners with onboarding tracking
-  - `Business`: Business profiles with operating hours
-  - `Service`: Service offerings with pricing
-  - `Booking`: Appointment system foundation
+  - `Business`: Business profiles with operating hours (JSONB) and capacity
+  - `Service`: Service offerings with pricing and duration
+  - `Booking`: Appointment records with `scheduled_at` and `end_time` (stored column)
+  - `BusinessClosure`: Holiday/closure date records (for blocking availability)
   - `Session`: Authentication sessions
 
 - **Key Relationships**:
@@ -71,8 +72,11 @@ thembooking_com/
   User → Business (1:1)
   Business → Services (1:N)
   Business → Bookings (1:N)
-  Service → Bookings (1:N)
+  Business → BusinessClosures (1:N)
+  Service → Bookings (1:N through BookingService join table)
   ```
+
+- **Booking Availability Check**: Direct overlap query against `bookings` table using PostgreSQL range overlap (`scheduled_at < end_time AND end_time > start_time`). No pre-generated slots.
 
 #### 4. Security Architecture (✅ Complete)
 - **Multi-layer Security**:
@@ -254,22 +258,30 @@ Hosting: Self-hosted
 # app/services/bookings/check_availability.rb
 module Bookings
   class CheckAvailability
-    def initialize(business:, date:, service:)
+    SLOT_INTERVAL = 15.minutes
+    ACTIVE_STATUSES = %w[pending confirmed in_progress].freeze
+
+    def initialize(business:, service: nil, service_ids: nil, date:)
       @business = business
-      @date = date
       @service = service
+      @service_ids = service_ids ? Array(service_ids) : nil
+      @date = date.is_a?(String) ? Date.parse(date) : date
     end
 
     def call
-      validate_inputs!
-      check_operating_hours!
-      check_existing_bookings!
-      check_capacity!
-      available_slots
+      return [] if business_closed_on_date?
+      day_hours = operating_hours_for_date
+      return [] if day_hours.nil? || day_hours["closed"]
+      total_duration = calculate_total_duration
+      return [] if total_duration.zero?
+      candidates = generate_candidate_times(day_hours, total_duration)
+      candidates.select { |start_time| available_at?(start_time, total_duration) }
     end
   end
 end
 ```
+
+**Note:** Uses direct overlap query against `bookings` table (PostgreSQL range overlap check) instead of pre-generated slots. Respects `business_closures` table for holiday/closure dates and `operating_hours` JSONB for breaks.
 
 ### 2. Controller Namespace Pattern
 ```ruby

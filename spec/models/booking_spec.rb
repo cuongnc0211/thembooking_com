@@ -86,4 +86,34 @@ RSpec.describe Booking, type: :model do
       end
     end
   end
+
+  describe "end_time attribute" do
+    let(:business) { create(:business) }
+
+    it "has an end_time column" do
+      booking = create(:booking, business: business)
+      expect(booking).to respond_to(:end_time)
+    end
+
+    it "can be explicitly set" do
+      explicit_end = Time.zone.parse("2025-01-06 11:00")
+      booking = create(:booking, business: business, end_time: explicit_end)
+      expect(booking.end_time).to eq(explicit_end)
+    end
+
+    it "is required (must be set explicitly)" do
+      # Bypass factory to test the validation directly
+      booking = Booking.new(business: business, customer_name: "Test", customer_phone: "0912345678",
+                            scheduled_at: 1.day.from_now, status: :pending, source: :online, end_time: nil)
+      expect(booking).not_to be_valid
+      expect(booking.errors[:end_time]).to include("can't be blank")
+    end
+
+    it "can store different end_time than scheduled_at" do
+      scheduled = Time.zone.parse("2025-01-06 10:00")
+      end_time = Time.zone.parse("2025-01-06 10:30")
+      booking = create(:booking, business: business, scheduled_at: scheduled, end_time: end_time, skip_future_validation: true)
+      expect(booking.end_time).to eq(end_time)
+    end
+  end
 end

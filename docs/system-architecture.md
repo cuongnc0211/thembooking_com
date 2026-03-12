@@ -148,6 +148,7 @@ erDiagram
 
     BUSINESS ||--o{ SERVICE : "1 to many"
     BUSINESS ||--o{ BOOKING : "1 to many"
+    BUSINESS ||--o{ BUSINESS_CLOSURE : "1 to many"
     BUSINESS ||--o{ STAFF : "1 to many"
     BUSINESS ||--o{ RESOURCE : "1 to many"
 
@@ -202,17 +203,23 @@ erDiagram
     BOOKING {
         bigint id PK
         bigint business_id FK
-        bigint service_id FK
         string customer_name
         string customer_phone
         string customer_email
-        date booking_date
-        time booking_time
+        datetime scheduled_at
+        datetime end_time
         enum status
         enum source
         string notes
-        datetime started_at
-        datetime completed_at
+        datetime created_at
+        datetime updated_at
+    }
+
+    BUSINESS_CLOSURE {
+        bigint id PK
+        bigint business_id FK
+        date date
+        string reason
         datetime created_at
         datetime updated_at
     }
@@ -230,9 +237,19 @@ erDiagram
 1. **User → Business**: One-to-One (one business per user initially)
 2. **Business → Services**: One-to-Many (multiple services per business)
 3. **Business → Bookings**: One-to-Many (multiple bookings per business)
-4. **Service → Bookings**: One-to-Many (multiple bookings per service)
-5. **Business → Staff**: One-to-Many (optional, future feature)
-6. **Business → Resources**: One-to-Many (optional, future feature)
+4. **Business → BusinessClosures**: One-to-Many (holiday/closure dates)
+5. **Service → Bookings**: One-to-Many (multiple bookings per service through BookingService)
+6. **Business → Staff**: One-to-Many (optional, future feature)
+7. **Business → Resources**: One-to-Many (optional, future feature)
+
+### Booking Availability Check Strategy
+**Direct Overlap Query** (not pre-generated slots):
+- For a given `date`, `start_time`, and service `duration`:
+- Check `BusinessClosure` table for that date (blocks entire day)
+- Query `operating_hours` JSONB for that day-of-week + breaks
+- Count active bookings overlapping the time window: `WHERE scheduled_at < end_time AND end_time > start_time`
+- Available if count < `business.capacity`
+- Uses PostgreSQL advisory lock (`pg_try_advisory_xact_lock`) during creation to serialize concurrent bookings
 
 ### Database Optimization Strategies
 ```sql
@@ -240,11 +257,15 @@ erDiagram
 CREATE INDEX idx_users_email ON users(email_address);
 CREATE INDEX idx_businesses_user_id ON businesses(user_id);
 CREATE INDEX idx_bookings_business_id ON bookings(business_id);
-CREATE INDEX idx_bookings_date_time ON bookings(booking_date, booking_time);
+-- Critical for availability check: range overlap query on (business_id, scheduled_at, end_time)
+CREATE INDEX idx_bookings_overlap_check ON bookings(business_id, scheduled_at, end_time);
 CREATE INDEX idx_services_business_id ON services(business_id);
 
+-- Unique index for business closure dates (prevent duplicates)
+CREATE UNIQUE INDEX idx_business_closures_business_date ON business_closures(business_id, date);
+
 -- Partial indexes for filtering
-CREATE INDEX idx_bookings_pending ON bookings(status) WHERE status = 'pending';
+CREATE INDEX idx_bookings_pending ON bookings(status) WHERE status IN ('pending', 'confirmed', 'in_progress');
 CREATE INDEX idx_services_active ON services(active) WHERE active = true;
 
 -- JSONB indexes for operating hours
@@ -380,47 +401,48 @@ module Dashboard
 end
 ```
 
-### Service Object Pattern
+### Booking Availability Service (Direct Overlap Query)
 ```ruby
 # app/services/bookings/check_availability.rb
 module Bookings
   class CheckAvailability
-    def initialize(business:, date:, service:)
+    SLOT_INTERVAL = 15.minutes
+    ACTIVE_STATUSES = %w[pending confirmed in_progress].freeze
+
+    def initialize(business:, service: nil, service_ids: nil, date:)
       @business = business
-      @date = date
-      @service = service
+      @service_ids = service_ids ? Array(service_ids) : nil
+      @date = date.is_a?(String) ? Date.parse(date) : date
     end
 
     def call
-      validate_inputs!
-      check_operating_hours!
-      check_existing_bookings!
-      check_capacity!
-      available_slots
+      # Guard: closed date (holiday/closure)
+      return [] if business_closed_on_date?
+
+      # Guard: no operating hours or closed day-of-week
+      day_hours = operating_hours_for_date
+      return [] if day_hours.nil? || day_hours["closed"]
+
+      total_duration = calculate_total_duration
+      return [] if total_duration.zero?
+
+      candidates = generate_candidate_times(day_hours, total_duration)
+      candidates.select { |start_time| available_at?(start_time, total_duration) }
     end
 
     private
 
-    def validate_inputs!
-      raise ArgumentError, "Invalid date" unless @date.is_a?(Date)
-      raise ArgumentError, "Business required" unless @business.present?
-      raise ArgumentError, "Service required" unless @service.present?
+    def business_closed_on_date?
+      @business.business_closures.exists?(date: @date)
     end
 
-    def check_operating_hours!
-      # Implementation
-    end
-
-    def check_existing_bookings!
-      # Implementation
-    end
-
-    def check_capacity!
-      # Implementation
-    end
-
-    def available_slots
-      # Return array of available time slots
+    def available_at?(start_time, duration_minutes)
+      end_time = start_time + duration_minutes.minutes
+      overlap_count = @business.bookings
+        .where(status: ACTIVE_STATUSES)
+        .where("scheduled_at < ? AND end_time > ?", end_time, start_time)
+        .count
+      overlap_count < @business.capacity
     end
   end
 end
@@ -429,13 +451,15 @@ end
 def check_availability
   result = Bookings::CheckAvailability.new(
     business: @business,
-    date: params[:date],
-    service: @service
+    service_ids: params[:service_ids],
+    date: params[:date]
   ).call
 
   render json: result
 end
 ```
+
+**Key change from slots system:** Instead of pre-generating `Slot` records and decrementing `capacity`, availability check now queries the `bookings` table directly for overlapping active bookings. Respects `business_closures` (holidays) and `operating_hours` JSONB (breaks).
 
 ### Domain Model Design
 ```ruby

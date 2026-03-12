@@ -380,6 +380,22 @@ en:
           submit_create: "Create Business"
           submit_update: "Save Changes"
 
+      business_closures:
+        index:
+          title: "Closed Dates"
+          subtitle: "Mark specific dates when your business is closed (e.g. public holidays). Customers won't be able to book on these dates."
+          add_title: "Add Closure Date"
+          date_label: "Date"
+          reason_label: "Reason (optional)"
+          reason_placeholder: "e.g. Public Holiday"
+          add_button: "Add Closure"
+          no_closures: "No upcoming closures."
+          col_date: "Date"
+          col_reason: "Reason"
+        flash:
+          created: "Closure date added."
+          removed: "Closure date removed."
+
       services:
         index:
           title: "Your Services"

@@ -11,11 +11,12 @@ FactoryBot.define do
     started_at { nil }
     completed_at { nil }
 
-    # Create at least one service association after building
+    # Create at least one service and compute end_time after building
     after(:build) do |booking|
       if booking.services.empty?
         booking.services << build(:service, business: booking.business)
       end
+      booking.end_time ||= booking.scheduled_at + booking.services.sum(&:duration_minutes).minutes
     end
 
     trait :with_multiple_services do

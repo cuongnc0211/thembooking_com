@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_11_032224) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_12_042104) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -61,16 +61,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_11_032224) do
     t.index ["service_id"], name: "index_booking_services_on_service_id"
   end
 
-  create_table "booking_slots", force: :cascade do |t|
-    t.bigint "booking_id", null: false
-    t.datetime "created_at", null: false
-    t.bigint "slot_id", null: false
-    t.datetime "updated_at", null: false
-    t.index ["booking_id", "slot_id"], name: "index_booking_slots_on_booking_and_slot", unique: true
-    t.index ["booking_id"], name: "index_booking_slots_on_booking_id"
-    t.index ["slot_id"], name: "index_booking_slots_on_slot_id"
-  end
-
   create_table "bookings", force: :cascade do |t|
     t.bigint "business_id", null: false
     t.datetime "completed_at"
@@ -78,17 +68,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_11_032224) do
     t.string "customer_email", limit: 255
     t.string "customer_name", limit: 100, null: false
     t.string "customer_phone", limit: 20, null: false
+    t.datetime "end_time", null: false
     t.text "notes"
     t.datetime "scheduled_at", null: false
     t.integer "source", default: 0, null: false
     t.datetime "started_at"
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
+    t.index ["business_id", "scheduled_at", "end_time"], name: "idx_bookings_overlap_check"
     t.index ["business_id", "scheduled_at"], name: "index_bookings_on_business_id_and_scheduled_at"
     t.index ["business_id", "status"], name: "index_bookings_on_business_id_and_status"
     t.index ["business_id"], name: "index_bookings_on_business_id"
     t.index ["customer_email"], name: "index_bookings_on_customer_email"
     t.index ["customer_phone"], name: "index_bookings_on_customer_phone"
+  end
+
+  create_table "business_closures", force: :cascade do |t|
+    t.bigint "business_id", null: false
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.string "reason", limit: 255
+    t.datetime "updated_at", null: false
+    t.index ["business_id", "date"], name: "index_business_closures_on_business_id_and_date", unique: true
+    t.index ["business_id"], name: "index_business_closures_on_business_id"
   end
 
   create_table "businesses", force: :cascade do |t|
@@ -135,21 +137,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_11_032224) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
-  create_table "slots", force: :cascade do |t|
-    t.bigint "business_id", null: false
-    t.integer "capacity", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.date "date", null: false
-    t.datetime "end_time", null: false
-    t.integer "original_capacity", default: 0, null: false
-    t.datetime "start_time", null: false
-    t.datetime "updated_at", null: false
-    t.index ["business_id", "date"], name: "index_slots_on_business_and_date"
-    t.index ["business_id", "start_time"], name: "index_slots_on_business_and_start_time", unique: true
-    t.index ["business_id"], name: "index_slots_on_business_id"
-    t.index ["date"], name: "index_slots_on_date"
-  end
-
   create_table "staffs", force: :cascade do |t|
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
@@ -190,11 +177,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_11_032224) do
   add_foreign_key "admin_sessions", "staffs"
   add_foreign_key "booking_services", "bookings"
   add_foreign_key "booking_services", "services"
-  add_foreign_key "booking_slots", "bookings"
-  add_foreign_key "booking_slots", "slots"
   add_foreign_key "bookings", "businesses"
+  add_foreign_key "business_closures", "businesses"
   add_foreign_key "businesses", "users"
   add_foreign_key "services", "businesses"
   add_foreign_key "sessions", "users"
-  add_foreign_key "slots", "businesses"
 end
