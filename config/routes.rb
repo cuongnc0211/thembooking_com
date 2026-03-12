@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
     resources :users, except: [ :new, :create ]
     resources :businesses, except: [ :new, :create ]
+    resources :staffs
   end
 
   # Dashboard namespace (requires authentication)
