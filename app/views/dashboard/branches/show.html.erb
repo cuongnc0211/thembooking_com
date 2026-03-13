@@ -1,0 +1,77 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header -->
+  <div class="flex justify-between items-start mb-8">
+    <div>
+      <div class="flex items-center gap-3 mb-1">
+        <h1 class="text-3xl font-bold"><%= @branch.name %></h1>
+        <% if @branch.active? %>
+          <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+        <% else %>
+          <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-slate-100 text-slate-500">Inactive</span>
+        <% end %>
+      </div>
+      <%= link_to "← All Branches", dashboard_branches_path, class: "text-sm text-slate-500 hover:text-slate-700" %>
+    </div>
+    <div class="flex gap-3">
+      <%= link_to "Edit Branch", edit_dashboard_branch_path(@branch), class: "btn-secondary py-2 px-4 text-sm" %>
+    </div>
+  </div>
+
+  <!-- Booking URL -->
+  <div class="bg-primary-50 border border-primary-200 rounded-xl p-6 mb-8">
+    <p class="text-sm font-medium text-primary-900 mb-2">Booking URL</p>
+    <div class="flex items-center space-x-2">
+      <code class="bg-white px-4 py-3 rounded-lg border border-primary-100 text-primary-700 flex-1 font-mono text-sm"><%= @branch.booking_url %></code>
+      <button class="btn-primary py-2 px-4 text-sm" onclick="navigator.clipboard.writeText('<%= @branch.booking_url %>')">
+        Copy
+      </button>
+    </div>
+    <p class="mt-2 text-sm text-primary-700">Share this URL with customers to let them book online.</p>
+  </div>
+
+  <!-- Quick Navigation -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <%= link_to dashboard_branch_bookings_path(@branch), class: "card p-5 text-center hover:shadow-lg transition-shadow group" do %>
+      <div class="text-2xl mb-2">📅</div>
+      <div class="font-semibold text-slate-900 group-hover:text-primary-600">Bookings</div>
+    <% end %>
+
+    <%= link_to dashboard_branch_services_path(@branch), class: "card p-5 text-center hover:shadow-lg transition-shadow group" do %>
+      <div class="text-2xl mb-2">✂️</div>
+      <div class="font-semibold text-slate-900 group-hover:text-primary-600">Services</div>
+    <% end %>
+
+    <%= link_to edit_dashboard_branch_open_hour_path(@branch), class: "card p-5 text-center hover:shadow-lg transition-shadow group" do %>
+      <div class="text-2xl mb-2">🕐</div>
+      <div class="font-semibold text-slate-900 group-hover:text-primary-600">Operating Hours</div>
+    <% end %>
+
+    <%= link_to dashboard_branch_business_closures_path(@branch), class: "card p-5 text-center hover:shadow-lg transition-shadow group" do %>
+      <div class="text-2xl mb-2">🚫</div>
+      <div class="font-semibold text-slate-900 group-hover:text-primary-600">Closed Dates</div>
+    <% end %>
+  </div>
+
+  <!-- Branch Details -->
+  <div class="card p-6">
+    <h3 class="text-lg font-semibold mb-4">Branch Details</h3>
+    <dl class="space-y-3 text-sm">
+      <% if @branch.address.present? %>
+        <div class="flex gap-3">
+          <dt class="font-medium text-slate-500 w-24 shrink-0">Address</dt>
+          <dd class="text-slate-900"><%= @branch.address %></dd>
+        </div>
+      <% end %>
+      <% if @branch.phone.present? %>
+        <div class="flex gap-3">
+          <dt class="font-medium text-slate-500 w-24 shrink-0">Phone</dt>
+          <dd class="text-slate-900"><%= @branch.phone %></dd>
+        </div>
+      <% end %>
+      <div class="flex gap-3">
+        <dt class="font-medium text-slate-500 w-24 shrink-0">Capacity</dt>
+        <dd class="text-slate-900"><%= @branch.capacity %> <%= "person".pluralize(@branch.capacity) %></dd>
+      </div>
+    </dl>
+  </div>
+</div>

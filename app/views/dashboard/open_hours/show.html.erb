@@ -1,14 +1,18 @@
 <div class="max-w-4xl mx-auto mt-8 px-4">
+  <div class="mb-4">
+    <%= link_to "← Back to Branch", dashboard_branch_path(@branch), class: "text-sm text-slate-500 hover:text-slate-700" %>
+  </div>
+
   <!-- Operating Hours -->
   <div class="mt-8 card p-6">
     <div class="flex justify-between items-center mb-4">
       <h3 class="text-lg font-semibold"><%= t('views.dashboard.open_hours.show.operating_hours_title') %></h3>
-      <%= link_to t('views.dashboard.open_hours.show.edit_hours'), edit_dashboard_open_hour_path, class: "text-sm text-primary-600 hover:text-primary-700" %>
+      <%= link_to t('views.dashboard.open_hours.show.edit_hours'), edit_dashboard_branch_open_hour_path(@branch), class: "text-sm text-primary-600 hover:text-primary-700" %>
     </div>
 
     <div class="space-y-3">
-      <% Business::WEEKDAYS.each do |day| %>
-        <% day_hours = @business.hours_for(day) %>
+      <% Branch::WEEKDAYS.each do |day| %>
+        <% day_hours = @branch.hours_for(day) %>
         <% if day_hours %>
           <div class="flex items-start justify-between py-2 border-b border-slate-100 last:border-0">
             <div class="flex-1">

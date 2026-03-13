@@ -31,30 +31,32 @@ Rails.application.routes.draw do
 
   # Dashboard namespace (requires authentication)
   namespace :dashboard do
-    root "businesses#show"
+    root "branches#index"
 
     # Onboarding flow
     resource :onboarding, only: [ :show, :update ], controller: "onboarding"
 
     resource :profile, only: [ :edit, :update ]
     resource :business, only: [ :show, :edit, :update ]
-    resource :open_hour, only: [ :show, :edit, :update ]
-    resources :services do
-      member do
-        post :move_up
-        post :move_down
+    resources :branches do
+      resource :open_hour, only: [ :show, :edit, :update ]
+      resources :services do
+        member do
+          post :move_up
+          post :move_down
+        end
       end
-    end
-    resources :bookings, only: [ :index, :show, :new, :create, :edit, :update ] do
-      member do
-        patch :confirm
-        patch :start
-        patch :complete
-        patch :cancel
-        patch :no_show
+      resources :bookings, only: [ :index, :show, :new, :create, :edit, :update ] do
+        member do
+          patch :confirm
+          patch :start
+          patch :complete
+          patch :cancel
+          patch :no_show
+        end
       end
+      resources :business_closures, only: [ :index, :create, :destroy ]
     end
-    resources :business_closures, only: [ :index, :create, :destroy ]
   end
 
   # Home

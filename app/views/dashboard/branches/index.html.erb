@@ -1,0 +1,19 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">Branches</h1>
+    <%= link_to "+ Add Branch", new_dashboard_branch_path, class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded" %>
+  </div>
+
+  <% if @branches.any? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <% @branches.each do |branch| %>
+        <%= render "branch", branch: branch %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card p-8 text-center">
+      <p class="text-slate-500 text-lg mb-4">No branches yet. Add your first branch to get started.</p>
+      <%= link_to "+ Add Branch", new_dashboard_branch_path, class: "btn-primary" %>
+    </div>
+  <% end %>
+</div>

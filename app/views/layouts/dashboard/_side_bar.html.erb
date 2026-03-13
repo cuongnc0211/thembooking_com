@@ -22,46 +22,30 @@
            <%= t('navigation.menu') %>
         </p>
 
-        <%= link_to dashboard_business_path, class: "flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group #{(request.path == dashboard_business_path || request.path == dashboard_root_path) ? 'bg-primary-50/80 text-primary-700 shadow-sm ring-1 ring-primary-200/50' : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'}" do %>
-          <svg class="mr-3 h-5 w-5 transition-colors #{ (request.path == dashboard_business_path || request.path == dashboard_root_path) ? 'text-primary-600' : 'text-slate-400 group-hover:text-primary-500' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <%= link_to dashboard_branches_path, class: "flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group #{request.path.start_with?('/dashboard/branches') || request.path == dashboard_root_path ? 'bg-primary-50/80 text-primary-700 shadow-sm ring-1 ring-primary-200/50' : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'}" do %>
+          <svg class="mr-3 h-5 w-5 transition-colors #{ request.path.start_with?('/dashboard/branches') || request.path == dashboard_root_path ? 'text-primary-600' : 'text-slate-400 group-hover:text-primary-500' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
           </svg>
-          <%= t('navigation.dashboard') %>
+          Branches
         <% end %>
 
-        <%= link_to edit_dashboard_business_path, class: "flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group #{request.path == edit_dashboard_business_path ? 'bg-primary-50/80 text-primary-700 shadow-sm ring-1 ring-primary-200/50' : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'}" do %>
-          <svg class="mr-3 h-5 w-5 transition-colors #{request.path == edit_dashboard_business_path ? 'text-primary-600' : 'text-slate-400 group-hover:text-primary-500' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <% if defined?(@branch) && @branch.present? %>
+          <div class="mx-3 my-1 px-3 py-2 bg-slate-50 rounded-lg border border-slate-200">
+            <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide mb-0.5">Current Branch</p>
+            <div class="flex items-center justify-between gap-2">
+              <p class="text-sm font-medium text-slate-700 truncate"><%= @branch.name %></p>
+              <% if current_user.business&.branches&.count.to_i > 1 %>
+                <%= link_to "Switch", dashboard_branches_path, class: "text-xs text-primary-600 hover:text-primary-800 font-medium flex-shrink-0" %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%= link_to dashboard_business_path, class: "flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group #{request.path == dashboard_business_path ? 'bg-primary-50/80 text-primary-700 shadow-sm ring-1 ring-primary-200/50' : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'}" do %>
+          <svg class="mr-3 h-5 w-5 transition-colors #{request.path == dashboard_business_path ? 'text-primary-600' : 'text-slate-400 group-hover:text-primary-500' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
           </svg>
           <%= t('navigation.business_profile') %>
-        <% end %>
-
-        <%= link_to edit_dashboard_open_hour_path, class: "flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group #{request.path == edit_dashboard_open_hour_path ? 'bg-primary-50/80 text-primary-700 shadow-sm ring-1 ring-primary-200/50' : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'}" do %>
-          <svg class="mr-3 h-5 w-5 transition-colors #{request.path == edit_dashboard_open_hour_path ? 'text-primary-600' : 'text-slate-400 group-hover:text-primary-500' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          <%= t('navigation.operating_hours') %>
-        <% end %>
-
-        <%= link_to dashboard_services_path, class: "flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group #{request.path == dashboard_services_path ? 'bg-primary-50/80 text-primary-700 shadow-sm ring-1 ring-primary-200/50' : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'}" do %>
-          <svg class="mr-3 h-5 w-5 transition-colors #{request.path == dashboard_services_path ? 'text-primary-600' : 'text-slate-400 group-hover:text-primary-500' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-          </svg>
-          <%= t('navigation.services') %>
-        <% end %>
-
-        <%= link_to dashboard_bookings_path, class: "flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group #{request.path.start_with?('/dashboard/bookings') ? 'bg-primary-50/80 text-primary-700 shadow-sm ring-1 ring-primary-200/50' : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'}" do %>
-          <svg class="mr-3 h-5 w-5 transition-colors #{request.path.start_with?('/dashboard/bookings') ? 'text-primary-600' : 'text-slate-400 group-hover:text-primary-500' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-          </svg>
-          <%= t('navigation.bookings') %>
-        <% end %>
-
-        <%= link_to dashboard_business_closures_path, class: "flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group #{request.path.start_with?('/dashboard/business_closures') ? 'bg-primary-50/80 text-primary-700 shadow-sm ring-1 ring-primary-200/50' : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'}" do %>
-          <svg class="mr-3 h-5 w-5 transition-colors #{request.path.start_with?('/dashboard/business_closures') ? 'text-primary-600' : 'text-slate-400 group-hover:text-primary-500' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
-          </svg>
-          <%= t('navigation.closed_dates') %>
         <% end %>
 
         <div class="mt-8 mb-2 px-4">

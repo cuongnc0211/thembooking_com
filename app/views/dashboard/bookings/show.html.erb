@@ -3,10 +3,10 @@
   <div class="flex justify-between items-center mb-6">
     <div>
       <h1 class="text-3xl font-bold mb-2">Booking Details</h1>
-      <%= link_to "← Back to Bookings", dashboard_bookings_path, class: "text-slate-600 hover:text-slate-800" %>
+      <%= link_to "← Back to Bookings", dashboard_branch_bookings_path(@branch), class: "text-slate-600 hover:text-slate-800" %>
     </div>
     <div class="flex gap-3">
-      <%= link_to "Edit", edit_dashboard_booking_path(@booking), class: "bg-slate-600 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded transition-colors" %>
+      <%= link_to "Edit", edit_dashboard_branch_booking_path(@branch, @booking), class: "bg-slate-600 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded transition-colors" %>
     </div>
   </div>
 
@@ -121,15 +121,15 @@
     <div class="border-t border-slate-200 pt-6 flex flex-wrap gap-3">
       <% case @booking.status %>
       <% when "pending" %>
-        <%= button_to "Confirm", confirm_dashboard_booking_path(@booking), method: :patch, class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors" %>
-        <%= button_to "Cancel", cancel_dashboard_booking_path(@booking), method: :patch, class: "bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors", data: { confirm: "Are you sure?" } %>
+        <%= button_to "Confirm", confirm_dashboard_branch_booking_path(@branch, @booking), method: :patch, class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors" %>
+        <%= button_to "Cancel", cancel_dashboard_branch_booking_path(@branch, @booking), method: :patch, class: "bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors", data: { confirm: "Are you sure?" } %>
       <% when "confirmed" %>
-        <%= button_to "Start Service", start_dashboard_booking_path(@booking), method: :patch, class: "bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded transition-colors" %>
-        <%= button_to "Mark No-Show", no_show_dashboard_booking_path(@booking), method: :patch, class: "bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded transition-colors", data: { confirm: "Mark customer as no-show?" } %>
-        <%= button_to "Cancel", cancel_dashboard_booking_path(@booking), method: :patch, class: "bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors", data: { confirm: "Are you sure?" } %>
+        <%= button_to "Start Service", start_dashboard_branch_booking_path(@branch, @booking), method: :patch, class: "bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded transition-colors" %>
+        <%= button_to "Mark No-Show", no_show_dashboard_branch_booking_path(@branch, @booking), method: :patch, class: "bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded transition-colors", data: { confirm: "Mark customer as no-show?" } %>
+        <%= button_to "Cancel", cancel_dashboard_branch_booking_path(@branch, @booking), method: :patch, class: "bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors", data: { confirm: "Are you sure?" } %>
       <% when "in_progress" %>
-        <%= button_to "Complete", complete_dashboard_booking_path(@booking), method: :patch, class: "bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded transition-colors" %>
-        <%= button_to "Cancel", cancel_dashboard_booking_path(@booking), method: :patch, class: "bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors", data: { confirm: "Are you sure?" } %>
+        <%= button_to "Complete", complete_dashboard_branch_booking_path(@branch, @booking), method: :patch, class: "bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded transition-colors" %>
+        <%= button_to "Cancel", cancel_dashboard_branch_booking_path(@branch, @booking), method: :patch, class: "bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors", data: { confirm: "Are you sure?" } %>
       <% end %>
     </div>
   </div>
