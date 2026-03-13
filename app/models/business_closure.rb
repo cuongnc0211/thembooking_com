@@ -1,8 +1,8 @@
 class BusinessClosure < ApplicationRecord
-  belongs_to :business
+  belongs_to :branch
 
   validates :date, presence: true
-  validates :date, uniqueness: { scope: :business_id, message: "already has a closure on this date" }
+  validates :date, uniqueness: { scope: :branch_id, message: "already has a closure on this date" }
   validates :reason, length: { maximum: 255 }, allow_blank: true
   validate :date_not_in_past, on: :create
 

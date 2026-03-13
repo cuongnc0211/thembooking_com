@@ -1,5 +1,5 @@
 class Booking < ApplicationRecord
-  belongs_to :business
+  belongs_to :branch
   has_many :booking_services, dependent: :destroy
   has_many :services, through: :booking_services
 
@@ -95,8 +95,8 @@ class Booking < ApplicationRecord
   end
 
   def broadcast_refresh_to_business
-    # Broadcast a page refresh to all clients watching this business's bookings
+    # Broadcast a page refresh to all clients watching this branch's bookings
     # This ensures capacity indicators and booking lists stay in sync
-    broadcast_refresh_to "business_#{business_id}_bookings"
+    broadcast_refresh_to "branch_#{branch_id}_bookings"
   end
 end

@@ -1,7 +1,7 @@
 module Bookings
   class CreateBooking
-    def initialize(business:, service_ids:, start_time: nil, scheduled_at: nil, customer_params:)
-      @business = business
+    def initialize(branch:, service_ids:, start_time: nil, scheduled_at: nil, customer_params:)
+      @branch = branch
       @service_ids = Array(service_ids)
       raw_time = start_time || scheduled_at
       @start_time = raw_time.is_a?(String) ? Time.zone.parse(raw_time) : raw_time
@@ -12,8 +12,8 @@ module Bookings
       return error_result("Start time must be provided") if @start_time.nil?
       return error_result("Services must be provided") if @service_ids.empty?
 
-      services = @business.services.where(id: @service_ids)
-      return error_result("One or more services do not belong to this business") if services.count != @service_ids.count
+      services = @branch.services.where(id: @service_ids)
+      return error_result("One or more services do not belong to this branch") if services.count != @service_ids.count
 
       total_duration = services.sum(:duration_minutes)
       return error_result("Service duration cannot be zero") if total_duration.zero?
@@ -22,24 +22,24 @@ module Bookings
 
       booking = nil
       ActiveRecord::Base.transaction do
-        # Advisory lock per business — serializes concurrent bookings for same business.
+        # Advisory lock per branch — serializes concurrent bookings for same branch.
         # pg_advisory_xact_lock is blocking: waits until the lock is available (short waits are OK
         # since each transaction is fast). Released automatically at transaction end.
         ActiveRecord::Base.connection.execute(
-          "SELECT pg_advisory_xact_lock(#{@business.id.to_i})"
+          ActiveRecord::Base.sanitize_sql(["SELECT pg_advisory_xact_lock(?)", @branch.id.to_i])
         )
 
         # Re-check availability inside lock
-        overlap_count = @business.bookings
+        overlap_count = @branch.bookings
           .where(status: %w[pending confirmed in_progress])
           .where("scheduled_at < ? AND end_time > ?", end_time, @start_time)
           .count
 
-        if overlap_count >= @business.capacity
+        if overlap_count >= @branch.capacity
           raise ActiveRecord::Rollback
         end
 
-        booking = @business.bookings.new(@customer_params)
+        booking = @branch.bookings.new(@customer_params)
         booking.scheduled_at = @start_time
         booking.end_time = end_time
         booking.status = :pending

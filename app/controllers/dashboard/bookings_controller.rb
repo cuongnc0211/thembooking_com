@@ -29,10 +29,11 @@ module Dashboard
         )
       end
 
-      # For capacity indicator
-      @current_capacity = @business.current_capacity_usage
-      @total_capacity = @business.capacity
-      @capacity_percentage = @business.capacity_percentage
+      # For capacity indicator — interim: use main branch until multi-branch UI ships
+      @branch = @business.branches.first
+      @current_capacity = @branch&.current_capacity_usage
+      @total_capacity = @branch&.capacity
+      @capacity_percentage = @branch&.capacity_percentage
 
       # For service filter dropdown
       @services = @business.services.active.order(:position)
@@ -45,13 +46,15 @@ module Dashboard
 
     def new
       @business = current_user.business
-      @booking = @business.bookings.new
+      @branch = @business.branches.first
+      @booking = @branch.bookings.new
       @services = @business.services.active.order(:position)
     end
 
     def create
       @business = current_user.business
-      @booking = @business.bookings.new(booking_params)
+      @branch = @business.branches.first
+      @booking = @branch.bookings.new(booking_params)
       @booking.source = :walk_in
       @booking.status = :in_progress
       @booking.scheduled_at = Time.current if @booking.scheduled_at.blank?

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_12_042104) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_13_045221) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -62,7 +62,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_042104) do
   end
 
   create_table "bookings", force: :cascade do |t|
-    t.bigint "business_id", null: false
+    t.bigint "branch_id", null: false
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.string "customer_email", limit: 255
@@ -75,46 +75,53 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_042104) do
     t.datetime "started_at"
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
-    t.index ["business_id", "scheduled_at", "end_time"], name: "idx_bookings_overlap_check"
-    t.index ["business_id", "scheduled_at"], name: "index_bookings_on_business_id_and_scheduled_at"
-    t.index ["business_id", "status"], name: "index_bookings_on_business_id_and_status"
-    t.index ["business_id"], name: "index_bookings_on_business_id"
+    t.index ["branch_id"], name: "index_bookings_on_branch_id"
     t.index ["customer_email"], name: "index_bookings_on_customer_email"
     t.index ["customer_phone"], name: "index_bookings_on_customer_phone"
   end
 
-  create_table "business_closures", force: :cascade do |t|
+  create_table "branches", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.string "address"
     t.bigint "business_id", null: false
+    t.integer "capacity", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.string "name", default: "Main Branch", null: false
+    t.jsonb "operating_hours", default: {}
+    t.string "phone"
+    t.integer "position", default: 0
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.index ["business_id", "active"], name: "index_branches_on_business_id_and_active"
+    t.index ["business_id"], name: "index_branches_on_business_id"
+    t.index ["slug"], name: "index_branches_on_slug", unique: true
+  end
+
+  create_table "business_closures", force: :cascade do |t|
+    t.bigint "branch_id", null: false
     t.datetime "created_at", null: false
     t.date "date", null: false
     t.string "reason", limit: 255
     t.datetime "updated_at", null: false
-    t.index ["business_id", "date"], name: "index_business_closures_on_business_id_and_date", unique: true
-    t.index ["business_id"], name: "index_business_closures_on_business_id"
+    t.index ["branch_id"], name: "index_business_closures_on_branch_id"
   end
 
   create_table "businesses", force: :cascade do |t|
-    t.string "address"
     t.string "business_type", default: "barber", null: false
-    t.integer "capacity", default: 1, null: false
     t.datetime "created_at", null: false
     t.string "currency", limit: 3, default: "VND", null: false
     t.text "description"
     t.jsonb "landing_page_config", default: {}
     t.string "name", null: false
-    t.jsonb "operating_hours", default: {}
-    t.string "phone"
-    t.string "slug", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
-    t.index ["slug"], name: "index_businesses_on_slug", unique: true
     t.index ["user_id"], name: "index_businesses_on_user_id"
     t.index ["user_id"], name: "index_businesses_on_user_id_unique", unique: true
   end
 
   create_table "services", force: :cascade do |t|
     t.boolean "active", default: true
-    t.bigint "business_id", null: false
+    t.bigint "branch_id", null: false
     t.datetime "created_at", null: false
     t.string "currency", limit: 3, default: "VND", null: false
     t.text "description"
@@ -123,9 +130,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_042104) do
     t.integer "position", default: 0
     t.integer "price_cents", null: false
     t.datetime "updated_at", null: false
-    t.index ["business_id", "active"], name: "index_services_on_business_id_and_active"
-    t.index ["business_id", "position"], name: "index_services_on_business_id_and_position"
-    t.index ["business_id"], name: "index_services_on_business_id"
+    t.index ["branch_id"], name: "index_services_on_branch_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -177,9 +182,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_042104) do
   add_foreign_key "admin_sessions", "staffs"
   add_foreign_key "booking_services", "bookings"
   add_foreign_key "booking_services", "services"
-  add_foreign_key "bookings", "businesses"
-  add_foreign_key "business_closures", "businesses"
+  add_foreign_key "bookings", "branches"
+  add_foreign_key "branches", "businesses"
+  add_foreign_key "business_closures", "branches"
   add_foreign_key "businesses", "users"
-  add_foreign_key "services", "businesses"
+  add_foreign_key "services", "branches"
   add_foreign_key "sessions", "users"
 end

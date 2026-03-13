@@ -11,7 +11,9 @@ module Dashboard
     end
 
     def update
-      if @business.update(business_params)
+      # Operating hours live on Branch — interim: use main branch until multi-branch UI ships
+      @branch = @business.branches.first
+      if @branch.update(business_params)
         redirect_to dashboard_open_hour_path, notice: t("controllers.dashboard.open_hours.flash.updated")
       else
         render :edit, status: :unprocessable_entity
@@ -22,6 +24,8 @@ module Dashboard
 
     def set_business
       @business = current_user.business
+      # Operating hours live on Branch — expose main branch for interim views
+      @branch = @business&.branches&.first
     end
 
     def business_params

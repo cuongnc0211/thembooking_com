@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :booking do
-    business
+    branch
     customer_name { Faker::Name.name }
     customer_email { Faker::Internet.email }
     customer_phone { "09#{Faker::Number.number(digits: 8)}" } # Vietnam phone format
@@ -14,7 +14,7 @@ FactoryBot.define do
     # Create at least one service and compute end_time after building
     after(:build) do |booking|
       if booking.services.empty?
-        booking.services << build(:service, business: booking.business)
+        booking.services << build(:service, branch: booking.branch)
       end
       booking.end_time ||= booking.scheduled_at + booking.services.sum(&:duration_minutes).minutes
     end
@@ -22,8 +22,8 @@ FactoryBot.define do
     trait :with_multiple_services do
       after(:build) do |booking|
         booking.services.clear
-        booking.services << build(:service, business: booking.business, duration_minutes: 30)
-        booking.services << build(:service, business: booking.business, duration_minutes: 15)
+        booking.services << build(:service, branch: booking.branch, duration_minutes: 30)
+        booking.services << build(:service, branch: booking.branch, duration_minutes: 15)
       end
     end
 

@@ -11,7 +11,7 @@ RSpec.describe BookingService, type: :model do
 
     it "ensures unique booking and service combination" do
       booking = create(:booking)
-      service = create(:service, business: booking.business)
+      service = create(:service, branch: booking.branch)
 
       # Create first booking_service
       BookingService.create!(booking: booking, service: service)

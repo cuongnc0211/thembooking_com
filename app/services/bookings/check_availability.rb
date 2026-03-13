@@ -3,8 +3,8 @@ module Bookings
     AVAILABILITY_STEP = 15.minutes
     ACTIVE_STATUSES = %w[pending confirmed in_progress].freeze
 
-    def initialize(business:, service: nil, service_ids: nil, date:)
-      @business = business
+    def initialize(branch:, service: nil, service_ids: nil, date:)
+      @branch = branch
       @service = service
       @service_ids = service_ids ? Array(service_ids) : nil
       @date = date.is_a?(String) ? Date.parse(date) : date
@@ -26,19 +26,19 @@ module Bookings
     private
 
     def business_closed_on_date?
-      @business.business_closures.exists?(date: @date)
+      @branch.business_closures.exists?(date: @date)
     end
 
     def operating_hours_for_date
       day_name = @date.strftime("%A").downcase
-      @business.operating_hours&.dig(day_name)
+      @branch.operating_hours&.dig(day_name)
     end
 
     def calculate_total_duration
       if @service
         @service.duration_minutes
       elsif @service_ids.present?
-        Service.where(id: @service_ids, business: @business).sum(:duration_minutes)
+        Service.where(id: @service_ids, branch: @branch).sum(:duration_minutes)
       else
         0
       end
@@ -82,12 +82,12 @@ module Bookings
     def available_at?(start_time, duration_minutes)
       end_time = start_time + duration_minutes.minutes
 
-      overlap_count = @business.bookings
+      overlap_count = @branch.bookings
         .where(status: ACTIVE_STATUSES)
         .where("scheduled_at < ? AND end_time > ?", end_time, start_time)
         .count
 
-      overlap_count < @business.capacity
+      overlap_count < @branch.capacity
     end
 
     def parse_time_on_date(time_str)

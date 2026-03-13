@@ -1,16 +1,17 @@
 require "rails_helper"
 
 RSpec.describe Bookings::CreateBooking, type: :service do
-  let(:user) { create(:user) }
-  let(:business) { create(:business, user: user, capacity: 1) }
-  let(:service) { create(:service, business: business, duration_minutes: 30) }
-  let(:start_time) { (Date.tomorrow.beginning_of_day + 10.hours).in_time_zone }
+  let(:user)     { create(:user) }
+  let(:business) { create(:business, user: user) }
+  let(:branch)   { create(:branch, business: business, capacity: 1) }
+  let(:service)  { create(:service, branch: branch, duration_minutes: 30) }
+  let(:start_time)      { (Date.tomorrow.beginning_of_day + 10.hours).in_time_zone }
   let(:customer_params) { { customer_name: "Nguyen Van A", customer_phone: "0901234567" } }
 
-  def call_service(start: start_time, service_ids: [service.id], customer_params: nil)
+  def call_service(start: start_time, service_ids: [ service.id ], customer_params: nil)
     customer_params ||= self.customer_params
     described_class.new(
-      business: business,
+      branch: branch,
       service_ids: service_ids,
       start_time: start,
       customer_params: customer_params
@@ -61,27 +62,26 @@ RSpec.describe Bookings::CreateBooking, type: :service do
     end
 
     context "with invalid service_ids" do
-      it "returns error when service doesn't belong to business" do
-        other_business = create(:business, user: create(:user), slug: "other-shop")
-        other_service = create(:service, business: other_business)
+      it "returns error when service doesn't belong to branch" do
+        other_branch   = create(:branch)
+        other_service  = create(:service, branch: other_branch)
 
-        result = call_service(service_ids: [other_service.id])
+        result = call_service(service_ids: [ other_service.id ])
         expect(result[:success]).to be false
-        expect(result[:error]).to include("One or more services do not belong to this business")
+        expect(result[:error]).to include("One or more services do not belong to this branch")
         expect(result[:booking]).to be_nil
       end
 
       it "returns error when service id doesn't exist" do
-        result = call_service(service_ids: [99999])
+        result = call_service(service_ids: [ 99999 ])
         expect(result[:success]).to be false
-        expect(result[:error]).to include("One or more services do not belong to this business")
+        expect(result[:error]).to include("One or more services do not belong to this branch")
       end
     end
 
     context "when time slot at full capacity" do
       it "rejects booking" do
-        # Fill capacity
-        create(:booking, business: business, scheduled_at: start_time, end_time: start_time + 30.minutes, status: :confirmed, services: [service])
+        create(:booking, branch: branch, scheduled_at: start_time, end_time: start_time + 30.minutes, status: :confirmed, services: [ service ])
 
         result = call_service
         expect(result[:success]).to be false
@@ -92,8 +92,8 @@ RSpec.describe Bookings::CreateBooking, type: :service do
 
     context "with multiple services" do
       it "creates booking with combined duration" do
-        service2 = create(:service, business: business, duration_minutes: 15)
-        result = call_service(service_ids: [service.id, service2.id])
+        service2 = create(:service, branch: branch, duration_minutes: 15)
+        result = call_service(service_ids: [ service.id, service2.id ])
 
         expect(result[:success]).to be true
         expect(result[:booking].end_time).to eq(start_time + 45.minutes)
@@ -101,11 +101,10 @@ RSpec.describe Bookings::CreateBooking, type: :service do
       end
 
       it "respects capacity with combined services" do
-        service2 = create(:service, business: business, duration_minutes: 15)
-        # Fill capacity with overlapping booking (30 + 15 = 45 minutes)
-        create(:booking, business: business, scheduled_at: start_time, end_time: start_time + 60.minutes, status: :confirmed, services: [service])
+        service2 = create(:service, branch: branch, duration_minutes: 15)
+        create(:booking, branch: branch, scheduled_at: start_time, end_time: start_time + 60.minutes, status: :confirmed, services: [ service ])
 
-        result = call_service(service_ids: [service.id, service2.id])
+        result = call_service(service_ids: [ service.id, service2.id ])
         expect(result[:success]).to be false
       end
     end
@@ -113,8 +112,8 @@ RSpec.describe Bookings::CreateBooking, type: :service do
     context "with start_time as string" do
       it "parses start_time correctly" do
         result = described_class.new(
-          business: business,
-          service_ids: [service.id],
+          branch: branch,
+          service_ids: [ service.id ],
           start_time: start_time.to_s,
           customer_params: customer_params
         ).call
@@ -127,8 +126,8 @@ RSpec.describe Bookings::CreateBooking, type: :service do
     context "with scheduled_at parameter (legacy support)" do
       it "works with scheduled_at instead of start_time" do
         result = described_class.new(
-          business: business,
-          service_ids: [service.id],
+          branch: branch,
+          service_ids: [ service.id ],
           scheduled_at: start_time,
           customer_params: customer_params
         ).call
@@ -140,43 +139,34 @@ RSpec.describe Bookings::CreateBooking, type: :service do
 
     context "with missing customer_params" do
       it "returns error when customer_name is missing" do
-        invalid_params = { customer_phone: "0901234567" }
-        result = call_service(customer_params: invalid_params)
-
+        result = call_service(customer_params: { customer_phone: "0901234567" })
         expect(result[:success]).to be false
         expect(result[:booking]).to be_nil
       end
 
       it "returns error when customer_phone is missing" do
-        invalid_params = { customer_name: "Nguyen Van A" }
-        result = call_service(customer_params: invalid_params)
-
+        result = call_service(customer_params: { customer_name: "Nguyen Van A" })
         expect(result[:success]).to be false
       end
     end
 
     context "with invalid customer_phone format" do
       it "returns error for invalid phone" do
-        invalid_params = { customer_name: "Nguyen Van A", customer_phone: "123456789" }
-        result = call_service(customer_params: invalid_params)
-
+        result = call_service(customer_params: { customer_name: "Nguyen Van A", customer_phone: "123456789" })
         expect(result[:success]).to be false
       end
     end
 
     context "concurrency with advisory locks" do
-      it "uses PostgreSQL blocking advisory lock for business" do
+      it "uses PostgreSQL blocking advisory lock for branch" do
         allow(ActiveRecord::Base.connection).to receive(:execute).and_call_original
         call_service
-        # Verify pg_advisory_xact_lock (blocking form) was called with business id
         expect(ActiveRecord::Base.connection).to have_received(:execute).with(/pg_advisory_xact_lock/)
       end
     end
 
     context "when booking is not valid after lock" do
       it "rolls back transaction and returns error" do
-        # Create a booking right before the service is called to cause validation conflict
-        # This tests the rollback on invalid booking
         allow_any_instance_of(Booking).to receive(:valid?).and_return(false)
 
         result = call_service
@@ -187,26 +177,23 @@ RSpec.describe Bookings::CreateBooking, type: :service do
 
     context "when capacity increased" do
       it "allows multiple bookings up to capacity" do
-        business.update(capacity: 2)
-        service2 = create(:service, business: business, duration_minutes: 30)
+        branch.update(capacity: 2)
+        service2 = create(:service, branch: branch, duration_minutes: 30)
 
-        # First booking
         result1 = call_service(start: start_time)
         expect(result1[:success]).to be true
 
-        # Second booking at same time
         result2 = described_class.new(
-          business: business,
-          service_ids: [service2.id],
+          branch: branch,
+          service_ids: [ service2.id ],
           start_time: start_time,
           customer_params: customer_params
         ).call
         expect(result2[:success]).to be true
 
-        # Third booking should fail
         result3 = described_class.new(
-          business: business,
-          service_ids: [service2.id],
+          branch: branch,
+          service_ids: [ service2.id ],
           start_time: start_time,
           customer_params: { customer_name: "Nguyen Van B", customer_phone: "0912345678" }
         ).call
@@ -216,10 +203,8 @@ RSpec.describe Bookings::CreateBooking, type: :service do
 
     context "with cancelled and completed bookings" do
       it "does not count cancelled/completed bookings toward capacity check" do
-        # Fill slot with cancelled booking
-        create(:booking, business: business, scheduled_at: start_time, end_time: start_time + 30.minutes, status: :cancelled, services: [service])
-        # Fill slot with completed booking
-        create(:booking, business: business, scheduled_at: start_time, end_time: start_time + 30.minutes, status: :completed, services: [service])
+        create(:booking, branch: branch, scheduled_at: start_time, end_time: start_time + 30.minutes, status: :cancelled, services: [ service ])
+        create(:booking, branch: branch, scheduled_at: start_time, end_time: start_time + 30.minutes, status: :completed, services: [ service ])
 
         result = call_service
         expect(result[:success]).to be true

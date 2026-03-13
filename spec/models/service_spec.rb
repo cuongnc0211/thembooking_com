@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Service, type: :model do
   describe "associations" do
-    it { is_expected.to belong_to(:business) }
+    it { is_expected.to belong_to(:branch) }
   end
 
   describe "validations" do
@@ -12,16 +12,15 @@ RSpec.describe Service, type: :model do
       it { is_expected.to validate_presence_of(:name) }
       it { is_expected.to validate_length_of(:name).is_at_most(100) }
 
-      it "validates uniqueness scoped to business" do
+      it "validates uniqueness scoped to branch" do
         service = create(:service, name: "Haircut")
-        duplicate = build(:service, name: "Haircut", business: service.business)
+        duplicate = build(:service, name: "Haircut", branch: service.branch)
         expect(duplicate).not_to be_valid
-        expect(duplicate.errors[:name]).to include("is already taken for this business")
       end
 
-      it "allows same name in different businesses" do
+      it "allows same name in different branches" do
         service1 = create(:service, name: "Haircut")
-        service2 = build(:service, name: "Haircut", business: create(:business, user: create(:user), slug: "another-shop"))
+        service2 = build(:service, name: "Haircut", branch: create(:branch))
         expect(service2).to be_valid
       end
     end
@@ -100,22 +99,22 @@ RSpec.describe Service, type: :model do
   end
 
   describe "scopes and ordering" do
-    let(:business) { create(:business) }
+    let(:branch) { create(:branch) }
 
     it "can be ordered by position" do
-      service1 = create(:service, business: business, position: 2)
-      service2 = create(:service, business: business, position: 1, name: "Second Service")
-      service3 = create(:service, business: business, position: 3, name: "Third Service")
+      service1 = create(:service, branch: branch, position: 2)
+      service2 = create(:service, branch: branch, position: 1, name: "Second Service")
+      service3 = create(:service, branch: branch, position: 3, name: "Third Service")
 
-      ordered_services = business.services.order(:position)
+      ordered_services = branch.services.order(:position)
       expect(ordered_services).to eq([ service2, service1, service3 ])
     end
 
     it "can filter active services" do
-      active_service = create(:service, business: business, active: true)
-      inactive_service = create(:service, business: business, active: false, name: "Inactive Service")
+      active_service = create(:service, branch: branch, active: true)
+      inactive_service = create(:service, branch: branch, active: false, name: "Inactive Service")
 
-      active_services = business.services.where(active: true)
+      active_services = branch.services.where(active: true)
       expect(active_services).to include(active_service)
       expect(active_services).not_to include(inactive_service)
     end

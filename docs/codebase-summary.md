@@ -18,8 +18,8 @@ ThemBooking is a modern Rails 8 application for booking and appointment manageme
 ```
 thembooking_com/
 ├── app/                    # Main application code
-│   ├── controllers/        # Controllers (14 files)
-│   ├── models/           # Models (13 files)
+│   ├── controllers/        # Controllers (15 files)
+│   ├── models/           # Models (14 files)
 │   ├── views/            # Views (ERB templates)
 │   ├── javascript/       # Frontend JavaScript
 │   ├── mailers/          # Email notifications (3 files)
@@ -45,7 +45,25 @@ thembooking_com/
   - Session management with Redis
   - Rate limiting for login attempts
 
-#### 2. Onboarding System (✅ Phase 4 Complete)
+#### 2. Admin Panel & Management System (✅ Complete)
+- **Files**:
+  - `app/controllers/admin/base_controller.rb` (auth enforcement)
+  - `app/controllers/admin/staffs_controller.rb` (staff CRUD, super_admin only)
+  - `app/controllers/admin/users_controller.rb` (user management)
+  - `app/controllers/admin/businesses_controller.rb` (business management)
+  - `app/models/staff.rb` (admin staff model)
+
+- **Features**:
+  - Staff CRUD operations with full validation
+  - Super-admin access control (super_admin role required)
+  - Staff account management (name, email, role, active status)
+  - Password management with bcrypt
+  - Search/filter functionality by name or email
+  - Pagination (25 records per page)
+  - Protection against self-deletion
+  - Routes: `resources :staffs` under admin namespace
+
+#### 3. Onboarding System (✅ Phase 4 Complete)
 - **Files**:
   - `app/controllers/dashboard/base_controller.rb`
   - `app/controllers/dashboard/onboarding_controller.rb`
@@ -58,27 +76,30 @@ thembooking_com/
   - Access control with before_action filters
   - Enhanced login redirects
 
-#### 3. Database Schema (✅ Complete)
+#### 4. Database Schema (✅ Phase 1: Multi-Location Support)
 - **Core Models**:
   - `User`: Business owners with onboarding tracking
-  - `Business`: Business profiles with operating hours (JSONB) and capacity
-  - `Service`: Service offerings with pricing and duration
-  - `Booking`: Appointment records with `scheduled_at` and `end_time` (stored column)
-  - `BusinessClosure`: Holiday/closure date records (for blocking availability)
+  - `Business`: Brand entity (no longer has location data). Belongs_to user, has_many branches
+  - `Branch`: Physical location with slug, address, phone, operating_hours (JSONB), capacity, active status
+  - `Service`: Service offerings with pricing and duration. Belongs_to branch
+  - `Booking`: Appointment records with `scheduled_at` and `end_time`. Belongs_to branch
+  - `BusinessClosure`: Holiday/closure date records. Belongs_to branch
   - `Session`: Authentication sessions
+  - `Staff`: Admin staff accounts with role and authentication
 
 - **Key Relationships**:
   ```
   User → Business (1:1)
-  Business → Services (1:N)
-  Business → Bookings (1:N)
-  Business → BusinessClosures (1:N)
+  Business → Branches (1:N)
+  Branch → Services (1:N)
+  Branch → Bookings (1:N)
+  Branch → BusinessClosures (1:N)
   Service → Bookings (1:N through BookingService join table)
   ```
 
-- **Booking Availability Check**: Direct overlap query against `bookings` table using PostgreSQL range overlap (`scheduled_at < end_time AND end_time > start_time`). No pre-generated slots.
+- **Booking Availability Check**: Direct overlap query against `bookings` table using PostgreSQL range overlap (`scheduled_at < end_time AND end_time > start_time`). No pre-generated slots. Respects branch-level capacity, operating hours, and business closures.
 
-#### 4. Security Architecture (✅ Complete)
+#### 5. Security Architecture (✅ Complete)
 - **Multi-layer Security**:
   - Authentication checks
   - Onboarding completion enforcement
@@ -87,7 +108,7 @@ thembooking_com/
   - CSRF protection
   - SQL injection prevention
 
-#### 5. Frontend Implementation (🚧 Partial)
+#### 6. Frontend Implementation (🚧 Partial)
 - **Technology Stack**:
   - Rails Server-Side Rendering (SSR)
   - Hotwire (Turbo + Stimulus)
@@ -211,21 +232,35 @@ Hosting: Self-hosted
    - Email verification and password reset
    - Rate limiting and security measures
 
-2. **Onboarding System (Full Implementation)**
+2. **Admin Panel & Staff Management**
+   - Staff CRUD operations (super_admin only)
+   - Admin users management
+   - Admin businesses management
+   - Secure role-based access control
+
+3. **Onboarding System (Full Implementation)**
    - 4-step progressive onboarding flow
    - Step validation and progress tracking
    - Security-enforced access control
    - Enhanced user experience with proper redirects
 
-3. **Database Architecture**
+4. **Multi-Location Architecture (Phase 1)**
+   - Branch model with location-specific data (slug, address, phone, operating_hours, capacity)
+   - Business model refactored to brand entity (no location data)
+   - Service, Booking, BusinessClosure now belong_to branch
+   - Public booking URL slug now branch-scoped instead of business-scoped
+   - Booking availability checks updated to use branch-level capacity and hours
+
+5. **Database Architecture**
    - Complete schema with relationships
    - Proper indexing for performance
    - Data validation and constraints
 
-4. **Security Foundation**
-   - Multi-layer authentication
+6. **Security Foundation**
+   - Multi-layer authentication (user + staff)
    - Onboarding completion enforcement
    - Email verification requirements
+   - Role-based access control
    - SQL injection prevention
 
 ### 🚧 In Progress Features

@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :service do
-    association :business
+    association :branch
     sequence(:name) { |n| "Service #{n}" }
     description { Faker::Lorem.sentence }
     duration_minutes { 30 }

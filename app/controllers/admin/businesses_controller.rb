@@ -3,8 +3,8 @@ module Admin
     before_action :set_business, only: %i[show edit update destroy]
 
     def index
-      @businesses = Business.includes(:user, :services, :bookings).order(created_at: :desc)
-      @businesses = @businesses.where("businesses.name ILIKE :q OR businesses.slug ILIKE :q", q: "%#{params[:q]}%") if params[:q].present?
+      @businesses = Business.includes(:user, :branches, :services, :bookings).order(created_at: :desc)
+      @businesses = @businesses.where("businesses.name ILIKE :q", q: "%#{params[:q]}%") if params[:q].present?
 
       @page = [ params.fetch(:page, 1).to_i, 1 ].max
       @per_page = 25
@@ -36,7 +36,7 @@ module Admin
     end
 
     def business_params
-      params.require(:business).permit(:name, :description, :address, :phone, :capacity, :business_type, :currency)
+      params.require(:business).permit(:name, :description, :business_type, :currency)
     end
   end
 end

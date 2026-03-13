@@ -7,11 +7,14 @@ module Dashboard
     end
 
     def new
-      @service = current_user.business.services.build
+      # Build via main branch so branch_id is set — interim until multi-branch UI ships
+      @service = current_user.business.branches.first.services.build
     end
 
     def create
-      @service = current_user.business.services.build(service_params)
+      # Build via main branch so branch_id is set — interim until multi-branch UI ships
+      branch = current_user.business.branches.first
+      @service = branch.services.build(service_params)
 
       # Set position to next available number
       max_position = current_user.business.services.maximum(:position) || 0

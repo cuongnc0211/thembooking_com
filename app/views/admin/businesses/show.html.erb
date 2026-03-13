@@ -16,6 +16,7 @@
   <%# Info card %>
   <div class="bg-white rounded-xl border border-gray-200 p-6">
     <h2 class="text-base font-semibold text-gray-900 mb-4">Business Info</h2>
+    <% main_branch = @business.branches.first %>
     <dl class="space-y-3 text-sm">
       <div class="flex justify-between">
         <dt class="text-gray-500">Name</dt>
@@ -23,7 +24,7 @@
       </div>
       <div class="flex justify-between">
         <dt class="text-gray-500">Slug</dt>
-        <dd class="text-gray-900"><%= @business.slug %></dd>
+        <dd class="text-gray-900"><%= main_branch&.slug || "---" %></dd>
       </div>
       <div class="flex justify-between">
         <dt class="text-gray-500">Type</dt>
@@ -31,15 +32,15 @@
       </div>
       <div class="flex justify-between">
         <dt class="text-gray-500">Address</dt>
-        <dd class="text-gray-900"><%= @business.address.presence || "---" %></dd>
+        <dd class="text-gray-900"><%= main_branch&.address.presence || "---" %></dd>
       </div>
       <div class="flex justify-between">
         <dt class="text-gray-500">Phone</dt>
-        <dd class="text-gray-900"><%= @business.phone.presence || "---" %></dd>
+        <dd class="text-gray-900"><%= main_branch&.phone.presence || "---" %></dd>
       </div>
       <div class="flex justify-between">
         <dt class="text-gray-500">Capacity</dt>
-        <dd class="text-gray-900"><%= @business.capacity %></dd>
+        <dd class="text-gray-900"><%= main_branch&.capacity || "---" %></dd>
       </div>
       <div class="flex justify-between">
         <dt class="text-gray-500">Currency</dt>
@@ -86,13 +87,14 @@
     </dl>
   </div>
 
-  <%# Operating Hours card %>
+  <%# Operating Hours card — shows main branch hours %>
   <div class="bg-white rounded-xl border border-gray-200 p-6">
-    <h2 class="text-base font-semibold text-gray-900 mb-4">Operating Hours</h2>
-    <% if @business.operating_hours.present? %>
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Operating Hours (Main Branch)</h2>
+    <% branch_hours = @business.branches.first&.operating_hours %>
+    <% if branch_hours.present? %>
       <dl class="space-y-2 text-sm">
-        <% Business::WEEKDAYS.each do |day| %>
-          <% day_hours = @business.operating_hours[day] %>
+        <% Branch::WEEKDAYS.each do |day| %>
+          <% day_hours = branch_hours[day] %>
           <div class="flex justify-between">
             <dt class="text-gray-500 capitalize"><%= day %></dt>
             <dd class="text-gray-900">

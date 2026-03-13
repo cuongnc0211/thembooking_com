@@ -2,23 +2,23 @@ class BookingsController < ApplicationController
   allow_unauthenticated_access # Public endpoint
 
   def new
-    @business = Business.find_by!(slug: params[:business_slug])
-    @services = @business.services.active.order(:position)
+    @branch = Branch.find_by!(slug: params[:business_slug])
+    @services = @branch.services.active.order(:position)
   end
 
   def react_new
-    @business = Business.find_by!(slug: params[:business_slug])
-    @services = @business.services.active.order(:position)
+    @branch = Branch.find_by!(slug: params[:business_slug])
+    @services = @branch.services.active.order(:position)
   end
 
   def availability
-    @business = Business.find_by!(slug: params[:business_slug])
+    @branch = Branch.find_by!(slug: params[:business_slug])
     service_ids = params[:service_ids] || []
     date = params[:date] ? Date.parse(params[:date]) : Date.current
 
     available_times = if service_ids.any?
       Bookings::CheckAvailability.new(
-        business: @business,
+        branch: @branch,
         service_ids: service_ids,
         date: date
       ).call
@@ -33,8 +33,8 @@ class BookingsController < ApplicationController
   end
 
   def create
-    @business = Business.find_by!(slug: params[:business_slug])
-    @services = @business.services.active.order(:position)
+    @branch = Branch.find_by!(slug: params[:business_slug])
+    @services = @branch.services.active.order(:position)
 
     # Parse start_time from params (format: "YYYY-MM-DD HH:MM")
     start_time = if params[:start_time].present?
@@ -46,14 +46,14 @@ class BookingsController < ApplicationController
     end
 
     result = Bookings::CreateBooking.new(
-      business: @business,
+      branch: @branch,
       service_ids: params[:service_ids],
       start_time: start_time,
       customer_params: booking_params
     ).call
 
     if result[:success]
-      redirect_to booking_confirmation_path(@business.slug, result[:booking])
+      redirect_to booking_confirmation_path(@branch.slug, result[:booking])
     else
       @error = result[:error]
       render :new, status: :unprocessable_entity
@@ -61,8 +61,8 @@ class BookingsController < ApplicationController
   end
 
   def show
-    @business = Business.find_by!(slug: params[:business_slug])
-    @booking = @business.bookings.find(params[:id])
+    @branch = Branch.find_by!(slug: params[:business_slug])
+    @booking = @branch.bookings.find(params[:id])
   end
 
   private

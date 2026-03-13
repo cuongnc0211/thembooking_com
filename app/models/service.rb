@@ -1,5 +1,5 @@
 class Service < ApplicationRecord
-  belongs_to :business
+  belongs_to :branch
 
   # Duration options in minutes
   DURATION_OPTIONS = [
@@ -25,7 +25,7 @@ class Service < ApplicationRecord
   # Validations
   validates :name, presence: true,
                    length: { maximum: 100 },
-                   uniqueness: { scope: :business_id, case_sensitive: false }
+                   uniqueness: { scope: :branch_id, case_sensitive: false }
 
   validates :duration_minutes, presence: true,
                                inclusion: { in: DURATION_OPTIONS.map { |o| o[:value] } }
