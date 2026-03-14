@@ -19,7 +19,7 @@ export default class extends Controller {
   ]
 
   static values = {
-    businessSlug: String
+    branchSlug: String
   }
 
   connect() {
@@ -135,7 +135,7 @@ export default class extends Controller {
         ...Object.fromEntries(serviceIds.map(id => [`service_ids[]`, id]))
       })
 
-      const response = await fetch(`/${this.businessSlugValue}/availability?${params}`)
+      const response = await fetch(`/${this.branchSlugValue}/availability?${params}`)
       const data = await response.json()
 
       // Hide loading spinner

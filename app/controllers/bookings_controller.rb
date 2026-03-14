@@ -2,17 +2,22 @@ class BookingsController < ApplicationController
   allow_unauthenticated_access # Public endpoint
 
   def new
-    @branch = Branch.find_by!(slug: params[:business_slug])
+    @branch = Branch.includes(:business).find_by!(slug: params[:branch_slug])
+    verify_branch_active!
+    @business = @branch.business
     @services = @branch.services.active.order(:position)
   end
 
   def react_new
-    @branch = Branch.find_by!(slug: params[:business_slug])
+    @branch = Branch.includes(:business).find_by!(slug: params[:branch_slug])
+    verify_branch_active!
+    @business = @branch.business
     @services = @branch.services.active.order(:position)
   end
 
   def availability
-    @branch = Branch.find_by!(slug: params[:business_slug])
+    @branch = Branch.find_by!(slug: params[:branch_slug])
+    verify_branch_active!
     service_ids = params[:service_ids] || []
     date = params[:date] ? Date.parse(params[:date]) : Date.current
 
@@ -33,16 +38,15 @@ class BookingsController < ApplicationController
   end
 
   def create
-    @branch = Branch.find_by!(slug: params[:business_slug])
+    @branch = Branch.find_by!(slug: params[:branch_slug])
+    verify_branch_active!
+    @business = @branch.business
     @services = @branch.services.active.order(:position)
 
-    # Parse start_time from params (format: "YYYY-MM-DD HH:MM")
     start_time = if params[:start_time].present?
       Time.zone.parse(params[:start_time])
     elsif params[:scheduled_at].present?
       params[:scheduled_at] # Support old parameter name
-    else
-      nil
     end
 
     result = Bookings::CreateBooking.new(
@@ -56,16 +60,21 @@ class BookingsController < ApplicationController
       redirect_to booking_confirmation_path(@branch.slug, result[:booking])
     else
       @error = result[:error]
-      render :new, status: :unprocessable_entity
+      render :react_new, status: :unprocessable_entity
     end
   end
 
   def show
-    @branch = Branch.find_by!(slug: params[:business_slug])
+    @branch = Branch.includes(:business).find_by!(slug: params[:branch_slug])
+    @business = @branch.business
     @booking = @branch.bookings.find(params[:id])
   end
 
   private
+
+  def verify_branch_active!
+    raise ActiveRecord::RecordNotFound unless @branch.active?
+  end
 
   def booking_params
     params.require(:booking).permit(:customer_name, :customer_phone, :customer_email, :notes)

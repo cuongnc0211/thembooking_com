@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (container) {
     const root = createRoot(container)
-    const { businessSlug, business, services } = container.dataset
+    const { branchSlug, business, services } = container.dataset
 
     root.render(
       <BookingApp
-        businessSlug={businessSlug}
+        branchSlug={branchSlug}
         business={JSON.parse(business)}
         services={JSON.parse(services)}
       />
@@ -25,11 +25,11 @@ document.addEventListener('turbo:load', () => {
 
   if (container && !container.hasAttribute('data-react-mounted')) {
     const root = createRoot(container)
-    const { businessSlug, business, services } = container.dataset
+    const { branchSlug, business, services } = container.dataset
 
     root.render(
       <BookingApp
-        businessSlug={businessSlug}
+        branchSlug={branchSlug}
         business={JSON.parse(business)}
         services={JSON.parse(services)}
       />

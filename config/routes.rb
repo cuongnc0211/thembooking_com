@@ -76,13 +76,12 @@ Rails.application.routes.draw do
 
   # Public booking routes (must be at the end to avoid conflicts)
   # React version of booking page
-  get "/booking/:business_slug", to: "bookings#react_new", as: :react_booking, constraints: { business_slug: /[a-z0-9\-]+/ }
+  get "/booking/:branch_slug", to: "bookings#react_new", as: :react_booking, constraints: { branch_slug: /[a-z0-9\-]+/ }
 
-  # Stimulus version (original)
-  get "/:business_slug", to: "bookings#react_new", as: :booking, constraints: { business_slug: /[a-z0-9\-]+/ }
-  get "/:business_slug/availability", to: "bookings#availability"
-  post "/:business_slug/bookings", to: "bookings#create"
-  get "/:business_slug/bookings/:id", to: "bookings#show", as: :booking_confirmation
+  get "/:branch_slug", to: "bookings#react_new", as: :booking, constraints: { branch_slug: /[a-z0-9\-]+/ }
+  get "/:branch_slug/availability", to: "bookings#availability"
+  post "/:branch_slug/bookings", to: "bookings#create"
+  get "/:branch_slug/bookings/:id", to: "bookings#show", as: :booking_confirmation
 
   # Defines the root path route ("/")
   root "home#index"
