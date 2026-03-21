@@ -11,7 +11,7 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
   end
 
-  # System tests require truncation (run in separate server thread)
+  # System tests require truncation (run in separate Puma server thread)
   config.before(:each, type: :system) do
     DatabaseCleaner.strategy = :truncation
   end

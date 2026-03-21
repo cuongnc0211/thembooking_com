@@ -1,14 +1,14 @@
 RSpec::Matchers.define :be_signed_in do
   match do |page|
-    page.has_link?('Sign out')
+    page.has_button?('Sign out')
   end
 
   failure_message do
-    'Expected user to be signed in (should have "Sign out" link), but was not'
+    'Expected user to be signed in (should have "Sign out" button), but was not'
   end
 
   failure_message_when_negated do
-    'Expected user not to be signed in, but found "Sign out" link'
+    'Expected user not to be signed in, but found "Sign out" button'
   end
 end
 

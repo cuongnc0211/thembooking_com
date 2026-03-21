@@ -5,6 +5,20 @@ All notable changes to ThemBooking project are documented here.
 ## [Unreleased]
 
 ### Added
+- **[2026-03-21] Phase 4: Comprehensive Testing (Complete)** — All 316 tests passing for multi-location support
+  - **Test Coverage**: Branch model specs, Dashboard CRUD specs, public booking flow specs
+  - **Factory Updates**: Branch factory, updated business/service/booking factories for branch association
+  - **System Tests Fixes**: Capybara session reset, flash message accessibility (role="alert"), field label corrections
+  - **Service Specs**: CheckAvailability and CreateBooking updated with branch context parameter
+  - **Authorization Testing**: Verified data scoping prevents cross-user branch access
+
+- **[2026-03-21] Dashboard Business Form Refactoring** — Business model simplified to brand-only
+  - **Removed Fields**: slug, address, phone, capacity (all moved to Branch)
+  - **Business Params**: Now only accepts name, business_type, description, logo
+  - **Form Updates**: Dashboard business form updated to remove location-specific fields
+  - **Controller Updates**: Dashboard::BusinessesController params whitelist updated
+
+### Added (Previous)
 - **[2026-03-13] Phase 1: Multi-Location Architecture (Documentation Update)** — Refactored system architecture docs for Branch model
   - **New Model**: `Branch` (physical location) with slug, address, phone, operating_hours (JSONB), capacity, active status, position
   - **New Structure**: Modular architecture documentation in `/docs/system-architecture/` directory

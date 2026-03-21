@@ -17,20 +17,8 @@
     <%= link_to t('views.dashboard.businesses.show.edit_business'), edit_dashboard_business_path, class: "bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" %>
   </div>
 
-  <!-- Booking URL -->
-  <div class="bg-primary-50 border border-primary-200 rounded-xl p-6 mb-8">
-    <p class="text-sm font-medium text-primary-900 mb-2"><%= t('views.dashboard.businesses.show.booking_url_title') %></p>
-    <div class="flex items-center space-x-2">
-      <code class="bg-white px-4 py-3 rounded-lg border border-primary-100 text-primary-700 flex-1 font-mono text-sm"><%= @business.booking_url %></code>
-      <button class="btn-primary py-2 px-4 text-sm" onclick="navigator.clipboard.writeText('<%= @business.booking_url %>')">
-        <%= t('common.actions.copy') %>
-      </button>
-    </div>
-    <p class="mt-2 text-sm text-primary-700"><%= t('views.dashboard.businesses.show.booking_url_hint') %></p>
-  </div>
-
   <!-- Business Details -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="grid grid-cols-1 gap-6">
     <!-- Description -->
     <div class="card p-6">
       <h3 class="text-lg font-semibold mb-2"><%= t('views.dashboard.businesses.show.description_title') %></h3>
@@ -40,76 +28,16 @@
         <p class="text-slate-400 italic"><%= t('views.dashboard.businesses.show.no_description') %></p>
       <% end %>
     </div>
-
-    <!-- Contact Info & Capacity -->
-    <div class="card p-6">
-      <h3 class="text-lg font-semibold mb-2"><%= t('views.dashboard.businesses.show.contact_info_title') %></h3>
-      <dl class="space-y-2">
-        <% if @business.address.present? %>
-          <div>
-            <dt class="text-sm text-slate-500"><%= t('views.dashboard.businesses.show.address_label') %></dt>
-            <dd class="text-slate-900"><%= @business.address %></dd>
-          </div>
-        <% end %>
-        <% if @business.phone.present? %>
-          <div>
-            <dt class="text-sm text-slate-500"><%= t('views.dashboard.businesses.show.phone_label') %></dt>
-            <dd class="text-slate-900"><%= @business.phone %></dd>
-          </div>
-        <% end %>
-        <div>
-          <dt class="text-sm text-slate-500"><%= t('views.dashboard.businesses.show.capacity_label') %></dt>
-          <dd class="text-slate-900">
-            <%= @business.capacity %>
-            <span class="text-sm text-slate-500">
-              <%= t('views.dashboard.businesses.show.capacity_suffix', count: @business.capacity) %>
-            </span>
-          </dd>
-        </div>
-        <% if @business.address.blank? && @business.phone.blank? %>
-          <p class="text-slate-400 italic"><%= t('views.dashboard.businesses.show.no_contact_info') %></p>
-        <% end %>
-      </dl>
-    </div>
   </div>
 
-  <!-- Operating Hours -->
-  <div class="mt-8 card p-6">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-semibold"><%= t('views.dashboard.businesses.show.operating_hours_title') %></h3>
-      <%= link_to t('views.dashboard.businesses.show.edit_hours'), edit_dashboard_business_path, class: "text-sm text-primary-600 hover:text-primary-700" %>
-    </div>
-
-    <div class="space-y-3">
-      <% Business::WEEKDAYS.each do |day| %>
-        <% day_hours = @business.hours_for(day) %>
-        <% if day_hours %>
-          <div class="flex items-start justify-between py-2 border-b border-slate-100 last:border-0">
-            <div class="flex-1">
-              <span class="font-medium text-slate-700 capitalize inline-block w-28"><%= t("time.day_names_short.#{day}") %></span>
-              <% if day_hours["closed"] %>
-                <span class="text-slate-400 italic"><%= t('views.dashboard.businesses.show.closed') %></span>
-              <% else %>
-                <span class="text-slate-900">
-                  <%= day_hours["open"] %> - <%= day_hours["close"] %>
-                </span>
-
-                <% breaks = day_hours["breaks"] || [] %>
-                <% if breaks.any? %>
-                  <div class="ml-28 mt-1">
-                    <span class="text-xs text-slate-500 uppercase"><%= t('views.dashboard.businesses.show.breaks_label') %></span>
-                    <% breaks.each do |break_period| %>
-                      <span class="text-sm text-slate-600 ml-2">
-                        <%= break_period["start"] %> - <%= break_period["end"] %>
-                      </span>
-                    <% end %>
-                  </div>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
+  <!-- Branches link -->
+  <div class="mt-6 card p-6">
+    <div class="flex justify-between items-center">
+      <div>
+        <h3 class="text-lg font-semibold">Branches</h3>
+        <p class="text-sm text-slate-500 mt-1">Manage locations, operating hours, services, and bookings per branch.</p>
+      </div>
+      <%= link_to "Manage Branches", dashboard_branches_path, class: "btn-primary py-2 px-4 text-sm" %>
     </div>
   </div>
 </div>

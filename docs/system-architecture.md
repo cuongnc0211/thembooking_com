@@ -13,19 +13,39 @@ This documentation has been reorganized into a modular structure for better main
 
 ## Quick Reference
 
-### Phase 1 Changes (Multi-Location Support)
+### Phases 1-4: Multi-Location Support (COMPLETED)
 
-The architecture has been updated to support multiple business locations:
+The architecture has been fully updated to support multiple business locations:
 
+**Phase 1: Data Model**
 - **Business**: Now a brand entity only (name, type, description, logo)
-- **Branch**: Physical location with slug, address, phone, operating_hours, capacity
+- **Branch**: Physical location with slug, address, phone, operating_hours, capacity, active status
 - **Services, Bookings, BusinessClosures**: All now belong to Branch instead of Business
+- Data migration: Existing businesses get auto-created "Main Branch" with all data
 
-This enables:
+**Phase 2: Dashboard CRUD**
+- Branch management interface with full CRUD operations
+- Nested routes: `dashboard_branch_services`, `dashboard_branch_bookings`, etc.
+- Branch activation/deactivation controls
+
+**Phase 3: Public Booking Page**
+- Public booking route changed from `/:business_slug` to `/:branch_slug`
+- BookingsController updated to load branch by slug
+- React components updated to display branch info + business branding
+- All JS files updated for `branchSlug` parameter
+
+**Phase 4: Comprehensive Testing**
+- 316 tests passing (0 failures)
+- Full coverage for Branch model, Dashboard CRUD, and public booking flow
+- Factory updates and service spec updates complete
+- System test fixes: Capybara session reset, flash accessibility, field labels
+
+**Features Enabled**:
 - Multiple locations per business
-- Branch-scoped availability checking
+- Branch-scoped availability checking and capacity management
 - Branch-specific operating hours and closures
-- Public booking URL: `/branch-slug` (branch-level, not business-level)
+- Public booking URL: `/branch-slug` (branch-level routing)
+- Dashboard: Branch-level service, booking, and closure management
 
 ### Key Models
 
@@ -43,5 +63,5 @@ Branch → BusinessClosures (1:N)
 - **Frontend**: Hotwire (Turbo + Stimulus), Tailwind CSS, selective React
 - **Deployment**: Kamal (Docker), self-hosted with Cloudflare Tunnel
 
-*Last Updated*: March 13, 2026
-*Version*: v0.2.0 (Modular Structure)
+*Last Updated*: March 21, 2026
+*Version*: v0.2.2 (Modular Structure + Multi-Location Complete & Tested)

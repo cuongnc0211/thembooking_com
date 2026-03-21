@@ -38,3 +38,10 @@ end
 
 # Server configuration
 Capybara.server = :puma, { Silent: true }
+
+# Reset browser session between system tests to prevent state leakage
+RSpec.configure do |config|
+  config.after(:each, type: :system) do
+    Capybara.reset_sessions!
+  end
+end

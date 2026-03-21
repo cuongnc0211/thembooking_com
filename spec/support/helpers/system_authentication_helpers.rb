@@ -7,18 +7,18 @@ module SystemAuthenticationHelpers
     fill_in 'Password', with: password
     click_button 'Sign in'
 
-    # Wait for redirect to complete
-    expect(page).to have_current_path(root_path, ignore_query: true)
+    # Wait for redirect to complete (path depends on onboarding status)
+    expect(page).not_to have_current_path(new_session_path, ignore_query: true)
   end
 
   def sign_out_via_ui
-    click_link 'Sign out'
+    click_button 'Sign out'
   end
 
   # Expectation helpers
   def expect_to_be_signed_in
-    # Verify signed-in state by checking for sign-out link
-    expect(page).to have_link('Sign out')
+    # Verify signed-in state by checking for sign-out button (button_to in layouts)
+    expect(page).to have_button('Sign out')
   end
 
   def expect_to_be_signed_out

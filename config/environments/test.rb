@@ -6,6 +6,9 @@
 Rails.application.configure do
   # Allow the default test host used by Rails integration tests / RSpec request specs
   config.hosts << "www.example.com"
+  # Allow Capybara's dynamic localhost addresses for system tests
+  config.hosts << /127\.0\.0\.\d+/
+  config.hosts << "localhost"
 
   config.after_initialize do
     if defined?(Bullet)

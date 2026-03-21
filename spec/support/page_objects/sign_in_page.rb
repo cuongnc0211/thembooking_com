@@ -22,7 +22,7 @@ module PageObjects
     end
 
     def signed_in?
-      has_link?('Sign out')
+      has_button?('Sign out')
     end
 
     def signed_out?
