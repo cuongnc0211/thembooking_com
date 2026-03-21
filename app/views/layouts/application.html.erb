@@ -38,7 +38,7 @@
     <% if flash.any? %>
       <div class="fixed top-24 right-4 z-50 flex flex-col gap-2 w-full max-w-sm pointer-events-none">
         <% flash.each do |name, msg| %>
-          <div role="alert" class="pointer-events-auto transform transition-all duration-300 hover:scale-105 <%= flash_class(name) %> bg-white border border-slate-100 shadow-lg rounded-xl p-4 flex items-start gap-3 animate-in slide-in-from-right-5 fade-in">
+          <div role="<%= name.to_sym == :notice ? 'status' : 'alert' %>" data-flash-type="<%= name %>" class="pointer-events-auto transform transition-all duration-300 hover:scale-105 <%= flash_class(name) %> bg-white border border-slate-100 shadow-lg rounded-xl p-4 flex items-start gap-3 animate-in slide-in-from-right-5 fade-in">
             <div class="flex-1 text-sm font-medium text-slate-700"><%= msg %></div>
             <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>

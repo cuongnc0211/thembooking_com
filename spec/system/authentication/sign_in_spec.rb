@@ -18,6 +18,7 @@ RSpec.describe 'User Sign In', type: :system do
 
       click_button 'Sign in'
 
+      # Non-onboarded user is redirected to onboarding after sign-in
       expect(page).to have_current_path(dashboard_onboarding_path, ignore_query: true)
       expect_to_be_signed_in
     end

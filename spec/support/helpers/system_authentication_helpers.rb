@@ -27,13 +27,13 @@ module SystemAuthenticationHelpers
 
   # Flash message helpers
   def expect_flash_notice(message)
-    within('.flash.notice, .alert.alert-success, [role="alert"]') do
+    within('.flash.notice, .alert.alert-success, [role="status"], [data-flash-type="notice"]') do
       expect(page).to have_content(message)
     end
   end
 
   def expect_flash_alert(message)
-    within('.flash.alert, .alert.alert-danger, [role="alert"]') do
+    within('.flash.alert, .alert.alert-danger, [role="alert"][data-flash-type="alert"]') do
       expect(page).to have_content(message)
     end
   end
