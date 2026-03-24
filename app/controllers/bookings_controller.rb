@@ -12,7 +12,7 @@ class BookingsController < ApplicationController
     @branch = Branch.includes(:business).find_by!(slug: params[:branch_slug])
     verify_branch_active!
     @business = @branch.business
-    @services = @branch.services.active.order(:position)
+    @services = @branch.services.active.includes(:service_category).order(:position)
   end
 
   def availability

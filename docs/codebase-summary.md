@@ -296,6 +296,27 @@ Hosting: Self-hosted
    - Request specs covering all CRUD operations + cross-branch isolation
    - Service assignment test coverage
 
+### ✅ Public Booking Page Service Category Grouping (Complete)
+1. **Backend Integration**
+   - `BookingsController#react_new` and `create` eager-load service categories (prevents N+1)
+   - `react_new.html.erb` serializes `service_category_id`, `service_category_name`, `service_category_position` to JSON
+
+2. **Frontend Refactoring**
+   - `ServiceSelector.jsx` groups services by category using `groupServicesByCategory()` utility
+   - Extracted `ServiceCard` component to eliminate duplicate card rendering
+   - Category headers render with proper styling (slate-700, lg font-semibold)
+   - Uncategorized services appear under "Other" section at bottom
+
+3. **Backward Compatibility**
+   - Flat grid renders when zero services have categories assigned
+   - No "Other" header shown in flat-grid mode
+   - Existing service selection behavior preserved across groups
+
+4. **Test Coverage**
+   - Request specs verify category fields in react_new JSON response
+   - Both categorized and uncategorized service scenarios tested
+   - 338 total tests passing with no regressions
+
 ### 🚧 In Progress Features
 1. **Service Management Interface**
    - Basic CRUD operations implemented
@@ -562,8 +583,8 @@ Key strengths:
 The codebase is well-positioned for continued development and scaling, with clear patterns and standards that will facilitate future feature additions and maintenance.
 
 *Generated*: December 7, 2025
-*Last Updated*: March 21, 2026
-*Version*: v0.2.2 (Multi-Location Complete)
+*Last Updated*: March 24, 2026
+*Version*: v0.2.3 (Service Category Grouping Complete)
 *Code Size*: 8,500+ lines of Ruby code
-*Test Count*: 316 tests, all passing
+*Test Count*: 338 tests, all passing
 *Development Methodology*: Test-Driven Development (TDD)

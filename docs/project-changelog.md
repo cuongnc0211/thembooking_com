@@ -5,6 +5,14 @@ All notable changes to ThemBooking project are documented here.
 ## [Unreleased]
 
 ### Added
+- **[2026-03-24] Public Booking Page Service Category Grouping (Complete)** — Services grouped by category on public booking page with backward-compatible flat grid fallback
+  - **Backend**: Added `.includes(:service_category)` to `BookingsController#react_new` and `create` for eager loading
+  - **Serialization**: `react_new.html.erb` now includes `service_category_id`, `service_category_name`, `service_category_position` in JSON
+  - **Frontend Refactor**: `ServiceSelector.jsx` now uses `groupServicesByCategory()` utility with extracted `ServiceCard` component
+  - **Grouping Logic**: Services grouped by category position order; uncategorized services appear under "Other" at bottom
+  - **Backward Compatibility**: Flat grid renders unchanged when no services have categories assigned
+  - **Test Coverage**: 338 tests passing (0 failures) including new request specs for both categorized and uncategorized services
+
 - **[2026-03-24] Service Category CRUD Management (Complete)** — Full dashboard interface for organizing services into categories
   - **Service Categories Model**: New `ServiceCategory` model with branch scoping, unique name validation (case-insensitive), position ordering
   - **Dashboard CRUD**: Full CRUD operations with nested routes under branches (`/dashboard/branches/:branch_id/service_categories`)

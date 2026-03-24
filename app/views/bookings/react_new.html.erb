@@ -21,7 +21,10 @@
       description: s.description,
       duration_minutes: s.duration_minutes,
       price_cents: s.price.to_i,
-      price_format: s.price.format
+      price_format: s.price.format,
+      service_category_id: s.service_category_id,
+      service_category_name: s.service_category&.name,
+      service_category_position: s.service_category&.position
     }
   }.to_json %>"
   data-turbo="false"
