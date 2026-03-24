@@ -56,6 +56,12 @@ Rails.application.routes.draw do
           patch :no_show
         end
       end
+      resource :operations, only: [ :show ] do
+        member do
+          get :data
+          get :services_list
+        end
+      end
       resources :business_closures, only: [ :index, :create, :destroy ]
     end
   end
