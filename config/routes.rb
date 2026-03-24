@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     resource :business, only: [ :show, :edit, :update ]
     resources :branches do
       resource :open_hour, only: [ :show, :edit, :update ]
+      resources :service_categories, only: [ :index, :new, :create, :edit, :update, :destroy ]
       resources :services do
         member do
           post :move_up

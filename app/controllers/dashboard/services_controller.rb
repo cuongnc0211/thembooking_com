@@ -93,7 +93,7 @@ module Dashboard
     end
 
     def service_params
-      params.require(:service).permit(:name, :description, :duration_minutes, :price, :active)
+      params.require(:service).permit(:name, :description, :duration_minutes, :price, :active, :service_category_id)
     end
   end
 end

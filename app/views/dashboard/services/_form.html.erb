@@ -20,6 +20,39 @@
     <%= form.text_area :description, rows: 3, class: "form-input", placeholder: t('views.dashboard.services.form.description_placeholder') %>
   </div>
 
+  <%# Category dropdown + inline quick-create %>
+  <div data-controller="category-quick-create"
+       data-category-quick-create-url-value="<%= dashboard_branch_service_categories_path(@branch) %>">
+    <div>
+      <%= form.label :service_category_id, t('views.dashboard.services.form.category_label'), class: "form-label" %>
+      <%= form.select :service_category_id,
+          options_for_select(
+            [[t('views.dashboard.services.form.category_prompt'), ""]] +
+              @branch.service_categories.ordered.map { |c| [c.name, c.id] },
+            service.service_category_id
+          ),
+          {},
+          class: "form-input",
+          data: { "category-quick-create-target" => "select" } %>
+      <p class="mt-1.5 text-sm text-slate-500"><%= t('views.dashboard.services.form.category_hint') %></p>
+    </div>
+
+    <div class="mt-3 flex items-center gap-2">
+      <input type="text"
+             placeholder="<%= t('views.dashboard.service_categories.form.quick_create_placeholder') %>"
+             class="form-input flex-1"
+             data-category-quick-create-target="input" />
+      <button type="button"
+              class="btn-ghost text-sm whitespace-nowrap"
+              data-action="click->category-quick-create#create">
+        <%= t('views.dashboard.service_categories.form.quick_create_button') %>
+      </button>
+      <span class="hidden text-sm text-slate-400" data-category-quick-create-target="spinner">
+        <%= t('views.dashboard.service_categories.form.quick_create_saving') %>
+      </span>
+    </div>
+  </div>
+
   <div>
     <%= form.label :duration_minutes, t('views.dashboard.services.form.duration_label'), class: "form-label" %>
     <%= form.select :duration_minutes,

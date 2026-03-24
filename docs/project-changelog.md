@@ -5,6 +5,17 @@ All notable changes to ThemBooking project are documented here.
 ## [Unreleased]
 
 ### Added
+- **[2026-03-24] Service Category CRUD Management (Complete)** — Full dashboard interface for organizing services into categories
+  - **Service Categories Model**: New `ServiceCategory` model with branch scoping, unique name validation (case-insensitive), position ordering
+  - **Dashboard CRUD**: Full CRUD operations with nested routes under branches (`/dashboard/branches/:branch_id/service_categories`)
+  - **Service Assignment**: Multi-select form interface to assign/reassign services to categories with checkbox-based selection
+  - **Service Form Integration**: Category dropdown on service form with optional selection + inline quick-create feature via Stimulus
+  - **Quick-Create API**: JSON endpoint for creating categories without page reload (Stimulus controller)
+  - **Internationalization**: Complete i18n support (English + Vietnamese) for all UI text and form labels
+  - **Database Migration**: Two migrations creating `service_categories` table and adding nullable `service_category_id` FK to `services`
+  - **Test Coverage**: 338 tests passing (0 failures) including model specs, request specs, service assignment, and cross-branch isolation
+  - **Dependent Nullify**: Deleting a category nullifies `service_category_id` on associated services (does not delete services)
+
 - **[2026-03-21] Phase 4: Comprehensive Testing (Complete)** — All 316 tests passing for multi-location support
   - **Test Coverage**: Branch model specs, Dashboard CRUD specs, public booking flow specs
   - **Factory Updates**: Branch factory, updated business/service/booking factories for branch association

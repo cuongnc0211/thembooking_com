@@ -1,6 +1,7 @@
 class Branch < ApplicationRecord
   belongs_to :business
   has_many :services, dependent: :destroy
+  has_many :service_categories, dependent: :destroy
   has_many :bookings, dependent: :destroy
   has_many :business_closures, dependent: :destroy
 

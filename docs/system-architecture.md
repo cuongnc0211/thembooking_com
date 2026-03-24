@@ -14,8 +14,9 @@ This documentation has been reorganized into a modular structure for better main
 ## Quick Reference
 
 ### Phases 1-4: Multi-Location Support (COMPLETED)
+### Phase 5: Service Category Management (COMPLETED)
 
-The architecture has been fully updated to support multiple business locations:
+The architecture has been fully updated to support multiple business locations with service organization:
 
 **Phase 1: Data Model**
 - **Business**: Now a brand entity only (name, type, description, logo)
@@ -40,12 +41,20 @@ The architecture has been fully updated to support multiple business locations:
 - Factory updates and service spec updates complete
 - System test fixes: Capybara session reset, flash accessibility, field labels
 
+**Phase 5: Service Category Management (COMPLETED)**
+- **Service Categories**: New model with branch-scoping, unique name validation, position ordering
+- **Dashboard CRUD**: Full interface for managing categories, assigning/reassigning services
+- **Service Form Integration**: Category dropdown + inline quick-create (Stimulus + JSON API)
+- **Internationalization**: Complete i18n support (en.yml + vi.yml)
+- **Test Coverage**: 338 passing tests with model, request, and integration specs
+
 **Features Enabled**:
 - Multiple locations per business
+- Service organization into categories per branch
 - Branch-scoped availability checking and capacity management
 - Branch-specific operating hours and closures
 - Public booking URL: `/branch-slug` (branch-level routing)
-- Dashboard: Branch-level service, booking, and closure management
+- Dashboard: Branch-level service categories, service, booking, and closure management
 
 ### Key Models
 
@@ -53,6 +62,8 @@ The architecture has been fully updated to support multiple business locations:
 User → Business (1:1)
 Business → Branches (1:N)
 Branch → Services (1:N)
+Branch → ServiceCategories (1:N)
+ServiceCategory → Services (0:N optional)
 Branch → Bookings (1:N)
 Branch → BusinessClosures (1:N)
 ```
@@ -63,5 +74,5 @@ Branch → BusinessClosures (1:N)
 - **Frontend**: Hotwire (Turbo + Stimulus), Tailwind CSS, selective React
 - **Deployment**: Kamal (Docker), self-hosted with Cloudflare Tunnel
 
-*Last Updated*: March 21, 2026
-*Version*: v0.2.2 (Modular Structure + Multi-Location Complete & Tested)
+*Last Updated*: March 24, 2026
+*Version*: v0.3.0 (Modular Structure + Multi-Location + Service Categories Complete & Tested)

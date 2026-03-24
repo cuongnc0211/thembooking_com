@@ -434,3 +434,28 @@ vi:
           active_hint: "Chỉ dịch vụ hoạt động mới có thể được đặt"
           submit_create: "Tạo Dịch Vụ"
           submit_update: "Lưu Thay Đổi"
+          category_label: "Danh Mục"
+          category_hint: "Tùy chọn. Gán dịch vụ này vào danh mục."
+          category_prompt: "— Không có danh mục —"
+
+      service_categories:
+        index:
+          title: "Danh Mục Dịch Vụ"
+          subtitle: "Tổ chức dịch vụ thành từng nhóm"
+          add_category: "Thêm Danh Mục"
+          no_categories_message: "Chưa có danh mục. Tạo danh mục để nhóm dịch vụ của bạn."
+        new:
+          title: "Thêm Danh Mục Mới"
+        edit:
+          title: "Chỉnh Sửa Danh Mục"
+        form:
+          name_label: "Tên Danh Mục"
+          name_placeholder: "vd: Tóc, Móng, Massage"
+          assign_services_label: "Gán Dịch Vụ"
+          assign_services_hint: "Chọn dịch vụ để gán vào danh mục này."
+          no_assignable_services: "Không có dịch vụ chưa được gán cho chi nhánh này."
+          submit_create: "Tạo Danh Mục"
+          submit_update: "Lưu Thay Đổi"
+          quick_create_placeholder: "Tên danh mục mới…"
+          quick_create_button: "+ Thêm danh mục"
+          quick_create_saving: "Đang lưu…"

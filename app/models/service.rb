@@ -1,5 +1,6 @@
 class Service < ApplicationRecord
   belongs_to :branch
+  belongs_to :service_category, optional: true
 
   # Duration options in minutes
   DURATION_OPTIONS = [

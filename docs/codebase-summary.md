@@ -76,12 +76,13 @@ thembooking_com/
   - Access control with before_action filters
   - Enhanced login redirects
 
-#### 4. Database Schema (✅ Phase 1: Multi-Location Support)
+#### 4. Database Schema (✅ Phase 1: Multi-Location Support | ✅ Service Categories)
 - **Core Models**:
   - `User`: Business owners with onboarding tracking
   - `Business`: Brand entity (no longer has location data). Belongs_to user, has_many branches
   - `Branch`: Physical location with slug, address, phone, operating_hours (JSONB), capacity, active status
-  - `Service`: Service offerings with pricing and duration. Belongs_to branch
+  - `ServiceCategory`: Groups services per branch. Belongs_to branch, has_many services (nullable)
+  - `Service`: Service offerings with pricing and duration. Belongs_to branch and optionally service_category
   - `Booking`: Appointment records with `scheduled_at` and `end_time`. Belongs_to branch
   - `BusinessClosure`: Holiday/closure date records. Belongs_to branch
   - `Session`: Authentication sessions
@@ -92,6 +93,8 @@ thembooking_com/
   User → Business (1:1)
   Business → Branches (1:N)
   Branch → Services (1:N)
+  Branch → ServiceCategories (1:N)
+  ServiceCategory → Services (1:N, optional)
   Branch → Bookings (1:N)
   Branch → BusinessClosures (1:N)
   Service → Bookings (1:N through BookingService join table)
@@ -270,10 +273,34 @@ Hosting: Self-hosted
    - Role-based access control
    - SQL injection prevention
 
+### ✅ Service Category Management (Complete)
+1. **Dashboard Service Categories CRUD**
+   - Full CRUD operations for service categories (create, read, update, delete)
+   - Nested resource routing under branches (`/dashboard/branches/:branch_id/service_categories`)
+   - Service assignment interface (multi-select checkbox form)
+   - Unique name constraint per branch (case-insensitive)
+
+2. **Service Form Integration**
+   - Category dropdown with optional selection
+   - Inline quick-create feature (Stimulus controller)
+   - JSON API endpoint for quick-create response
+   - Seamless category assignment during service creation/edit
+
+3. **Internationalization**
+   - Full i18n support (English + Vietnamese)
+   - Locale keys for all UI text and form labels
+
+4. **Testing**
+   - 338 passing tests (0 failures)
+   - Model specs with validation and dependent nullify tests
+   - Request specs covering all CRUD operations + cross-branch isolation
+   - Service assignment test coverage
+
 ### 🚧 In Progress Features
 1. **Service Management Interface**
    - Basic CRUD operations implemented
-   - UI refinement needed
+   - Category grouping now available
+   - UI refinement ongoing
 
 2. **Business Profile Management**
    - Edit functionality complete

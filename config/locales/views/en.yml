@@ -434,3 +434,28 @@ en:
           active_hint: "Only active services can be booked by customers"
           submit_create: "Create Service"
           submit_update: "Save Changes"
+          category_label: "Category"
+          category_hint: "Optional. Assign this service to a category."
+          category_prompt: "— No category —"
+
+      service_categories:
+        index:
+          title: "Service Categories"
+          subtitle: "Organize your services into groups"
+          add_category: "Add New Category"
+          no_categories_message: "No categories yet. Create one to group your services."
+        new:
+          title: "Add New Category"
+        edit:
+          title: "Edit Category"
+        form:
+          name_label: "Category Name"
+          name_placeholder: "e.g., Hair, Nails, Massage"
+          assign_services_label: "Assign Services"
+          assign_services_hint: "Select services to assign to this category."
+          no_assignable_services: "No unassigned services available for this branch."
+          submit_create: "Create Category"
+          submit_update: "Save Changes"
+          quick_create_placeholder: "New category name…"
+          quick_create_button: "+ Add category"
+          quick_create_saving: "Saving…"

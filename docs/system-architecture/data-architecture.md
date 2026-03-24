@@ -10,9 +10,11 @@ erDiagram
     BUSINESS ||--o{ BRANCH : "1 to many"
 
     BRANCH ||--o{ SERVICE : "1 to many"
+    BRANCH ||--o{ SERVICE_CATEGORY : "1 to many"
     BRANCH ||--o{ BOOKING : "1 to many"
     BRANCH ||--o{ BUSINESS_CLOSURE : "1 to many"
 
+    SERVICE_CATEGORY ||--o{ SERVICE : "0 to many"
     SERVICE ||--o{ BOOKING : "1 to many"
 
     USER {
@@ -57,9 +59,19 @@ erDiagram
         datetime updated_at
     }
 
+    SERVICE_CATEGORY {
+        bigint id PK
+        bigint branch_id FK
+        string name
+        integer position
+        datetime created_at
+        datetime updated_at
+    }
+
     SERVICE {
         bigint id PK
         bigint branch_id FK
+        bigint service_category_id FK "nullable"
         string name
         integer duration_minutes
         integer price_cents
@@ -111,6 +123,8 @@ erDiagram
 | User → Business | 1:1 | One business per user |
 | Business → Branches | 1:N | Multiple physical locations per business |
 | Branch → Services | 1:N | Multiple services per branch location |
+| Branch → ServiceCategories | 1:N | Multiple service categories per branch location |
+| ServiceCategory → Services | 0:N | Optional grouping of services by category |
 | Branch → Bookings | 1:N | Multiple bookings per branch |
 | Branch → BusinessClosures | 1:N | Holiday/closure dates per branch |
 | Service → Bookings | 1:N | Multiple bookings per service (through BookingService) |

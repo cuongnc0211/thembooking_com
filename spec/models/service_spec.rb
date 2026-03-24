@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe Service, type: :model do
   describe "associations" do
     it { is_expected.to belong_to(:branch) }
+    it { is_expected.to belong_to(:service_category).optional }
   end
 
   describe "validations" do

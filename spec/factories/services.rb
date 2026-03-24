@@ -30,6 +30,10 @@ FactoryBot.define do
       price_cents { 20000000 } # 200,000 VND
     end
 
+    trait :with_category do
+      association :service_category
+    end
+
     trait :manicure do
       name { "Manicure" }
       description { "Basic manicure service" }
