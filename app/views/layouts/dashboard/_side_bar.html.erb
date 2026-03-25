@@ -39,6 +39,15 @@
               <% end %>
             </div>
           </div>
+
+          <% ops_path = dashboard_branch_operations_path(@branch) %>
+          <% ops_active = request.path.start_with?(ops_path) %>
+          <%= link_to ops_path, class: "flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group #{ops_active ? 'bg-primary-50/80 text-primary-700 shadow-sm ring-1 ring-primary-200/50' : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'}" do %>
+            <svg class="mr-3 h-5 w-5 transition-colors <%= ops_active ? 'text-primary-600' : 'text-slate-400 group-hover:text-primary-500' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/>
+            </svg>
+            Operations
+          <% end %>
         <% end %>
 
         <%= link_to edit_dashboard_business_landing_page_path, class: "flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group #{request.path == edit_dashboard_business_landing_page_path ? 'bg-primary-50/80 text-primary-700 shadow-sm ring-1 ring-primary-200/50' : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'}" do %>
