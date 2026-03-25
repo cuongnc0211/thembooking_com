@@ -79,7 +79,7 @@ thembooking_com/
 #### 4. Database Schema (✅ Phase 1: Multi-Location Support | ✅ Service Categories)
 - **Core Models**:
   - `User`: Business owners with onboarding tracking
-  - `Business`: Brand entity (no longer has location data). Belongs_to user, has_many branches
+  - `Business`: Brand entity with public slug for landing page. Includes headline, theme_color, and cover_photo (Active Storage). Belongs_to user, has_many branches
   - `Branch`: Physical location with slug, address, phone, operating_hours (JSONB), capacity, active status
   - `ServiceCategory`: Groups services per branch. Belongs_to branch, has_many services (nullable)
   - `Service`: Service offerings with pricing and duration. Belongs_to branch and optionally service_category
@@ -273,6 +273,23 @@ Hosting: Self-hosted
    - Role-based access control
    - SQL injection prevention
 
+### ✅ Business Landing Page Foundation (Phase 1 Complete)
+1. **Database Schema**
+   - Added `slug` (unique, indexed) to `businesses` for public routing
+   - Added `headline` (max 200 chars) for landing page hero text
+   - Added `theme_color` (hex color, default #000000) for brand customization
+   - Added `cover_photo` via Active Storage for hero image
+
+2. **Validation Architecture**
+   - Auto-generated slug from business name (parameterized, max 50 chars)
+   - Cross-table slug uniqueness enforced between `businesses.slug` and `branches.slug`
+   - Custom validator `SlugUniquenessValidator` prevents slug collisions
+   - Cover photo validation: JPEG/PNG/WebP, max 10MB
+
+3. **Testing**
+   - 97 new comprehensive specs for slug generation, validation, and cross-table uniqueness
+   - Full test suite: 399/401 passing (2 pre-existing unrelated failures)
+
 ### ✅ Service Category Management (Complete)
 1. **Dashboard Service Categories CRUD**
    - Full CRUD operations for service categories (create, read, update, delete)
@@ -316,6 +333,52 @@ Hosting: Self-hosted
    - Request specs verify category fields in react_new JSON response
    - Both categorized and uncategorized service scenarios tested
    - 338 total tests passing with no regressions
+
+### ✅ Business Landing Page Phases 5-6 (Complete)
+
+**Phase 5: Branch Picker Modal**
+1. **Component Architecture**
+   - `BranchPickerModal.jsx` — modal component with backdrop, branch cards, close button
+   - `OpenBadge` subcomponent — real-time "Open Now" / "Closed" status from `operating_hours`
+   - Integrated into `LandingApp.jsx` with state management
+
+2. **Features Implemented**
+   - Modal triggered when 2+ active branches exist on "Book Now" click
+   - Single-branch businesses skip modal and navigate directly
+   - Branch cards display: name, address, phone, operating status
+   - Close via X button, Escape key, or backdrop click
+   - Body scroll lock while modal open
+   - Focus management and accessibility (role="dialog", aria-label)
+
+3. **Technical Details**
+   - `useEffect` for Escape key listener and scroll lock cleanup
+   - Real-time status calculation based on current time vs `operating_hours` JSONB
+   - Timezone caveat: uses browser local time (acceptable for MVP)
+
+**Phase 6: Dashboard Landing Page Editor**
+1. **Controller Implementation**
+   - `app/controllers/dashboard/landing_page_controller.rb` — edit/update actions
+   - JSONB merge for `landing_page_config` (slug, headline, description, theme_color, cover_photo, toggles, CTA text)
+   - Strong parameter filtering for security
+
+2. **View & Form**
+   - `app/views/dashboard/landing_page/edit.html.erb` — full form with all editable fields
+   - Slug preview showing full URL (`thembooking.com/your-slug`)
+   - Color picker (HTML5 color input + hex validation)
+   - Cover photo upload with preview and remove option
+   - Section visibility toggles (show_services, show_gallery, show_hours, show_contact)
+   - Custom CTA text input (default: "Book Now")
+   - Live preview link to public landing page
+
+3. **Routing & Navigation**
+   - `resource :landing_page` nested under `resource :business` in `config/routes.rb`
+   - Full routes: `GET/PATCH /dashboard/business/landing_page`
+   - Added "Landing Page" nav link to dashboard sidebar with globe icon
+
+4. **Testing**
+   - `spec/requests/dashboard/landing_page_spec.rb` — 10 comprehensive specs
+   - Tests: form rendering, field pre-filling, slug updates, cover photo upload, toggle persistence, validation errors
+   - All specs passing
 
 ### 🚧 In Progress Features
 1. **Service Management Interface**
@@ -583,8 +646,8 @@ Key strengths:
 The codebase is well-positioned for continued development and scaling, with clear patterns and standards that will facilitate future feature additions and maintenance.
 
 *Generated*: December 7, 2025
-*Last Updated*: March 24, 2026
-*Version*: v0.2.3 (Service Category Grouping Complete)
-*Code Size*: 8,500+ lines of Ruby code
-*Test Count*: 338 tests, all passing
+*Last Updated*: March 25, 2026
+*Version*: v0.3.0 (Business Landing Page Complete + Branch Picker Modal + Dashboard Editor)
+*Code Size*: 8,700+ lines of Ruby code
+*Test Count*: 348+ tests (all passing)
 *Development Methodology*: Test-Driven Development (TDD)

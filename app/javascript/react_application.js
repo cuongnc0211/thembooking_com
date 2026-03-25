@@ -1,40 +1,49 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import BookingApp from './components/BookingApp'
+import LandingApp from './components/landing/LandingApp'
+
+function mountBookingApp(container) {
+  const { branchSlug, business, services } = container.dataset
+  createRoot(container).render(
+    <BookingApp
+      branchSlug={branchSlug}
+      business={JSON.parse(business)}
+      services={JSON.parse(services)}
+    />
+  )
+}
+
+function mountLandingApp(container) {
+  const { business, branches, galleryPhotos } = container.dataset
+  createRoot(container).render(
+    <LandingApp
+      business={JSON.parse(business)}
+      branches={JSON.parse(branches)}
+      galleryPhotos={JSON.parse(galleryPhotos)}
+    />
+  )
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('react-booking-root')
+  const bookingRoot = document.getElementById('react-booking-root')
+  if (bookingRoot) mountBookingApp(bookingRoot)
 
-  if (container) {
-    const root = createRoot(container)
-    const { branchSlug, business, services } = container.dataset
-
-    root.render(
-      <BookingApp
-        branchSlug={branchSlug}
-        business={JSON.parse(business)}
-        services={JSON.parse(services)}
-      />
-    )
-  }
+  const landingRoot = document.getElementById('react-landing-root')
+  if (landingRoot) mountLandingApp(landingRoot)
 })
 
 // Support Turbo Drive navigation
 document.addEventListener('turbo:load', () => {
-  const container = document.getElementById('react-booking-root')
+  const bookingRoot = document.getElementById('react-booking-root')
+  if (bookingRoot && !bookingRoot.hasAttribute('data-react-mounted')) {
+    mountBookingApp(bookingRoot)
+    bookingRoot.setAttribute('data-react-mounted', 'true')
+  }
 
-  if (container && !container.hasAttribute('data-react-mounted')) {
-    const root = createRoot(container)
-    const { branchSlug, business, services } = container.dataset
-
-    root.render(
-      <BookingApp
-        branchSlug={branchSlug}
-        business={JSON.parse(business)}
-        services={JSON.parse(services)}
-      />
-    )
-
-    container.setAttribute('data-react-mounted', 'true')
+  const landingRoot = document.getElementById('react-landing-root')
+  if (landingRoot && !landingRoot.hasAttribute('data-react-mounted')) {
+    mountLandingApp(landingRoot)
+    landingRoot.setAttribute('data-react-mounted', 'true')
   }
 })

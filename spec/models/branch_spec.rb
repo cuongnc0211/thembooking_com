@@ -33,6 +33,25 @@ RSpec.describe Branch, type: :model do
         branch = build(:branch, slug: "  MY-SHOP  ")
         expect(branch.slug).to eq("my-shop")
       end
+
+      it "rejects branch slug that matches an existing business slug" do
+        business = create(:business, slug: "main-shop")
+        branch = build(:branch, slug: "main-shop")
+        expect(branch).not_to be_valid
+        expect(branch.errors[:slug]).to include("is already taken by a business")
+      end
+
+      it "allows branch slug when no matching business slug exists" do
+        branch = build(:branch, slug: "unique-slug")
+        expect(branch).to be_valid
+      end
+
+      it "ignores case when checking cross-table uniqueness with business" do
+        create(:business, slug: "main-shop")
+        branch = build(:branch, slug: "MAIN-SHOP")
+        expect(branch).not_to be_valid
+        expect(branch.errors[:slug]).to include("is already taken by a business")
+      end
     end
 
     describe "capacity" do

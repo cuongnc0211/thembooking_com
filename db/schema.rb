@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_24_042133) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_24_072048) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -111,12 +111,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_24_042133) do
     t.datetime "created_at", null: false
     t.string "currency", limit: 3, default: "VND", null: false
     t.text "description"
+    t.string "headline", limit: 200
     t.jsonb "landing_page_config", default: {}
     t.string "name", null: false
+    t.string "slug", limit: 50, null: false
+    t.string "theme_color", limit: 7, default: "#000000"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["slug"], name: "index_businesses_on_slug", unique: true
     t.index ["user_id"], name: "index_businesses_on_user_id"
     t.index ["user_id"], name: "index_businesses_on_user_id_unique", unique: true
+  end
+
+  create_table "gallery_photos", force: :cascade do |t|
+    t.bigint "business_id", null: false
+    t.string "caption", limit: 200
+    t.datetime "created_at", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["business_id", "position"], name: "index_gallery_photos_on_business_id_and_position"
+    t.index ["business_id"], name: "index_gallery_photos_on_business_id"
   end
 
   create_table "service_categories", force: :cascade do |t|
@@ -198,6 +212,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_24_042133) do
   add_foreign_key "branches", "businesses"
   add_foreign_key "business_closures", "branches"
   add_foreign_key "businesses", "users"
+  add_foreign_key "gallery_photos", "businesses"
   add_foreign_key "service_categories", "branches"
   add_foreign_key "services", "branches"
   add_foreign_key "services", "service_categories"

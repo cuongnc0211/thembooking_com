@@ -15,6 +15,7 @@ This documentation has been reorganized into a modular structure for better main
 
 ### Phases 1-4: Multi-Location Support (COMPLETED)
 ### Phase 5: Service Category Management (COMPLETED)
+### Phases 1-6: Business Landing Page (COMPLETED)
 
 The architecture has been fully updated to support multiple business locations with service organization:
 
@@ -48,6 +49,12 @@ The architecture has been fully updated to support multiple business locations w
 - **Internationalization**: Complete i18n support (en.yml + vi.yml)
 - **Test Coverage**: 338 passing tests with model, request, and integration specs
 
+**Phase 6: Business Landing Page (COMPLETED)**
+- **Phase 5: Branch Picker Modal** — Modal component with real-time open/closed status badges, Escape/backdrop close, scroll lock, focus management
+- **Phase 6: Dashboard Landing Page Editor** — Full CRUD interface for business owners to customize landing page (slug, headline, description, theme color, cover photo, section toggles, custom CTA)
+- **Features**: Live preview link, color picker, section visibility controls, cover photo upload with preview
+- **Test Coverage**: 10 comprehensive landing page editor specs, all passing
+
 **Features Enabled**:
 - Multiple locations per business
 - Service organization into categories per branch
@@ -68,11 +75,18 @@ Branch → Bookings (1:N)
 Branch → BusinessClosures (1:N)
 ```
 
+### Slug Routing Strategy (Business Landing Pages)
+- **Business Slug**: Public URL identifier for landing pages (e.g., `/acme-salon`)
+- **Branch Slug**: Public URL identifier for booking pages (e.g., `/acme-downtown`)
+- **Cross-table Uniqueness**: Both slugs must be globally unique via `SlugUniquenessValidator`
+- **Implementation**: Single catch-all controller queries Business first, then Branch
+- **Auto-generation**: Business slugs auto-generated from business name; Branch slugs auto-generated from branch name
+
 ### Tech Stack
 
 - **Backend**: Rails 8.0.0, Ruby 3.3.0, PostgreSQL 14+, Redis 6+
 - **Frontend**: Hotwire (Turbo + Stimulus), Tailwind CSS, selective React
 - **Deployment**: Kamal (Docker), self-hosted with Cloudflare Tunnel
 
-*Last Updated*: March 24, 2026
-*Version*: v0.3.0 (Modular Structure + Multi-Location + Service Categories Complete & Tested)
+*Last Updated*: March 25, 2026
+*Version*: v0.3.2 (Business Landing Page Complete - All 6 Phases)

@@ -16,7 +16,8 @@ class Branch < ApplicationRecord
   validates :slug, presence: true,
                    uniqueness: { case_sensitive: false },
                    format: { with: /\A[a-z0-9\-]+\z/, message: "only allows lowercase letters, numbers, and hyphens" },
-                   length: { minimum: 3, maximum: 50 }
+                   length: { minimum: 3, maximum: 50 },
+                   slug_uniqueness: true
   validates :capacity, presence: true,
                        numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 50 }
   validates :phone, format: { with: /\A[0-9\s\-\+\(\)]+\z/, message: "only allows numbers and basic formatting" },
