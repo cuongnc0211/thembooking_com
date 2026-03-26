@@ -6,6 +6,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="ThemBooking">
     <meta name="mobile-web-app-capable" content="yes">
+    <%# Override navbar to dark glass for dashboard %>
+    <% content_for :nav_class, "glass-dark" %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 

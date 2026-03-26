@@ -46,8 +46,11 @@
           </div>
         <% end %>
 
-        <%= link_to root_path, class: "flex items-center" do %>
-          <span class="text-2xl font-display font-bold text-gradient">ThemBooking</span>
+        <%# Hide logo in dashboard — sidebar already shows it %>
+        <% unless current_user && controller_path.start_with?('dashboard') %>
+          <%= link_to root_path, class: "flex items-center" do %>
+            <span class="text-2xl font-display font-bold text-gradient">ThemBooking</span>
+          <% end %>
         <% end %>
       </div>
 
@@ -55,12 +58,12 @@
       <div class="flex items-center gap-3">
         <!-- Language Switcher (Desktop) -->
         <div data-controller="dropdown" class="relative hidden md:block">
-          <button data-action="click->dropdown#toggle" class="flex items-center gap-2 p-2 rounded-lg hover:bg-white/50 transition-colors">
-            <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button data-action="click->dropdown#toggle" class="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-colors">
+            <svg class="w-5 h-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
             </svg>
-            <span class="text-sm font-medium text-slate-700"><%= I18n.locale.to_s.upcase %></span>
-            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span class="text-sm font-medium text-slate-200"><%= I18n.locale.to_s.upcase %></span>
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
