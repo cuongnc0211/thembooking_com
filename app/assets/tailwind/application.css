@@ -139,6 +139,18 @@
     @apply hover:-translate-y-1 hover:shadow-xl;
   }
 
+  /* Dashboard card — slate-800 glass, matches mock design */
+  .dashboard-card {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(71, 85, 105, 0.3);
+    border-radius: 12px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .dashboard-card:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+    background: rgba(30, 41, 59, 0.95);
+  }
+
   /* Form Controls */
   .form-input {
     @apply w-full px-4 py-3 rounded-xl border border-slate-500 bg-white focus:border-primary-500 focus:ring-primary-500 transition-colors duration-200;

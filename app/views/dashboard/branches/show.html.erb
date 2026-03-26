@@ -1,109 +1,134 @@
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
 
-  <!-- Branch header -->
-  <div class="flex items-start justify-between mb-6">
-    <div>
-      <div class="flex items-center gap-3 mb-1">
-        <h1 class="text-xl font-semibold text-white"><%= @branch.name %></h1>
+  <!-- Main card -->
+  <div class="dashboard-card p-6">
+    <!-- Branch header -->
+    <div class="flex items-start justify-between mb-4">
+      <div>
+        <h1 class="text-xl font-bold text-white mb-0.5"><%= @branch.name %></h1>
+        <p class="text-sm text-slate-400">
+          <%= [I18n.l(Date.today, format: :long), @branch.address].compact.join(' · ') %>
+        </p>
+      </div>
+      <div class="flex items-center gap-2">
         <% if @branch.active? %>
-          <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">Active</span>
+          <span class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            Active
+          </span>
         <% else %>
-          <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-700/50 text-slate-400 border border-slate-600/30">Inactive</span>
+          <span class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full bg-slate-700/50 text-slate-400 border border-slate-600/30">
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+            Inactive
+          </span>
+        <% end %>
+        <%= link_to edit_dashboard_branch_path(@branch), class: "px-3 py-1.5 text-xs font-medium rounded-lg text-slate-300 border border-slate-600/40 hover:border-slate-500 transition-colors" do %>
+          Chỉnh sửa
+        <% end %>
+        <%= link_to dashboard_branches_path, class: "text-xs px-2 py-1.5 text-slate-500 hover:text-slate-300 transition-colors" do %>
+          ← Tất cả branches
         <% end %>
       </div>
-      <p class="text-slate-500 text-sm">
-        <%= [@branch.address, @branch.phone].compact.join(' · ') %>
-      </p>
     </div>
-    <div class="flex items-center gap-2">
-      <%= link_to "Edit Branch", edit_dashboard_branch_path(@branch),
-            class: "px-4 py-2 text-sm text-slate-300 border border-slate-600/50 rounded-lg hover:border-slate-500 hover:text-slate-200 transition-colors" %>
-      <%= link_to "← All Branches", dashboard_branches_path,
-            class: "px-4 py-2 text-sm text-slate-500 hover:text-slate-300 transition-colors flex items-center gap-1" %>
-    </div>
-  </div>
 
-  <!-- Booking URL -->
-  <div class="bg-slate-800/50 border border-slate-700/40 rounded-xl p-4 mb-4">
-    <p class="text-xs text-slate-400 font-medium uppercase tracking-wide mb-2">Booking URL</p>
-    <div class="flex items-center gap-3">
-      <code class="flex-1 bg-[#0f172a]/80 border border-slate-700/40 rounded-lg px-3 py-2 text-sm font-mono text-slate-400 truncate">
+    <div class="border-t border-white/6 mb-4"></div>
+
+    <!-- Booking URL -->
+    <p class="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">Booking URL</p>
+    <div class="flex items-center gap-3 mb-1">
+      <code class="flex-1 px-3 py-2.5 rounded-xl text-sm font-mono truncate text-slate-400" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06);">
         <%= @branch.booking_url %>
       </code>
       <button
-        class="px-4 py-2 text-sm font-medium text-white rounded-lg flex-shrink-0"
+        class="px-4 py-2.5 text-sm font-semibold text-white rounded-xl flex-shrink-0"
         style="background: linear-gradient(135deg, #4f46e5, #6366f1);"
         onclick="navigator.clipboard.writeText('<%= @branch.booking_url %>');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',2000)">
         Copy
       </button>
     </div>
-    <p class="mt-2 text-xs text-slate-500">Share this URL with customers to let them book online.</p>
+    <p class="text-xs text-slate-500 mb-5">Share this URL with customers to let them book online.</p>
+
+    <div class="border-t border-white/6 mb-4"></div>
+
+    <!-- Action rows -->
+    <p class="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">Quản lý chi nhánh</p>
+    <div class="space-y-2">
+      <%= link_to dashboard_branch_bookings_path(@branch), class: "flex items-center gap-4 px-4 py-3 rounded-xl transition-all group", style: "background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);" do %>
+        <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold text-indigo-300" style="background: rgba(99,102,241,0.25);">LH</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-white">Lịch hẹn</p>
+          <p class="text-xs text-slate-400">Xem và quản lý lịch đặt</p>
+        </div>
+        <svg class="w-4 h-4 flex-shrink-0 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      <% end %>
+
+      <%= link_to dashboard_branch_services_path(@branch), class: "flex items-center gap-4 px-4 py-3 rounded-xl transition-all group", style: "background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);" do %>
+        <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold text-purple-300" style="background: rgba(139,92,246,0.25);">DV</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-white">Dịch vụ</p>
+          <p class="text-xs text-slate-400">Cấu hình dịch vụ và giá</p>
+        </div>
+        <svg class="w-4 h-4 flex-shrink-0 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      <% end %>
+
+      <%= link_to edit_dashboard_branch_open_hour_path(@branch), class: "flex items-center gap-4 px-4 py-3 rounded-xl transition-all group", style: "background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);" do %>
+        <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold text-amber-300" style="background: rgba(245,158,11,0.25);">GH</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-white">Giờ làm việc</p>
+          <p class="text-xs text-slate-400">Thiết lập giờ mở cửa</p>
+        </div>
+        <svg class="w-4 h-4 flex-shrink-0 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      <% end %>
+
+      <%= link_to dashboard_branch_business_closures_path(@branch), class: "flex items-center gap-4 px-4 py-3 rounded-xl transition-all group", style: "background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);" do %>
+        <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold text-red-300" style="background: rgba(239,68,68,0.2);">ND</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-white">Ngày đóng cửa</p>
+          <p class="text-xs text-slate-400">Quản lý lịch nghỉ</p>
+        </div>
+        <svg class="w-4 h-4 flex-shrink-0 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      <% end %>
+    </div>
   </div>
 
-  <!-- Quick action tiles -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-    <%= link_to dashboard_branch_bookings_path(@branch),
-          class: "bg-slate-800/50 border border-slate-700/30 rounded-xl p-4 flex flex-col items-center gap-2.5 hover:bg-indigo-500/8 hover:border-indigo-500/30 transition-all group" do %>
-      <div class="w-10 h-10 rounded-xl bg-indigo-500/15 flex items-center justify-center group-hover:bg-indigo-500/20 transition-colors">
-        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-        </svg>
+  <!-- Stat cards row -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="dashboard-card p-5">
+      <p class="text-sm text-slate-400 mb-3">Chi tiết chi nhánh</p>
+      <div class="space-y-2">
+        <% if @branch.address.present? %>
+          <div class="flex gap-3 text-sm">
+            <span class="text-slate-500 min-w-20">Địa chỉ</span>
+            <span class="text-white font-medium"><%= @branch.address %></span>
+          </div>
+        <% end %>
+        <% if @branch.phone.present? %>
+          <div class="flex gap-3 text-sm">
+            <span class="text-slate-500 min-w-20">Điện thoại</span>
+            <span class="text-white font-medium"><%= @branch.phone %></span>
+          </div>
+        <% end %>
+        <div class="flex gap-3 text-sm">
+          <span class="text-slate-500 min-w-20">Sức chứa</span>
+          <span class="text-white font-medium"><%= @branch.capacity %> <%= "person".pluralize(@branch.capacity) %></span>
+        </div>
       </div>
-      <span class="text-sm font-medium text-slate-300">Bookings</span>
-    <% end %>
+    </div>
 
-    <%= link_to dashboard_branch_services_path(@branch),
-          class: "bg-slate-800/50 border border-slate-700/30 rounded-xl p-4 flex flex-col items-center gap-2.5 hover:bg-purple-500/8 hover:border-purple-500/30 transition-all group" do %>
-      <div class="w-10 h-10 rounded-xl bg-purple-500/15 flex items-center justify-center group-hover:bg-purple-500/20 transition-colors">
-        <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-        </svg>
-      </div>
-      <span class="text-sm font-medium text-slate-300">Services</span>
-    <% end %>
-
-    <%= link_to edit_dashboard_branch_open_hour_path(@branch),
-          class: "bg-slate-800/50 border border-slate-700/30 rounded-xl p-4 flex flex-col items-center gap-2.5 hover:bg-amber-500/8 hover:border-amber-500/30 transition-all group" do %>
-      <div class="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">
-        <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-      </div>
-      <span class="text-sm font-medium text-slate-300">Operating Hours</span>
-    <% end %>
-
-    <%= link_to dashboard_branch_business_closures_path(@branch),
-          class: "bg-slate-800/50 border border-slate-700/30 rounded-xl p-4 flex flex-col items-center gap-2.5 hover:bg-red-500/8 hover:border-red-500/30 transition-all group" do %>
-      <div class="w-10 h-10 rounded-xl bg-red-500/15 flex items-center justify-center group-hover:bg-red-500/20 transition-colors">
-        <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
-        </svg>
-      </div>
-      <span class="text-sm font-medium text-slate-300">Closed Dates</span>
-    <% end %>
-  </div>
-
-  <!-- Branch details -->
-  <div class="bg-slate-800/50 border border-slate-700/40 rounded-xl p-4">
-    <h3 class="text-sm font-medium text-slate-200 mb-3">Branch Details</h3>
-    <dl class="space-y-0">
-      <% if @branch.address.present? %>
-        <div class="flex py-2.5 border-b border-slate-700/30">
-          <dt class="text-slate-500 text-sm w-28 shrink-0">Address</dt>
-          <dd class="text-slate-200 text-sm"><%= @branch.address %></dd>
+    <div class="dashboard-card p-5">
+      <p class="text-sm text-slate-400 mb-3">Vận hành hôm nay</p>
+      <%= link_to dashboard_branch_operations_path(@branch), class: "flex items-center justify-between group" do %>
+        <div>
+          <p class="text-2xl font-bold text-white">Operations</p>
+          <p class="text-xs mt-1 text-indigo-400">Xem lịch hẹn trực tiếp →</p>
+        </div>
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(99,102,241,0.2);">
+          <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
         </div>
       <% end %>
-      <% if @branch.phone.present? %>
-        <div class="flex py-2.5 border-b border-slate-700/30">
-          <dt class="text-slate-500 text-sm w-28 shrink-0">Phone</dt>
-          <dd class="text-slate-200 text-sm"><%= @branch.phone %></dd>
-        </div>
-      <% end %>
-      <div class="flex py-2.5">
-        <dt class="text-slate-500 text-sm w-28 shrink-0">Capacity</dt>
-        <dd class="text-slate-200 text-sm"><%= @branch.capacity %> <%= "person".pluralize(@branch.capacity) %></dd>
-      </div>
-    </dl>
+    </div>
   </div>
 
 </div>
