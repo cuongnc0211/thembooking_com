@@ -61,10 +61,12 @@ module Dashboard
         @business = current_user.business || current_user.build_business
       when 3
         @business = current_user.business || current_user.build_business
-        @operating_hours = build_simplified_hours(@business&.operating_hours)
+        @branch = @business.branches.first
+        @operating_hours = build_simplified_hours(@branch&.operating_hours)
       when 4
         @business = current_user.business || current_user.build_business
-        @services = @business.services.any? ? @business.services : [ Service.new ]
+        @branch = @business.branches.first
+        @services = @branch&.services&.any? ? @branch.services : [ Service.new ]
       end
     end
 
@@ -92,37 +94,52 @@ module Dashboard
 
     def process_business
       business = current_user.business || current_user.build_business
-      business.assign_attributes(business_params)
-      business.save
+      if business.update(business_brand_params)
+        # Create default branch with location data if none exists
+        unless business.branches.exists?
+          branch_attrs = {
+            name: "Main Branch",
+            slug: params.dig(:business, :slug),
+            phone: params.dig(:business, :phone),
+            address: params.dig(:business, :address),
+            capacity: params.dig(:business, :capacity).presence || 1
+          }.compact
+          business.branches.create!(branch_attrs)
+        end
+        true
+      else
+        false
+      end
     end
 
     def process_hours
       hours = expand_simplified_hours(hours_params)
       return false if hours.nil?
 
-      # TO DO: auto populate time slot if there is no time slot yet
+      branch = current_user.business&.branches&.first
+      return false unless branch
 
-      current_user.business.update(operating_hours: hours)
+      branch.update(operating_hours: hours)
     end
 
     def process_services
-      business = current_user.business || current_user.build_business
+      branch = current_user.business&.branches&.first
+      return false unless branch
 
-      # Process services params to convert price to price_cents
-      services_params = business_services_params
-      if services_params[:services_attributes]
-        services_params[:services_attributes].each do |_, service_attrs|
-          process_price_cents(service_attrs) if service_attrs[:price].present?
+      raw_attrs = business_services_params[:services_attributes]
+      return true if raw_attrs.blank?
+
+      raw_attrs.each_value do |attrs|
+        next if attrs[:_destroy] == "1"
+        processed = process_price_cents(attrs)
+        branch.services.find_or_initialize_by(name: attrs[:name]).tap do |s|
+          s.assign_attributes(processed.except(:_destroy, :id, :price))
+          unless s.save
+            Rails.logger.warn "Failed to save service during onboarding: #{s.errors.full_messages}"
+          end
         end
       end
-
-      business.assign_attributes(services_params)
-
-      if business.save
-        true
-      else
-        false
-      end
+      true
     end
 
     def advance_to_next_step
@@ -138,11 +155,8 @@ module Dashboard
       params.require(:user).permit(:name, :phone, :avatar)
     end
 
-    def business_params
-      params.require(:business).permit(
-        :name, :business_type, :slug, :phone,
-        :capacity, :address, :description, :logo
-      )
+    def business_brand_params
+      params.require(:business).permit(:name, :business_type, :description, :logo)
     end
 
     def business_services_params
@@ -214,7 +228,6 @@ module Dashboard
 
       # At least one day must be enabled
       unless weekdays_enabled || saturday_enabled || sunday_enabled
-        current_user.business.errors.add(:operating_hours, "must have at least one day open")
         return nil
       end
 

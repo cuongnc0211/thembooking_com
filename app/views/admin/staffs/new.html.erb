@@ -1,0 +1,9 @@
+<% admin_breadcrumbs(link_to("Staffs", admin_staffs_path), "New") %>
+
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-gray-900">New Staff</h1>
+</div>
+
+<div class="bg-white rounded-xl border border-gray-200 p-6 max-w-2xl">
+  <%= render "form", staff: @staff %>
+</div>

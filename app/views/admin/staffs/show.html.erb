@@ -1,0 +1,75 @@
+<% admin_breadcrumbs(link_to("Staffs", admin_staffs_path), @staff.name) %>
+
+<div class="mb-6 flex items-center justify-between">
+  <h1 class="text-2xl font-bold text-gray-900"><%= @staff.name %></h1>
+  <div class="flex gap-2">
+    <%= link_to "Edit", edit_admin_staff_path(@staff),
+        class: "px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg" %>
+    <% unless @staff == current_staff %>
+      <%= link_to "Delete", admin_staff_path(@staff),
+          data: { turbo_method: :delete, turbo_confirm: "Delete this staff member? This cannot be undone." },
+          class: "px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+  <%# Profile card %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Profile</h2>
+    <dl class="space-y-3 text-sm">
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Name</dt>
+        <dd class="text-gray-900 font-medium"><%= @staff.name %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Email</dt>
+        <dd class="text-gray-900"><%= @staff.email_address %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Role</dt>
+        <dd>
+          <%
+            role_classes = case @staff.role
+              when "super_admin" then "bg-red-100 text-red-800"
+              when "developer"   then "bg-blue-100 text-blue-800"
+              when "sale"        then "bg-green-100 text-green-800"
+              when "accountant"  then "bg-yellow-100 text-yellow-800"
+              else "bg-gray-100 text-gray-800"
+            end
+          %>
+          <span class="<%= role_classes %> rounded-full px-2 py-0.5 text-xs font-medium">
+            <%= @staff.role.humanize %>
+          </span>
+        </dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Active</dt>
+        <dd>
+          <% if @staff.active? %>
+            <span class="bg-green-100 text-green-800 rounded-full px-2 py-0.5 text-xs font-medium">Yes</span>
+          <% else %>
+            <span class="bg-red-100 text-red-800 rounded-full px-2 py-0.5 text-xs font-medium">No</span>
+          <% end %>
+        </dd>
+      </div>
+    </dl>
+  </div>
+
+  <%# Meta card %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Meta</h2>
+    <dl class="space-y-3 text-sm">
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Created</dt>
+        <dd class="text-gray-900"><%= @staff.created_at.strftime("%b %d, %Y %H:%M") %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Updated</dt>
+        <dd class="text-gray-900"><%= @staff.updated_at.strftime("%b %d, %Y %H:%M") %></dd>
+      </div>
+    </dl>
+  </div>
+
+</div>

@@ -34,6 +34,11 @@ en:
         active: "Active"
         position: "Position"
 
+      service_category:
+        name: "Name"
+        position: "Position"
+        branch: "Branch"
+
     errors:
       models:
         user:

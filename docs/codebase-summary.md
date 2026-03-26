@@ -18,8 +18,8 @@ ThemBooking is a modern Rails 8 application for booking and appointment manageme
 ```
 thembooking_com/
 ├── app/                    # Main application code
-│   ├── controllers/        # Controllers (14 files)
-│   ├── models/           # Models (13 files)
+│   ├── controllers/        # Controllers (15 files)
+│   ├── models/           # Models (14 files)
 │   ├── views/            # Views (ERB templates)
 │   ├── javascript/       # Frontend JavaScript
 │   ├── mailers/          # Email notifications (3 files)
@@ -45,7 +45,25 @@ thembooking_com/
   - Session management with Redis
   - Rate limiting for login attempts
 
-#### 2. Onboarding System (✅ Phase 4 Complete)
+#### 2. Admin Panel & Management System (✅ Complete)
+- **Files**:
+  - `app/controllers/admin/base_controller.rb` (auth enforcement)
+  - `app/controllers/admin/staffs_controller.rb` (staff CRUD, super_admin only)
+  - `app/controllers/admin/users_controller.rb` (user management)
+  - `app/controllers/admin/businesses_controller.rb` (business management)
+  - `app/models/staff.rb` (admin staff model)
+
+- **Features**:
+  - Staff CRUD operations with full validation
+  - Super-admin access control (super_admin role required)
+  - Staff account management (name, email, role, active status)
+  - Password management with bcrypt
+  - Search/filter functionality by name or email
+  - Pagination (25 records per page)
+  - Protection against self-deletion
+  - Routes: `resources :staffs` under admin namespace
+
+#### 3. Onboarding System (✅ Phase 4 Complete)
 - **Files**:
   - `app/controllers/dashboard/base_controller.rb`
   - `app/controllers/dashboard/onboarding_controller.rb`
@@ -58,23 +76,33 @@ thembooking_com/
   - Access control with before_action filters
   - Enhanced login redirects
 
-#### 3. Database Schema (✅ Complete)
+#### 4. Database Schema (✅ Phase 1: Multi-Location Support | ✅ Service Categories)
 - **Core Models**:
   - `User`: Business owners with onboarding tracking
-  - `Business`: Business profiles with operating hours
-  - `Service`: Service offerings with pricing
-  - `Booking`: Appointment system foundation
+  - `Business`: Brand entity with public slug for landing page. Includes headline, theme_color, and cover_photo (Active Storage). Belongs_to user, has_many branches
+  - `Branch`: Physical location with slug, address, phone, operating_hours (JSONB), capacity, active status
+  - `ServiceCategory`: Groups services per branch. Belongs_to branch, has_many services (nullable)
+  - `Service`: Service offerings with pricing and duration. Belongs_to branch and optionally service_category
+  - `Booking`: Appointment records with `scheduled_at` and `end_time`. Belongs_to branch
+  - `BusinessClosure`: Holiday/closure date records. Belongs_to branch
   - `Session`: Authentication sessions
+  - `Staff`: Admin staff accounts with role and authentication
 
 - **Key Relationships**:
   ```
   User → Business (1:1)
-  Business → Services (1:N)
-  Business → Bookings (1:N)
-  Service → Bookings (1:N)
+  Business → Branches (1:N)
+  Branch → Services (1:N)
+  Branch → ServiceCategories (1:N)
+  ServiceCategory → Services (1:N, optional)
+  Branch → Bookings (1:N)
+  Branch → BusinessClosures (1:N)
+  Service → Bookings (1:N through BookingService join table)
   ```
 
-#### 4. Security Architecture (✅ Complete)
+- **Booking Availability Check**: Direct overlap query against `bookings` table using PostgreSQL range overlap (`scheduled_at < end_time AND end_time > start_time`). No pre-generated slots. Respects branch-level capacity, operating hours, and business closures.
+
+#### 5. Security Architecture (✅ Complete)
 - **Multi-layer Security**:
   - Authentication checks
   - Onboarding completion enforcement
@@ -83,7 +111,7 @@ thembooking_com/
   - CSRF protection
   - SQL injection prevention
 
-#### 5. Frontend Implementation (🚧 Partial)
+#### 6. Frontend Implementation (🚧 Partial)
 - **Technology Stack**:
   - Rails Server-Side Rendering (SSR)
   - Hotwire (Turbo + Stimulus)
@@ -207,27 +235,156 @@ Hosting: Self-hosted
    - Email verification and password reset
    - Rate limiting and security measures
 
-2. **Onboarding System (Full Implementation)**
+2. **Admin Panel & Staff Management**
+   - Staff CRUD operations (super_admin only)
+   - Admin users management
+   - Admin businesses management
+   - Secure role-based access control
+
+3. **Onboarding System (Full Implementation)**
    - 4-step progressive onboarding flow
    - Step validation and progress tracking
    - Security-enforced access control
    - Enhanced user experience with proper redirects
 
-3. **Database Architecture**
+4. **Multi-Location Architecture (Phases 1-4 Complete)**
+   - Phase 1: Branch model with location-specific data (slug, address, phone, operating_hours, capacity)
+   - Phase 1: Business model refactored to brand entity (name, business_type, description, logo)
+   - Phase 1: Service, Booking, BusinessClosure now belong_to branch (not business)
+   - Phase 1: Zero-downtime data migration with auto-created "Main Branch" for existing businesses
+   - Phase 2: Dashboard Branch CRUD with nested resource routing
+   - Phase 2: Branch activation/deactivation controls
+   - Phase 3: Public booking page updated for branch context (route: `/:branch_slug` instead of `/:business_slug`)
+   - Phase 3: React booking components updated to use branch data for branding and availability
+   - Phase 4: Comprehensive test coverage - 316/316 tests all passing
+   - Phase 4: System test fixes - Capybara session reset, flash role="alert", field label corrections
+   - Booking availability checks use branch-level capacity and hours
+   - Business form refactored to brand-only (removed location fields)
+
+5. **Database Architecture**
    - Complete schema with relationships
    - Proper indexing for performance
    - Data validation and constraints
 
-4. **Security Foundation**
-   - Multi-layer authentication
+6. **Security Foundation**
+   - Multi-layer authentication (user + staff)
    - Onboarding completion enforcement
    - Email verification requirements
+   - Role-based access control
    - SQL injection prevention
+
+### ✅ Business Landing Page Foundation (Phase 1 Complete)
+1. **Database Schema**
+   - Added `slug` (unique, indexed) to `businesses` for public routing
+   - Added `headline` (max 200 chars) for landing page hero text
+   - Added `theme_color` (hex color, default #000000) for brand customization
+   - Added `cover_photo` via Active Storage for hero image
+
+2. **Validation Architecture**
+   - Auto-generated slug from business name (parameterized, max 50 chars)
+   - Cross-table slug uniqueness enforced between `businesses.slug` and `branches.slug`
+   - Custom validator `SlugUniquenessValidator` prevents slug collisions
+   - Cover photo validation: JPEG/PNG/WebP, max 10MB
+
+3. **Testing**
+   - 97 new comprehensive specs for slug generation, validation, and cross-table uniqueness
+   - Full test suite: 399/401 passing (2 pre-existing unrelated failures)
+
+### ✅ Service Category Management (Complete)
+1. **Dashboard Service Categories CRUD**
+   - Full CRUD operations for service categories (create, read, update, delete)
+   - Nested resource routing under branches (`/dashboard/branches/:branch_id/service_categories`)
+   - Service assignment interface (multi-select checkbox form)
+   - Unique name constraint per branch (case-insensitive)
+
+2. **Service Form Integration**
+   - Category dropdown with optional selection
+   - Inline quick-create feature (Stimulus controller)
+   - JSON API endpoint for quick-create response
+   - Seamless category assignment during service creation/edit
+
+3. **Internationalization**
+   - Full i18n support (English + Vietnamese)
+   - Locale keys for all UI text and form labels
+
+4. **Testing**
+   - 338 passing tests (0 failures)
+   - Model specs with validation and dependent nullify tests
+   - Request specs covering all CRUD operations + cross-branch isolation
+   - Service assignment test coverage
+
+### ✅ Public Booking Page Service Category Grouping (Complete)
+1. **Backend Integration**
+   - `BookingsController#react_new` and `create` eager-load service categories (prevents N+1)
+   - `react_new.html.erb` serializes `service_category_id`, `service_category_name`, `service_category_position` to JSON
+
+2. **Frontend Refactoring**
+   - `ServiceSelector.jsx` groups services by category using `groupServicesByCategory()` utility
+   - Extracted `ServiceCard` component to eliminate duplicate card rendering
+   - Category headers render with proper styling (slate-700, lg font-semibold)
+   - Uncategorized services appear under "Other" section at bottom
+
+3. **Backward Compatibility**
+   - Flat grid renders when zero services have categories assigned
+   - No "Other" header shown in flat-grid mode
+   - Existing service selection behavior preserved across groups
+
+4. **Test Coverage**
+   - Request specs verify category fields in react_new JSON response
+   - Both categorized and uncategorized service scenarios tested
+   - 338 total tests passing with no regressions
+
+### ✅ Business Landing Page Phases 5-6 (Complete)
+
+**Phase 5: Branch Picker Modal**
+1. **Component Architecture**
+   - `BranchPickerModal.jsx` — modal component with backdrop, branch cards, close button
+   - `OpenBadge` subcomponent — real-time "Open Now" / "Closed" status from `operating_hours`
+   - Integrated into `LandingApp.jsx` with state management
+
+2. **Features Implemented**
+   - Modal triggered when 2+ active branches exist on "Book Now" click
+   - Single-branch businesses skip modal and navigate directly
+   - Branch cards display: name, address, phone, operating status
+   - Close via X button, Escape key, or backdrop click
+   - Body scroll lock while modal open
+   - Focus management and accessibility (role="dialog", aria-label)
+
+3. **Technical Details**
+   - `useEffect` for Escape key listener and scroll lock cleanup
+   - Real-time status calculation based on current time vs `operating_hours` JSONB
+   - Timezone caveat: uses browser local time (acceptable for MVP)
+
+**Phase 6: Dashboard Landing Page Editor**
+1. **Controller Implementation**
+   - `app/controllers/dashboard/landing_page_controller.rb` — edit/update actions
+   - JSONB merge for `landing_page_config` (slug, headline, description, theme_color, cover_photo, toggles, CTA text)
+   - Strong parameter filtering for security
+
+2. **View & Form**
+   - `app/views/dashboard/landing_page/edit.html.erb` — full form with all editable fields
+   - Slug preview showing full URL (`thembooking.com/your-slug`)
+   - Color picker (HTML5 color input + hex validation)
+   - Cover photo upload with preview and remove option
+   - Section visibility toggles (show_services, show_gallery, show_hours, show_contact)
+   - Custom CTA text input (default: "Book Now")
+   - Live preview link to public landing page
+
+3. **Routing & Navigation**
+   - `resource :landing_page` nested under `resource :business` in `config/routes.rb`
+   - Full routes: `GET/PATCH /dashboard/business/landing_page`
+   - Added "Landing Page" nav link to dashboard sidebar with globe icon
+
+4. **Testing**
+   - `spec/requests/dashboard/landing_page_spec.rb` — 10 comprehensive specs
+   - Tests: form rendering, field pre-filling, slug updates, cover photo upload, toggle persistence, validation errors
+   - All specs passing
 
 ### 🚧 In Progress Features
 1. **Service Management Interface**
    - Basic CRUD operations implemented
-   - UI refinement needed
+   - Category grouping now available
+   - UI refinement ongoing
 
 2. **Business Profile Management**
    - Edit functionality complete
@@ -254,22 +411,30 @@ Hosting: Self-hosted
 # app/services/bookings/check_availability.rb
 module Bookings
   class CheckAvailability
-    def initialize(business:, date:, service:)
+    SLOT_INTERVAL = 15.minutes
+    ACTIVE_STATUSES = %w[pending confirmed in_progress].freeze
+
+    def initialize(business:, service: nil, service_ids: nil, date:)
       @business = business
-      @date = date
       @service = service
+      @service_ids = service_ids ? Array(service_ids) : nil
+      @date = date.is_a?(String) ? Date.parse(date) : date
     end
 
     def call
-      validate_inputs!
-      check_operating_hours!
-      check_existing_bookings!
-      check_capacity!
-      available_slots
+      return [] if business_closed_on_date?
+      day_hours = operating_hours_for_date
+      return [] if day_hours.nil? || day_hours["closed"]
+      total_duration = calculate_total_duration
+      return [] if total_duration.zero?
+      candidates = generate_candidate_times(day_hours, total_duration)
+      candidates.select { |start_time| available_at?(start_time, total_duration) }
     end
   end
 end
 ```
+
+**Note:** Uses direct overlap query against `bookings` table (PostgreSQL range overlap check) instead of pre-generated slots. Respects `business_closures` table for holiday/closure dates and `operating_hours` JSONB for breaks.
 
 ### 2. Controller Namespace Pattern
 ```ruby
@@ -481,6 +646,8 @@ Key strengths:
 The codebase is well-positioned for continued development and scaling, with clear patterns and standards that will facilitate future feature additions and maintenance.
 
 *Generated*: December 7, 2025
-*Version*: v0.1.2
-*Code Size*: 8,375 lines of Ruby code
+*Last Updated*: March 25, 2026
+*Version*: v0.3.0 (Business Landing Page Complete + Branch Picker Modal + Dashboard Editor)
+*Code Size*: 8,700+ lines of Ruby code
+*Test Count*: 348+ tests (all passing)
 *Development Methodology*: Test-Driven Development (TDD)

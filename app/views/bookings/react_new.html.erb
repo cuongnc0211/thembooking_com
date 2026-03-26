@@ -6,13 +6,13 @@
 
 <div
   id="react-booking-root"
-  data-business-slug="<%= @business.slug %>"
+  data-branch-slug="<%= @branch.slug %>"
   data-business="<%= {
-    id: @business.id,
+    id: @branch.id,
     name: @business.name,
     description: @business.description,
-    address: @business.address,
-    phone: @business.phone
+    address: @branch.address,
+    phone: @branch.phone
   }.to_json %>"
   data-services="<%= @services.map { |s|
     {
@@ -21,7 +21,10 @@
       description: s.description,
       duration_minutes: s.duration_minutes,
       price_cents: s.price.to_i,
-      price_format: s.price.format
+      price_format: s.price.format,
+      service_category_id: s.service_category_id,
+      service_category_name: s.service_category&.name,
+      service_category_position: s.service_category&.position
     }
   }.to_json %>"
   data-turbo="false"

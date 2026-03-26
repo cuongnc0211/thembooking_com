@@ -14,13 +14,11 @@ RSpec.describe 'User Sign Up', type: :system do
       fill_in 'user[password]', with: 'secure_password123'
       fill_in 'user[password_confirmation]', with: 'secure_password123'
 
-      expect {
-        find('input[type="submit"]').click # Use generic submit button selector
-      }.to change(User, :count).by(1)
+      click_button 'Create account'
 
-      # Verify user attributes
-      user = User.last
-      expect(user.email_address).to eq('newuser@example.com')
+      # Wait for redirect and verify user was created
+      expect(page).to have_content('Please check your email to confirm your account.')
+      expect(User.find_by(email_address: 'newuser@example.com')).to be_present
     end
   end
 
@@ -32,13 +30,13 @@ RSpec.describe 'User Sign Up', type: :system do
 
       fill_in 'Email', with: 'taken@example.com'
       fill_in 'Password', with: 'password123'
-      fill_in 'Password confirmation', with: 'password123'
+      fill_in 'Password Confirmation', with: 'password123'
 
       expect {
-        click_button 'Sign up'
+        click_button 'Create account'
       }.not_to change(User, :count)
 
-      expect(page).to have_content('has already been taken')
+      expect(page).to have_content('is already registered')
     end
 
     it 'shows error when password confirmation does not match' do
@@ -46,9 +44,9 @@ RSpec.describe 'User Sign Up', type: :system do
 
       fill_in 'Email', with: 'user@example.com'
       fill_in 'Password', with: 'password123'
-      fill_in 'Password confirmation', with: 'different_password'
+      fill_in 'Password Confirmation', with: 'different_password'
 
-      click_button 'Sign up'
+      click_button 'Create account'
 
       expect(page).to have_content("doesn't match")
     end
@@ -58,9 +56,9 @@ RSpec.describe 'User Sign Up', type: :system do
 
       fill_in 'Email', with: 'user@example.com'
       fill_in 'Password', with: '123'
-      fill_in 'Password confirmation', with: '123'
+      fill_in 'Password Confirmation', with: '123'
 
-      click_button 'Sign up'
+      click_button 'Create account'
 
       expect(page).to have_content('is too short')
     end
@@ -69,7 +67,7 @@ RSpec.describe 'User Sign Up', type: :system do
       visit new_registration_path
 
       # Leave all fields empty
-      click_button 'Sign up'
+      click_button 'Create account'
 
       expect(page).to have_content("can't be blank")
     end
@@ -85,7 +83,8 @@ RSpec.describe 'User Sign Up', type: :system do
                     password: 'password123'
                   )
 
-      expect(User.last.email_address).to eq('newuser@example.com')
+      expect(page).to have_content('Please check your email to confirm your account.')
+      expect(User.find_by(email_address: 'newuser@example.com')).to be_present
     end
 
     it 'shows email taken error using page object' do

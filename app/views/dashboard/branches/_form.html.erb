@@ -1,0 +1,54 @@
+<%= form_with model: [:dashboard, branch], class: "space-y-6" do |form| %>
+  <% if branch.errors.any? %>
+    <div class="bg-red-50 border border-red-100 text-red-700 px-4 py-3 rounded-xl">
+      <ul class="list-disc list-inside">
+        <% branch.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Branch Name -->
+  <div>
+    <%= form.label :name, "Branch Name", class: "form-label" %>
+    <%= form.text_field :name, class: "form-input", placeholder: "e.g. Main Branch, District 1 Branch" %>
+  </div>
+
+  <!-- Slug -->
+  <div>
+    <%= form.label :slug, "Booking URL Slug", class: "form-label" %>
+    <div class="mt-1 flex rounded-xl shadow-sm">
+      <%= form.text_field :slug, class: "flex-1 form-input rounded-r-none border-r-0 focus:ring-0", placeholder: "my-branch-name" %>
+      <span class="inline-flex items-center px-4 rounded-r-xl border border-l-0 border-slate-200 bg-slate-50 text-slate-500 text-sm font-medium">
+        .thembooking.com
+      </span>
+    </div>
+    <p class="mt-1.5 text-sm text-slate-500">Lowercase letters, numbers, and hyphens only. Minimum 3 characters.</p>
+  </div>
+
+  <!-- Address -->
+  <div>
+    <%= form.label :address, "Address", class: "form-label" %>
+    <%= form.text_field :address, class: "form-input", placeholder: "123 Street, District, City" %>
+  </div>
+
+  <!-- Phone -->
+  <div>
+    <%= form.label :phone, "Phone Number", class: "form-label" %>
+    <%= form.telephone_field :phone, class: "form-input", placeholder: "0912345678" %>
+  </div>
+
+  <!-- Capacity -->
+  <div>
+    <%= form.label :capacity, "Capacity", class: "form-label" %>
+    <%= form.number_field :capacity, class: "form-input", min: 1, max: 50, placeholder: "5" %>
+    <p class="mt-1.5 text-sm text-slate-500">Maximum number of customers that can be served simultaneously (1–50).</p>
+  </div>
+
+  <!-- Submit -->
+  <div class="flex items-center gap-4 pt-4 border-t border-slate-100">
+    <%= form.submit branch.persisted? ? "Update Branch" : "Create Branch", class: "btn-primary cursor-pointer" %>
+    <%= link_to "Cancel", branch.persisted? ? dashboard_branch_path(branch) : dashboard_branches_path, class: "btn-ghost" %>
+  </div>
+<% end %>

@@ -10,7 +10,7 @@ module PageObjects
 
     # Common utility methods
     def has_flash_notice?(message)
-      within('.flash.notice, .alert.alert-success, [role="alert"]') do
+      within('.flash.notice, .alert.alert-success, [role="status"], [data-flash-type="notice"]') do
         has_content?(message)
       end
     rescue Capybara::ElementNotFound
@@ -18,7 +18,7 @@ module PageObjects
     end
 
     def has_flash_alert?(message)
-      within('.flash.alert, .alert.alert-danger, [role="alert"]') do
+      within('.flash.alert, .alert.alert-danger, [role="alert"][data-flash-type="alert"]') do
         has_content?(message)
       end
     rescue Capybara::ElementNotFound

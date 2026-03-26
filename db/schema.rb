@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_06_171152) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_24_072048) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,15 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_06_171152) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "admin_sessions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "ip_address"
+    t.bigint "staff_id", null: false
+    t.datetime "updated_at", null: false
+    t.string "user_agent"
+    t.index ["staff_id"], name: "index_admin_sessions_on_staff_id"
+  end
+
   create_table "booking_services", force: :cascade do |t|
     t.bigint "booking_id", null: false
     t.datetime "created_at", null: false
@@ -52,48 +61,61 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_06_171152) do
     t.index ["service_id"], name: "index_booking_services_on_service_id"
   end
 
-  create_table "booking_slots", force: :cascade do |t|
-    t.bigint "booking_id", null: false
-    t.datetime "created_at", null: false
-    t.bigint "slot_id", null: false
-    t.datetime "updated_at", null: false
-    t.index ["booking_id", "slot_id"], name: "index_booking_slots_on_booking_and_slot", unique: true
-    t.index ["booking_id"], name: "index_booking_slots_on_booking_id"
-    t.index ["slot_id"], name: "index_booking_slots_on_slot_id"
-  end
-
   create_table "bookings", force: :cascade do |t|
-    t.bigint "business_id", null: false
+    t.bigint "branch_id", null: false
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.string "customer_email", limit: 255
     t.string "customer_name", limit: 100, null: false
     t.string "customer_phone", limit: 20, null: false
+    t.datetime "end_time", null: false
     t.text "notes"
     t.datetime "scheduled_at", null: false
     t.integer "source", default: 0, null: false
     t.datetime "started_at"
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
-    t.index ["business_id", "scheduled_at"], name: "index_bookings_on_business_id_and_scheduled_at"
-    t.index ["business_id", "status"], name: "index_bookings_on_business_id_and_status"
-    t.index ["business_id"], name: "index_bookings_on_business_id"
+    t.index ["branch_id"], name: "index_bookings_on_branch_id"
     t.index ["customer_email"], name: "index_bookings_on_customer_email"
     t.index ["customer_phone"], name: "index_bookings_on_customer_phone"
   end
 
-  create_table "businesses", force: :cascade do |t|
+  create_table "branches", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
     t.string "address"
-    t.string "business_type", default: "barber", null: false
+    t.bigint "business_id", null: false
     t.integer "capacity", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.string "name", default: "Main Branch", null: false
+    t.jsonb "operating_hours", default: {}
+    t.string "phone"
+    t.integer "position", default: 0
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.index ["business_id", "active"], name: "index_branches_on_business_id_and_active"
+    t.index ["business_id"], name: "index_branches_on_business_id"
+    t.index ["slug"], name: "index_branches_on_slug", unique: true
+  end
+
+  create_table "business_closures", force: :cascade do |t|
+    t.bigint "branch_id", null: false
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.string "reason", limit: 255
+    t.datetime "updated_at", null: false
+    t.index ["branch_id"], name: "index_business_closures_on_branch_id"
+  end
+
+  create_table "businesses", force: :cascade do |t|
+    t.string "business_type", default: "barber", null: false
     t.datetime "created_at", null: false
     t.string "currency", limit: 3, default: "VND", null: false
     t.text "description"
+    t.string "headline", limit: 200
     t.jsonb "landing_page_config", default: {}
     t.string "name", null: false
-    t.jsonb "operating_hours", default: {}
-    t.string "phone"
-    t.string "slug", null: false
+    t.string "slug", limit: 50, null: false
+    t.string "theme_color", limit: 7, default: "#000000"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["slug"], name: "index_businesses_on_slug", unique: true
@@ -101,9 +123,29 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_06_171152) do
     t.index ["user_id"], name: "index_businesses_on_user_id_unique", unique: true
   end
 
+  create_table "gallery_photos", force: :cascade do |t|
+    t.bigint "business_id", null: false
+    t.string "caption", limit: 200
+    t.datetime "created_at", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["business_id", "position"], name: "index_gallery_photos_on_business_id_and_position"
+    t.index ["business_id"], name: "index_gallery_photos_on_business_id"
+  end
+
+  create_table "service_categories", force: :cascade do |t|
+    t.bigint "branch_id", null: false
+    t.datetime "created_at", null: false
+    t.string "name", limit: 100, null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["branch_id", "name"], name: "index_service_categories_on_branch_id_and_name", unique: true
+    t.index ["branch_id"], name: "index_service_categories_on_branch_id"
+  end
+
   create_table "services", force: :cascade do |t|
     t.boolean "active", default: true
-    t.bigint "business_id", null: false
+    t.bigint "branch_id", null: false
     t.datetime "created_at", null: false
     t.string "currency", limit: 3, default: "VND", null: false
     t.text "description"
@@ -111,10 +153,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_06_171152) do
     t.string "name", limit: 100, null: false
     t.integer "position", default: 0
     t.integer "price_cents", null: false
+    t.bigint "service_category_id"
     t.datetime "updated_at", null: false
-    t.index ["business_id", "active"], name: "index_services_on_business_id_and_active"
-    t.index ["business_id", "position"], name: "index_services_on_business_id_and_position"
-    t.index ["business_id"], name: "index_services_on_business_id"
+    t.index ["branch_id"], name: "index_services_on_branch_id"
+    t.index ["service_category_id"], name: "index_services_on_service_category_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -126,19 +168,17 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_06_171152) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
-  create_table "slots", force: :cascade do |t|
-    t.bigint "business_id", null: false
-    t.integer "capacity", default: 0, null: false
+  create_table "staffs", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
-    t.date "date", null: false
-    t.datetime "end_time", null: false
-    t.integer "original_capacity", default: 0, null: false
-    t.datetime "start_time", null: false
+    t.string "email_address", null: false
+    t.string "name", null: false
+    t.string "password_digest", null: false
+    t.integer "role", default: 0, null: false
     t.datetime "updated_at", null: false
-    t.index ["business_id", "date"], name: "index_slots_on_business_and_date"
-    t.index ["business_id", "start_time"], name: "index_slots_on_business_and_start_time", unique: true
-    t.index ["business_id"], name: "index_slots_on_business_id"
-    t.index ["date"], name: "index_slots_on_date"
+    t.index ["active"], name: "index_staffs_on_active"
+    t.index ["email_address"], name: "index_staffs_on_email_address", unique: true
+    t.index ["role"], name: "index_staffs_on_role"
   end
 
   create_table "users", force: :cascade do |t|
@@ -165,13 +205,16 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_06_171152) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "admin_sessions", "staffs"
   add_foreign_key "booking_services", "bookings"
   add_foreign_key "booking_services", "services"
-  add_foreign_key "booking_slots", "bookings"
-  add_foreign_key "booking_slots", "slots"
-  add_foreign_key "bookings", "businesses"
+  add_foreign_key "bookings", "branches"
+  add_foreign_key "branches", "businesses"
+  add_foreign_key "business_closures", "branches"
   add_foreign_key "businesses", "users"
-  add_foreign_key "services", "businesses"
+  add_foreign_key "gallery_photos", "businesses"
+  add_foreign_key "service_categories", "branches"
+  add_foreign_key "services", "branches"
+  add_foreign_key "services", "service_categories"
   add_foreign_key "sessions", "users"
-  add_foreign_key "slots", "businesses"
 end

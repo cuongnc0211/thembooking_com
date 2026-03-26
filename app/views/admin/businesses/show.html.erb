@@ -1,0 +1,130 @@
+<% admin_breadcrumbs(link_to("Businesses", admin_businesses_path), @business.name) %>
+
+<div class="mb-6 flex items-center justify-between">
+  <h1 class="text-2xl font-bold text-gray-900"><%= @business.name %></h1>
+  <div class="flex gap-2">
+    <%= link_to "Edit", edit_admin_business_path(@business),
+        class: "px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg" %>
+    <%= link_to "Delete", admin_business_path(@business),
+        data: { turbo_method: :delete, turbo_confirm: "Delete this business? All services and bookings will be destroyed." },
+        class: "px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg" %>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+  <%# Info card %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Business Info</h2>
+    <% main_branch = @business.branches.first %>
+    <dl class="space-y-3 text-sm">
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Name</dt>
+        <dd class="text-gray-900 font-medium"><%= @business.name %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Slug</dt>
+        <dd class="text-gray-900"><%= main_branch&.slug || "---" %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Type</dt>
+        <dd><span class="bg-indigo-100 text-indigo-800 rounded-full px-2 py-0.5 text-xs font-medium"><%= @business.business_type.humanize %></span></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Address</dt>
+        <dd class="text-gray-900"><%= main_branch&.address.presence || "---" %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Phone</dt>
+        <dd class="text-gray-900"><%= main_branch&.phone.presence || "---" %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Capacity</dt>
+        <dd class="text-gray-900"><%= main_branch&.capacity || "---" %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Currency</dt>
+        <dd class="text-gray-900"><%= @business.currency.presence || "---" %></dd>
+      </div>
+      <% if @business.description.present? %>
+        <div>
+          <dt class="text-gray-500 mb-1">Description</dt>
+          <dd class="text-gray-900"><%= @business.description %></dd>
+        </div>
+      <% end %>
+    </dl>
+  </div>
+
+  <%# Owner card %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Owner</h2>
+    <dl class="space-y-3 text-sm">
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Name</dt>
+        <dd class="text-gray-900 font-medium">
+          <%= link_to @business.user.name, admin_user_path(@business.user), class: "hover:text-indigo-600" %>
+        </dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Email</dt>
+        <dd class="text-gray-900"><%= @business.user.email_address %></dd>
+      </div>
+    </dl>
+  </div>
+
+  <%# Stats card %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Stats</h2>
+    <dl class="space-y-3 text-sm">
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Services</dt>
+        <dd class="text-gray-900 font-medium"><%= @business.services.count %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Bookings</dt>
+        <dd class="text-gray-900 font-medium"><%= @business.bookings.count %></dd>
+      </div>
+    </dl>
+  </div>
+
+  <%# Operating Hours card — shows main branch hours %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Operating Hours (Main Branch)</h2>
+    <% branch_hours = @business.branches.first&.operating_hours %>
+    <% if branch_hours.present? %>
+      <dl class="space-y-2 text-sm">
+        <% Branch::WEEKDAYS.each do |day| %>
+          <% day_hours = branch_hours[day] %>
+          <div class="flex justify-between">
+            <dt class="text-gray-500 capitalize"><%= day %></dt>
+            <dd class="text-gray-900">
+              <% if day_hours && !day_hours["closed"] %>
+                <%= day_hours["open"] %> - <%= day_hours["close"] %>
+              <% else %>
+                <span class="text-gray-400">Closed</span>
+              <% end %>
+            </dd>
+          </div>
+        <% end %>
+      </dl>
+    <% else %>
+      <p class="text-sm text-gray-400">Not configured.</p>
+    <% end %>
+  </div>
+
+  <%# Meta card %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Meta</h2>
+    <dl class="space-y-3 text-sm">
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Created</dt>
+        <dd class="text-gray-900"><%= @business.created_at.strftime("%b %d, %Y %H:%M") %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Updated</dt>
+        <dd class="text-gray-900"><%= @business.updated_at.strftime("%b %d, %Y %H:%M") %></dd>
+      </div>
+    </dl>
+  </div>
+
+</div>

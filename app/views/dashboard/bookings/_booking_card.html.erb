@@ -95,25 +95,25 @@
     <% end %>
   </div>
 
-  <!-- Action Buttons (will add in Phase 2) -->
+  <!-- Action Buttons -->
   <div class="flex gap-2 pt-4 border-t border-slate-200">
-    <%= link_to "View Details", dashboard_booking_path(booking), class: "text-sm text-primary-600 hover:text-primary-800 font-medium" %>
+    <%= link_to "View Details", dashboard_branch_booking_path(branch, booking), class: "text-sm text-primary-600 hover:text-primary-800 font-medium" %>
 
     <% case booking.status %>
     <% when "pending" %>
-      <%= button_to "Confirm", confirm_dashboard_booking_path(booking), method: :patch, class: "text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded font-medium cursor-pointer" %>
+      <%= button_to "Confirm", confirm_dashboard_branch_booking_path(branch, booking), method: :patch, class: "text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded font-medium cursor-pointer" %>
     <% when "confirmed" %>
-      <%= button_to "Start Service", start_dashboard_booking_path(booking), method: :patch, class: "text-sm bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded font-medium cursor-pointer" %>
+      <%= button_to "Start Service", start_dashboard_branch_booking_path(branch, booking), method: :patch, class: "text-sm bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded font-medium cursor-pointer" %>
     <% when "in_progress" %>
-      <%= button_to "Complete", complete_dashboard_booking_path(booking), method: :patch, class: "text-sm bg-slate-600 hover:bg-slate-700 text-white px-3 py-1 rounded font-medium cursor-pointer" %>
+      <%= button_to "Complete", complete_dashboard_branch_booking_path(branch, booking), method: :patch, class: "text-sm bg-slate-600 hover:bg-slate-700 text-white px-3 py-1 rounded font-medium cursor-pointer" %>
     <% end %>
 
     <% if ["pending", "confirmed", "in_progress"].include?(booking.status) %>
-      <%= button_to "Cancel", cancel_dashboard_booking_path(booking), method: :patch, data: { turbo_confirm: "Are you sure you want to cancel this booking?" }, class: "text-sm text-red-600 hover:text-red-800 font-medium cursor-pointer ml-auto" %>
+      <%= button_to "Cancel", cancel_dashboard_branch_booking_path(branch, booking), method: :patch, data: { turbo_confirm: "Are you sure you want to cancel this booking?" }, class: "text-sm text-red-600 hover:text-red-800 font-medium cursor-pointer ml-auto" %>
     <% end %>
 
     <% if ["confirmed", "in_progress"].include?(booking.status) %>
-      <%= button_to "No Show", no_show_dashboard_booking_path(booking), method: :patch, data: { turbo_confirm: "Mark this booking as no-show?" }, class: "text-sm text-orange-600 hover:text-orange-800 font-medium cursor-pointer" %>
+      <%= button_to "No Show", no_show_dashboard_branch_booking_path(branch, booking), method: :patch, data: { turbo_confirm: "Mark this booking as no-show?" }, class: "text-sm text-orange-600 hover:text-orange-800 font-medium cursor-pointer" %>
     <% end %>
   </div>
 </div>

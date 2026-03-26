@@ -34,6 +34,11 @@ vi:
         active: "Hoạt động"
         position: "Vị trí"
 
+      service_category:
+        name: "Tên"
+        position: "Vị Trí"
+        branch: "Chi Nhánh"
+
     errors:
       models:
         user:

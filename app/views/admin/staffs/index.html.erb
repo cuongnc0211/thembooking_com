@@ -1,0 +1,103 @@
+<% admin_breadcrumbs("Staffs") %>
+
+<div class="mb-6 flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Staffs</h1>
+    <p class="text-sm text-gray-500 mt-1"><%= @total %> total staffs</p>
+  </div>
+  <%= link_to "New Staff", new_admin_staff_path,
+      class: "px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg" %>
+</div>
+
+<%# Search form %>
+<div class="mb-4">
+  <%= form_with url: admin_staffs_path, method: :get, local: true, class: "flex gap-2" do |f| %>
+    <%= f.text_field :q, value: params[:q], placeholder: "Search by name or email…",
+        class: "block w-full max-w-sm rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    <%= f.submit "Search", class: "px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg cursor-pointer" %>
+    <% if params[:q].present? %>
+      <%= link_to "Clear", admin_staffs_path, class: "px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg" %>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Active</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @staffs.each do |staff| %>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              <%= link_to staff.name, admin_staff_path(staff), class: "hover:text-indigo-600" %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= staff.email_address %></td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <%
+                role_classes = case staff.role
+                  when "super_admin" then "bg-red-100 text-red-800"
+                  when "developer"   then "bg-blue-100 text-blue-800"
+                  when "sale"        then "bg-green-100 text-green-800"
+                  when "accountant"  then "bg-yellow-100 text-yellow-800"
+                  else "bg-gray-100 text-gray-800"
+                end
+              %>
+              <span class="<%= role_classes %> rounded-full px-2 py-0.5 text-xs font-medium">
+                <%= staff.role.humanize %>
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <% if staff.active? %>
+                <span class="text-green-600" title="Active">&#10003;</span>
+              <% else %>
+                <span class="text-red-500" title="Inactive">&#10007;</span>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= staff.created_at.strftime("%b %d, %Y") %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+              <%= link_to "Show", admin_staff_path(staff), class: "text-indigo-600 hover:text-indigo-800" %>
+              <%= link_to "Edit", edit_admin_staff_path(staff), class: "text-gray-600 hover:text-gray-800" %>
+              <%= link_to "Delete", admin_staff_path(staff),
+                  data: { turbo_method: :delete, turbo_confirm: "Delete this staff member? This cannot be undone." },
+                  class: "text-red-600 hover:text-red-800" %>
+            </td>
+          </tr>
+        <% end %>
+        <% if @staffs.empty? %>
+          <tr>
+            <td colspan="6" class="px-6 py-10 text-center text-sm text-gray-400">No staffs found.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <%# Pagination %>
+  <% total_pages = (@total.to_f / @per_page).ceil %>
+  <% if total_pages > 1 %>
+    <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between text-sm text-gray-500">
+      <span>Page <%= @page %> of <%= total_pages %> (<%= @total %> staffs)</span>
+      <div class="flex gap-2">
+        <% if @page > 1 %>
+          <%= link_to "Previous", admin_staffs_path(q: params[:q], page: @page - 1),
+              class: "px-3 py-1 rounded border border-gray-300 hover:bg-gray-50" %>
+        <% end %>
+        <% if @page < total_pages %>
+          <%= link_to "Next", admin_staffs_path(q: params[:q], page: @page + 1),
+              class: "px-3 py-1 rounded border border-gray-300 hover:bg-gray-50" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

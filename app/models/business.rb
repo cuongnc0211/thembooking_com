@@ -1,123 +1,47 @@
 class Business < ApplicationRecord
   belongs_to :user
-  has_many :services, dependent: :destroy
-  has_many :bookings, dependent: :destroy
-  has_many :slots, dependent: :destroy
+  has_many :branches, dependent: :destroy
+  has_many :services, through: :branches
+  has_many :bookings, through: :branches
+  has_many :gallery_photos, dependent: :destroy
   has_one_attached :logo
-
-  accepts_nested_attributes_for :services, allow_destroy: true, reject_if: :all_blank
+  has_one_attached :cover_photo
 
   # Constants
-  WEEKDAYS = %w[monday tuesday wednesday thursday friday saturday sunday].freeze
   BUSINESS_TYPES = %w[barber salon spa nail other]
 
   enum :business_type, BUSINESS_TYPES.zip(BUSINESS_TYPES).to_h
 
-  # Callbacks
-  after_initialize :set_default_operating_hours, if: :need_init_operating_hours
+  # Auto-generate slug from name before validation if not set
+  before_validation :generate_slug, if: -> { slug.blank? && name.present? }
+  normalizes :slug, with: ->(s) { s.strip.downcase }
 
   # Validations
   validates :name, presence: true, length: { maximum: 100 }
+  validates :business_type, presence: true
+  validates :user_id, uniqueness: { message: "already has a business" }
   validates :slug, presence: true,
                    uniqueness: { case_sensitive: false },
                    format: { with: /\A[a-z0-9\-]+\z/, message: "only allows lowercase letters, numbers, and hyphens" },
-                   length: { minimum: 3, maximum: 50 }
-  validates :business_type, presence: true
-  validates :capacity, presence: true,
-                       numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 50 }
-  validates :phone, format: { with: /\A[0-9\s\-\+\(\)]+\z/, message: "only allows numbers and basic formatting" },
-                    allow_blank: true
-  validates :user_id, uniqueness: { message: "already has a business" }
+                   length: { minimum: 3, maximum: 50 },
+                   slug_uniqueness: true
+  validates :headline, length: { maximum: 200 }, allow_blank: true
+  validates :theme_color, format: { with: /\A#[0-9a-fA-F]{6}\z/ }, allow_blank: true
   validate :logo_format
-  validate :operating_hours_format
-  validate :operating_hours_logic
-  validate :breaks_within_operating_hours
-  validate :breaks_do_not_overlap
-
-  # Normalize slug before validation
-  normalizes :slug, with: ->(slug) { slug.strip.downcase }
-
-  def booking_url
-    if Rails.env.development?
-      "localhost:3000/#{slug}"
-    else
-      "thembooking.com/#{slug}"
-    end
-  end
-
-  # Operating hours helper methods
-  def open_on?(day_name)
-    hours = operating_hours&.dig(day_name.to_s.downcase)
-    return false unless hours
-    !hours["closed"]
-  end
-
-  def hours_for(day_name)
-    operating_hours&.dig(day_name.to_s.downcase)
-  end
-
-  def operating_on?(datetime)
-    return false unless datetime
-
-    day_name = datetime.strftime("%A").downcase
-    hours = hours_for(day_name)
-    return false unless hours && !hours["closed"]
-
-    time_str = datetime.strftime("%H:%M")
-    open_time = hours["open"]
-    close_time = hours["close"]
-
-    return false unless time_str >= open_time && time_str < close_time
-
-    # Check if on break
-    !on_break?(datetime)
-  end
-
-  def on_break?(datetime)
-    return false unless datetime
-
-    day_name = datetime.strftime("%A").downcase
-    hours = hours_for(day_name)
-    return false unless hours
-
-    breaks = hours["breaks"] || []
-    time_str = datetime.strftime("%H:%M")
-
-    breaks.any? do |break_period|
-      break_start = break_period["start"]
-      break_end = break_period["end"]
-      time_str >= break_start && time_str < break_end
-    end
-  end
-
-  # Capacity tracking methods
-  def current_capacity_usage
-    bookings.where(status: :in_progress).count
-  end
-
-  def capacity_percentage
-    return 0 if capacity.zero?
-    (current_capacity_usage.to_f / capacity * 100).round
-  end
+  validate :cover_photo_format
 
   private
 
-  def need_init_operating_hours
-    operating_hours.blank?
-  end
-
-  def set_default_operating_hours
-    return if operating_hours.present?
-
-    self.operating_hours = {
-      "monday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [ { "start": "12:00", "end": "13:00" } ] },
-      "tuesday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [ { "start": "12:00", "end": "13:00" } ] },
-      "wednesday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [ { "start": "12:00", "end": "13:00" } ] },
-      "thursday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [ { "start": "12:00", "end": "13:00" } ] },
-      "friday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [ { "start": "12:00", "end": "13:00" } ] },
-      "saturday" => { "open" => "09:00", "close" => "17:00", "closed" => false, "breaks" => [ { "start": "12:00", "end": "13:00" } ] },
-      "sunday" => { "open" => nil, "close" => nil, "closed" => true, "breaks" => [] }
-    }
+  # Auto-generates a slug from name, appending a counter suffix to resolve collisions.
+  def generate_slug
+    base = name.parameterize.first(50)
+    candidate = base
+    counter = 1
+    while Business.where(slug: candidate).exists? || Branch.where(slug: candidate).exists?
+      candidate = "#{base.first(46)}-#{counter}"
+      counter += 1
+    end
+    self.slug = candidate
   end
 
   def logo_format
@@ -132,102 +56,15 @@ class Business < ApplicationRecord
     end
   end
 
-  def operating_hours_format
-    return if operating_hours.blank?
+  def cover_photo_format
+    return unless cover_photo.attached?
 
-    WEEKDAYS.each do |day|
-      hours = operating_hours[day]
-      next unless hours
-
-      is_closed = hours["closed"]
-
-      # Open days must have open and close times
-      if !is_closed && hours["open"].blank?
-        errors.add(:operating_hours, "#{day.capitalize} must have an opening time")
-      end
-
-      if !is_closed && hours["close"].blank?
-        errors.add(:operating_hours, "#{day.capitalize} must have a closing time")
-      end
+    unless cover_photo.content_type.in?(%w[image/jpeg image/png image/webp])
+      errors.add(:cover_photo, "must be a JPEG, PNG, or WebP")
     end
-  end
 
-  def operating_hours_logic
-    return if operating_hours.blank?
-
-    WEEKDAYS.each do |day|
-      hours = operating_hours[day]
-      next unless hours
-      next if hours["closed"] # Skip validation for closed days
-
-      open_time = hours["open"]
-      close_time = hours["close"]
-
-      next if open_time.blank? || close_time.blank?
-
-      if close_time <= open_time
-        errors.add(:operating_hours, "#{day.capitalize} closing time must be after opening time")
-      end
-    end
-  end
-
-  def breaks_within_operating_hours
-    return if operating_hours.blank?
-
-    WEEKDAYS.each do |day|
-      hours = operating_hours[day]
-      next unless hours
-      next if hours["closed"]
-
-      open_time = hours["open"]
-      close_time = hours["close"]
-      breaks = hours["breaks"] || []
-
-      breaks.each do |break_period|
-        break_start = break_period["start"]
-        break_end = break_period["end"]
-
-        next if break_start.blank? || break_end.blank?
-
-        # Validate break end > break start
-        if break_end <= break_start
-          errors.add(:operating_hours, "#{day.capitalize} break end time must be after start time")
-          next
-        end
-
-        # Validate break is within operating hours
-        if break_start < open_time || break_end > close_time
-          errors.add(:operating_hours, "#{day.capitalize} break must be within operating hours (#{open_time} - #{close_time})")
-        end
-      end
-    end
-  end
-
-  def breaks_do_not_overlap
-    return if operating_hours.blank?
-
-    WEEKDAYS.each do |day|
-      hours = operating_hours[day]
-      next unless hours
-
-      breaks = hours["breaks"] || []
-      next if breaks.size < 2
-
-      # Sort breaks by start time
-      sorted_breaks = breaks.sort_by { |b| b["start"] }
-
-      # Check for overlaps
-      sorted_breaks.each_with_index do |break_period, index|
-        next if index == sorted_breaks.size - 1
-
-        current_end = break_period["end"]
-        next_start = sorted_breaks[index + 1]["start"]
-
-        if current_end > next_start
-          errors.add(:operating_hours, "#{day.capitalize} has overlapping break times")
-          break
-        end
-      end
+    if cover_photo.byte_size > 10.megabytes
+      errors.add(:cover_photo, "size must be less than 10MB")
     end
   end
 end

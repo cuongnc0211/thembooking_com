@@ -4,7 +4,7 @@ import DateNavigation from './DateNavigation'
 import TimeSlotGrid from './TimeSlotGrid'
 import CustomerForm from './CustomerForm'
 
-export default function BookingApp({ businessSlug, business, services }) {
+export default function BookingApp({ branchSlug, business, services }) {
   // State management
   const [selectedServices, setSelectedServices] = useState([])
   const [selectedDate, setSelectedDate] = useState(new Date())
@@ -47,7 +47,7 @@ export default function BookingApp({ businessSlug, business, services }) {
     selectedServices.forEach(id => params.append('service_ids[]', id))
 
     try {
-      const response = await fetch(`/${businessSlug}/availability?${params}`)
+      const response = await fetch(`/${branchSlug}/availability?${params}`)
       const data = await response.json()
 
       setAvailableSlots(data.available_slots || [])
@@ -145,7 +145,7 @@ export default function BookingApp({ businessSlug, business, services }) {
         {currentStep >= 3 && selectedTime && (
           <div className="mt-6">
             <CustomerForm
-              businessSlug={businessSlug}
+              branchSlug={branchSlug}
               selectedServices={selectedServices}
               selectedDate={selectedDate}
               selectedTime={selectedTime}

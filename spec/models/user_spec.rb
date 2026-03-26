@@ -143,9 +143,10 @@ RSpec.describe User, type: :model do
       end
 
       context "step 3 (hours)" do
-        it "returns true when business has operating_hours" do
+        it "returns true when business branch has operating_hours" do
           user = create(:user)
-          create(:business, user: user)
+          business = create(:business, user: user)
+          create(:branch, business: business)
           expect(user.onboarding_step_complete?(3)).to be true
         end
       end
@@ -154,7 +155,8 @@ RSpec.describe User, type: :model do
         it "returns true when business has at least one service" do
           user = create(:user)
           business = create(:business, user: user)
-          create(:service, business: business)
+          branch = create(:branch, business: business)
+          create(:service, branch: branch)
           expect(user.onboarding_step_complete?(4)).to be true
         end
 

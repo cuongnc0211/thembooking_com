@@ -7,7 +7,7 @@
 
   <!-- Form -->
   <div class="card p-6">
-    <%= form_with model: @booking, url: dashboard_bookings_path, method: :post, class: "space-y-6" do |f| %>
+    <%= form_with model: @booking, url: dashboard_branch_bookings_path(@branch), method: :post, class: "space-y-6" do |f| %>
       <!-- Error Messages -->
       <% if @booking.errors.any? %>
         <div class="rounded-md bg-red-50 p-4">
@@ -108,7 +108,7 @@
 
       <!-- Form Actions -->
       <div class="flex items-center justify-between pt-4 border-t border-slate-200">
-        <%= link_to "Cancel", dashboard_bookings_path, class: "text-slate-600 hover:text-slate-800 font-medium" %>
+        <%= link_to "Cancel", dashboard_branch_bookings_path(@branch), class: "text-slate-600 hover:text-slate-800 font-medium" %>
         <%= f.submit "Add Walk-In", class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors cursor-pointer" %>
       </div>
     <% end %>

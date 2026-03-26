@@ -29,12 +29,8 @@ module Dashboard
     def business_params
       params.require(:business).permit(
         :name,
-        :slug,
         :business_type,
         :description,
-        :address,
-        :phone,
-        :capacity,
         :logo
       )
     end

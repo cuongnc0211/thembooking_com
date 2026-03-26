@@ -75,7 +75,7 @@ class User < ApplicationRecord
     case step_number
     when 1 then name.present? && phone.present?
     when 2 then business.present?
-    when 3 then business&.operating_hours.present?
+    when 3 then business&.branches&.first&.operating_hours.present?
     when 4 then business&.services&.any?
     else false
     end

@@ -78,7 +78,9 @@ en:
     services: "Services"
     operating_hours: "Operating Hours"
     bookings: "Bookings"
+    closed_dates: "Closed Dates"
     language: "Language"
+    menu: "Menu"
 
   footer:
     tagline: "Modern booking solutions for modern businesses. Streamline your scheduling and grow your business."

@@ -1,0 +1,43 @@
+<%= form_with(model: [:dashboard, @branch, category], class: "space-y-6") do |form| %>
+  <% if category.errors.any? %>
+    <div class="bg-red-50 border border-red-100 text-red-700 px-4 py-3 rounded-xl">
+      <h3 class="font-medium"><%= t('common.errors_header') %></h3>
+      <ul class="list-disc list-inside mt-2">
+        <% category.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, t('views.dashboard.service_categories.form.name_label'), class: "form-label" %>
+    <%= form.text_field :name, class: "form-input", placeholder: t('views.dashboard.service_categories.form.name_placeholder') %>
+  </div>
+
+  <% if assignable_services.any? %>
+    <div>
+      <label class="form-label"><%= t('views.dashboard.service_categories.form.assign_services_label') %></label>
+      <p class="text-sm text-slate-500 mb-2"><%= t('views.dashboard.service_categories.form.assign_services_hint') %></p>
+      <div class="space-y-2 max-h-60 overflow-y-auto border border-slate-200 rounded-lg p-3">
+        <% assignable_services.each do |service| %>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <%= check_box_tag "service_category[service_ids][]",
+                service.id,
+                category.services.include?(service),
+                class: "h-4 w-4 text-primary-600 focus:ring-primary-500 border-slate-300 rounded" %>
+            <span class="text-sm text-slate-900"><%= service.name %></span>
+          </label>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <p class="text-sm text-slate-400 italic"><%= t('views.dashboard.service_categories.form.no_assignable_services') %></p>
+  <% end %>
+
+  <div class="flex items-center gap-4 pt-4 border-t border-slate-100">
+    <%= form.submit category.persisted? ? t('views.dashboard.service_categories.form.submit_update') : t('views.dashboard.service_categories.form.submit_create'),
+        class: "btn-primary cursor-pointer" %>
+    <%= link_to t('common.actions.cancel'), dashboard_branch_service_categories_path(@branch), class: "btn-ghost" %>
+  </div>
+<% end %>

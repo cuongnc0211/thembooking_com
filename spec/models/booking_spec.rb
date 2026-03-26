@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Booking, type: :model do
   describe "associations" do
-    it { is_expected.to belong_to(:business) }
+    it { is_expected.to belong_to(:branch) }
     it { is_expected.to have_many(:booking_services).dependent(:destroy) }
     it { is_expected.to have_many(:services).through(:booking_services) }
   end
@@ -84,6 +84,35 @@ RSpec.describe Booking, type: :model do
         # Factory already adds a service
         expect(booking).to be_valid
       end
+    end
+  end
+
+  describe "end_time attribute" do
+    let(:branch) { create(:branch) }
+
+    it "has an end_time column" do
+      booking = create(:booking, branch: branch)
+      expect(booking).to respond_to(:end_time)
+    end
+
+    it "can be explicitly set" do
+      explicit_end = Time.zone.parse("2025-01-06 11:00")
+      booking = create(:booking, branch: branch, end_time: explicit_end)
+      expect(booking.end_time).to eq(explicit_end)
+    end
+
+    it "is required (must be set explicitly)" do
+      booking = Booking.new(branch: branch, customer_name: "Test", customer_phone: "0912345678",
+                            scheduled_at: 1.day.from_now, status: :pending, source: :online, end_time: nil)
+      expect(booking).not_to be_valid
+      expect(booking.errors[:end_time]).to include("can't be blank")
+    end
+
+    it "can store different end_time than scheduled_at" do
+      scheduled = Time.zone.parse("2025-01-06 10:00")
+      end_time = Time.zone.parse("2025-01-06 10:30")
+      booking = create(:booking, branch: branch, scheduled_at: scheduled, end_time: end_time, skip_future_validation: true)
+      expect(booking.end_time).to eq(end_time)
     end
   end
 end

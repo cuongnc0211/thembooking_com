@@ -1,0 +1,15 @@
+<% content_for :title, "Operations — #{@branch.name}" %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "operations_application", type: "module", "data-turbo-track": "reload" %>
+<% end %>
+
+<div
+  id="react-operations-root"
+  data-branch-id="<%= @branch.id %>"
+  data-branch-name="<%= @branch.name %>"
+  data-data-url="<%= data_dashboard_branch_operations_path(@branch) %>"
+  data-services-url="<%= services_list_dashboard_branch_operations_path(@branch) %>"
+  data-bookings-url="<%= dashboard_branch_bookings_path(@branch) %>"
+  data-turbo="false"
+></div>

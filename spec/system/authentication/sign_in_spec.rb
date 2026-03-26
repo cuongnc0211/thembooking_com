@@ -18,7 +18,8 @@ RSpec.describe 'User Sign In', type: :system do
 
       click_button 'Sign in'
 
-      expect(page).to have_current_path(root_path, ignore_query: true)
+      # Non-onboarded user is redirected to onboarding after sign-in
+      expect(page).to have_current_path(dashboard_onboarding_path, ignore_query: true)
       expect_to_be_signed_in
     end
   end
@@ -32,7 +33,7 @@ RSpec.describe 'User Sign In', type: :system do
 
       click_button 'Sign in'
 
-      expect(page).to have_content('Invalid')
+      expect(page).to have_content('Try another email address or password.')
       expect_to_be_signed_out
     end
 
@@ -44,7 +45,7 @@ RSpec.describe 'User Sign In', type: :system do
 
       click_button 'Sign in'
 
-      expect(page).to have_content('Invalid')
+      expect(page).to have_content('Try another email address or password.')
       expect_to_be_signed_out
     end
   end
@@ -54,28 +55,30 @@ RSpec.describe 'User Sign In', type: :system do
       sign_in_as(user)
       expect_to_be_signed_in
 
-      click_link 'Sign out'
+      click_button 'Sign out'
 
       expect_to_be_signed_out
-      expect(page).to have_current_path(root_path, ignore_query: true)
+      expect(page).to have_current_path(new_session_path, ignore_query: true)
     end
   end
 
   describe 'redirect after sign in' do
+    let(:onboarded_user) { create(:user, :onboarding_completed, email_address: 'onboarded@example.com', password: 'password123') }
+
     it 'redirects to requested page after sign in' do
       # Try to access protected page while signed out
-      visit dashboard_profile_path
+      visit edit_dashboard_profile_path
 
       # Should redirect to sign in
       expect(page).to have_current_path(new_session_path)
 
-      # Sign in
-      fill_in 'Email', with: user.email_address
+      # Sign in with onboarded user
+      fill_in 'Email', with: onboarded_user.email_address
       fill_in 'Password', with: 'password123'
       click_button 'Sign in'
 
       # Should redirect back to originally requested page
-      expect(page).to have_current_path(dashboard_profile_path, ignore_query: true)
+      expect(page).to have_current_path(edit_dashboard_profile_path, ignore_query: true)
     end
   end
 
@@ -93,7 +96,7 @@ RSpec.describe 'User Sign In', type: :system do
       sign_in_page.visit_page
                   .sign_in_with(email: 'wrong@example.com', password: 'wrong')
 
-      expect(sign_in_page).to have_error_message('Invalid')
+      expect(sign_in_page).to have_error_message('Try another email address or password.')
       expect(sign_in_page).to be_signed_out
     end
   end

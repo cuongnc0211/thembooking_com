@@ -1,0 +1,53 @@
+<% content_for :title, "#{@business.headline.presence || @business.name}" %>
+
+<% content_for :head do %>
+  <meta property="og:title" content="<%= @business.name %>" />
+  <meta property="og:description" content="<%= @business.description&.truncate(160) %>" />
+  <%= javascript_include_tag "react_application", type: "module", "data-turbo-track": "reload" %>
+<% end %>
+
+<div
+  id="react-landing-root"
+  data-business="<%= {
+    id: @business.id,
+    name: @business.name,
+    slug: @business.slug,
+    description: @business.description,
+    headline: @business.headline,
+    theme_color: @business.theme_color,
+    business_type: @business.business_type,
+    logo_url: @business.logo.attached? ? url_for(@business.logo) : nil,
+    cover_photo_url: @business.cover_photo.attached? ? url_for(@business.cover_photo) : nil,
+    landing_page_config: @business.landing_page_config
+  }.to_json %>"
+  data-branches="<%= @branches.map { |b|
+    {
+      id: b.id,
+      name: b.name,
+      slug: b.slug,
+      address: b.address,
+      phone: b.phone,
+      operating_hours: b.operating_hours,
+      services: b.services.select(&:active?).sort_by(&:position).map { |s|
+        {
+          id: s.id,
+          name: s.name,
+          description: s.description,
+          duration_minutes: s.duration_minutes,
+          price_cents: s.price.to_i,
+          price_format: s.price.format,
+          category_name: s.service_category&.name
+        }
+      }
+    }
+  }.to_json %>"
+  data-gallery-photos="<%= @gallery_photos.map { |p|
+    {
+      id: p.id,
+      caption: p.caption,
+      image_url: url_for(p.image),
+      thumbnail_url: url_for(p.image.variant(resize_to_fill: [300, 300]))
+    }
+  }.to_json %>"
+  data-turbo="false"
+></div>

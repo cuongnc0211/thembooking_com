@@ -5,7 +5,7 @@
     "esbuild": "^0.27.0"
   },
   "scripts": {
-    "build": "esbuild app/javascript/react_application.js --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.js=jsx --loader:.jsx=jsx --minify"
+    "build": "esbuild app/javascript/react_application.js app/javascript/operations_application.js --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.js=jsx --loader:.jsx=jsx --minify"
   },
   "dependencies": {
     "react": "^19.2.0",

@@ -1,0 +1,10 @@
+<% admin_breadcrumbs(link_to("Staffs", admin_staffs_path), link_to(@staff.name, admin_staff_path(@staff)), "Edit") %>
+
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-gray-900">Edit Staff</h1>
+  <p class="text-sm text-gray-500 mt-1"><%= @staff.email_address %></p>
+</div>
+
+<div class="bg-white rounded-xl border border-gray-200 p-6 max-w-2xl">
+  <%= render "form", staff: @staff %>
+</div>

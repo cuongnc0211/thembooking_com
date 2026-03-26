@@ -1,18 +1,14 @@
 module Dashboard
   class OpenHoursController < BaseController
-    before_action :set_business, only: [ :show, :edit, :update ]
+    before_action :set_branch, only: [ :show, :edit, :update ]
 
-    def show
-      redirect_to dashboard_business_path, notice: t("controllers.dashboard.open_hours.flash.create_business_first") if @business.nil?
-    end
+    def show; end
 
-    def edit
-      redirect_to dashboard_business_path, notice: t("controllers.dashboard.open_hours.flash.create_business_first") if @business.nil?
-    end
+    def edit; end
 
     def update
-      if @business.update(business_params)
-        redirect_to dashboard_open_hour_path, notice: t("controllers.dashboard.open_hours.flash.updated")
+      if @branch.update(open_hour_params)
+        redirect_to dashboard_branch_open_hour_path(@branch), notice: t("controllers.dashboard.open_hours.flash.updated")
       else
         render :edit, status: :unprocessable_entity
       end
@@ -20,12 +16,17 @@ module Dashboard
 
     private
 
-    def set_business
-      @business = current_user.business
+    def set_branch
+      business = current_user.business
+      return redirect_to(dashboard_onboarding_path, alert: "Please complete business setup first.") unless business
+
+      @branch = business.branches.find(params[:branch_id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to dashboard_branches_path, alert: "Branch not found."
     end
 
-    def business_params
-      permitted = params.require(:business).permit(
+    def open_hour_params
+      permitted = params.require(:branch).permit(
         operating_hours: {
           monday: [ :open, :close, :closed, breaks: [ :start, :end ] ],
           tuesday: [ :open, :close, :closed, breaks: [ :start, :end ] ],

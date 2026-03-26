@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :service do
-    association :business
+    association :branch
     sequence(:name) { |n| "Service #{n}" }
     description { Faker::Lorem.sentence }
     duration_minutes { 30 }
@@ -28,6 +28,10 @@ FactoryBot.define do
       description { "Relaxing full body massage" }
       duration_minutes { 90 }
       price_cents { 20000000 } # 200,000 VND
+    end
+
+    trait :with_category do
+      association :service_category
     end
 
     trait :manicure do

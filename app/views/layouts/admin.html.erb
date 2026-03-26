@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html class="h-full">
+  <head>
+    <title><%= content_for(:title) || "Admin - ThemBooking" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body data-controller="sidebar" class="h-full bg-gray-50 font-sans antialiased">
+    <%= render "layouts/admin/topbar" %>
+
+    <div class="flex h-full pt-16">
+      <%# Mobile overlay — clicking it closes the sidebar %>
+      <div data-sidebar-target="overlay"
+           data-action="click->sidebar#close"
+           class="fixed inset-0 bg-gray-900/50 z-40 hidden md:hidden"></div>
+
+      <%= render "layouts/admin/sidebar" %>
+
+      <%# Main content area %>
+      <main class="flex-1 md:ml-60 overflow-y-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <%# Breadcrumb — rendered by individual views via content_for(:breadcrumbs) %>
+          <% if content_for?(:breadcrumbs) %>
+            <nav class="mb-4 text-sm text-gray-500">
+              <%= yield :breadcrumbs %>
+            </nav>
+          <% end %>
+
+          <%# Flash messages %>
+          <% flash.each do |type, message| %>
+            <div class="mb-4 p-4 rounded-lg text-sm
+              <%= type == 'alert' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-green-50 text-green-700 border border-green-200' %>">
+              <%= message %>
+            </div>
+          <% end %>
+
+          <%= yield %>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
