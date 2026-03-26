@@ -1,0 +1,67 @@
+<%# Branch-scoped horizontal tab bar — only renders when @branch is present %>
+<% return unless defined?(@branch) && @branch.present? %>
+<div class="
+  fixed left-0 right-0 z-30 md:left-56
+  bg-[#111827]/98 border-b border-slate-700/40
+  overflow-x-auto
+  flex items-center
+  top-16
+" style="-webkit-overflow-scrolling: touch; scrollbar-width: none;">
+  <style>.branch-tab-scroll::-webkit-scrollbar { display: none; }</style>
+  <div class="branch-tab-scroll flex items-center min-w-max px-4 overflow-x-auto w-full" style="scrollbar-width: none;">
+    <%
+      tabs = [
+        {
+          label: t('navigation.overview', default: 'Tổng quan'),
+          path: dashboard_branch_path(@branch),
+          icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>',
+          active: request.path == dashboard_branch_path(@branch)
+        },
+        {
+          label: t('navigation.bookings', default: 'Lịch hẹn'),
+          path: dashboard_branch_bookings_path(@branch),
+          icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>',
+          active: request.path.start_with?(dashboard_branch_bookings_path(@branch))
+        },
+        {
+          label: t('navigation.services', default: 'Dịch vụ'),
+          path: dashboard_branch_services_path(@branch),
+          icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>',
+          active: request.path.start_with?(dashboard_branch_services_path(@branch))
+        },
+        {
+          label: t('navigation.operating_hours', default: 'Giờ làm việc'),
+          path: edit_dashboard_branch_open_hour_path(@branch),
+          icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>',
+          active: request.path.start_with?(dashboard_branch_open_hour_path(@branch))
+        },
+        {
+          label: t('navigation.closed_dates', default: 'Ngày đóng cửa'),
+          path: dashboard_branch_business_closures_path(@branch),
+          icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>',
+          active: request.path.start_with?(dashboard_branch_business_closures_path(@branch))
+        },
+        {
+          label: 'Landing Page',
+          path: edit_dashboard_business_landing_page_path,
+          icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>',
+          active: request.path == edit_dashboard_business_landing_page_path
+        },
+        {
+          label: 'Operations',
+          path: dashboard_branch_operations_path(@branch),
+          icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>',
+          active: request.path.start_with?(dashboard_branch_operations_path(@branch))
+        }
+      ]
+    %>
+    <% tabs.each do |tab| %>
+      <%= link_to tab[:path], class: "flex items-center gap-2 px-4 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 transition-all duration-150 #{tab[:active] ? 'text-indigo-300 border-indigo-500 bg-indigo-500/[0.06]' : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-800/30'}" do %>
+        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><%= tab[:icon].html_safe %></svg>
+        <%= tab[:label] %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<%# Spacer to push content below the fixed tab bar %>
+<div class="h-11 flex-shrink-0"></div>

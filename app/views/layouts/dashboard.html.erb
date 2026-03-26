@@ -23,26 +23,13 @@
     <%= stylesheet_link_tag 'application', "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    
-    <style>
-      .animate-blob { animation: blob 7s infinite; }
-      .animation-delay-2000 { animation-delay: 2s; }
-      .animation-delay-4000 { animation-delay: 4s; }
-      @keyframes blob {
-        0% { transform: translate(0px, 0px) scale(1); }
-        33% { transform: translate(30px, -50px) scale(1.1); }
-        66% { transform: translate(-20px, 20px) scale(0.9); }
-        100% { transform: translate(0px, 0px) scale(1); }
-      }
-    </style>
   </head>
 
-  <body data-controller="sidebar" class="bg-gray-50/50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-primary-500 selection:text-white relative overflow-x-hidden">
-    <!-- Decorative Ambient Background -->
+  <body data-controller="sidebar" class="bg-[#0f172a] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white relative overflow-x-hidden">
+    <!-- Subtle Dark Ambient Background -->
     <div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-      <div class="absolute top-[-10%] left-[-10%] w-[40rem] h-[40rem] bg-indigo-200/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
-      <div class="absolute top-[-10%] right-[-10%] w-[40rem] h-[40rem] bg-cyan-200/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
-      <div class="absolute bottom-[-20%] left-[20%] w-[40rem] h-[40rem] bg-fuchsia-200/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-4000"></div>
+      <div class="absolute top-0 left-0 w-96 h-96 bg-indigo-600/5 rounded-full filter blur-3xl"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-purple-600/5 rounded-full filter blur-3xl"></div>
     </div>
 
     <%= render 'layouts/nav_bar' %>
@@ -50,41 +37,44 @@
     <!-- Main Layout: Sidebar + Content -->
     <div class="flex flex-col min-h-screen pt-16">
       <!-- Mobile Overlay -->
-      <div data-sidebar-target="overlay" data-action="click->sidebar#close" class="fixed inset-0 bg-slate-900/40 z-40 hidden md:hidden backdrop-blur-sm transition-opacity duration-300"></div>
+      <div data-sidebar-target="overlay" data-action="click->sidebar#close" class="fixed inset-0 bg-slate-900/60 z-40 hidden md:hidden backdrop-blur-sm transition-opacity duration-300"></div>
+
+      <!-- Branch Tab Bar (only when @branch is present) -->
+      <%= render 'layouts/dashboard/branch_tab_bar' if defined?(@branch) && @branch.present? %>
 
       <div class="flex flex-1 w-full mx-auto max-w-[1920px]">
         <!-- Sidebar -->
         <%= render 'layouts/dashboard/side_bar' %>
 
-        <!-- Main Content Area - Padded left to account for fixed sidebar -->
-        <main class="flex-1 min-w-0 md:pl-64 px-4 sm:px-6 lg:px-8 py-8 md:py-10 transition-all duration-300">
+        <!-- Main Content Area -->
+        <main class="flex-1 min-w-0 md:pl-56 px-4 sm:px-6 lg:px-8 py-6 md:py-8 pb-24 md:pb-8 transition-all duration-300">
           <div class="max-w-7xl mx-auto w-full animate-in slide-in-from-bottom-2 fade-in duration-500">
-            <!-- Flash Messages (Premium Glass Toast) -->
+            <!-- Flash Messages -->
             <% if flash.any? %>
               <div class="fixed top-20 right-4 z-[60] flex flex-col gap-3 w-full max-w-sm pointer-events-none">
                 <% flash.each do |name, msg| %>
-                  <% 
+                  <%
                     base_classes = "pointer-events-auto transform transition-all duration-300 hover:scale-[1.02] backdrop-blur-md shadow-xl rounded-2xl p-4 flex items-start gap-3 animate-in slide-in-from-right-8 fade-in border"
                     type_classes = case name.to_s
-                      when 'notice', 'success' then "bg-white/90 border-emerald-100 text-emerald-800 ring-1 ring-emerald-500/10"
-                      when 'alert', 'error' then "bg-white/90 border-rose-100 text-rose-800 ring-1 ring-rose-500/10"
-                      else "bg-white/90 border-slate-200 text-slate-800"
+                      when 'notice', 'success' then "bg-slate-800/95 border-emerald-500/30 text-emerald-300 ring-1 ring-emerald-500/20"
+                      when 'alert', 'error' then "bg-slate-800/95 border-rose-500/30 text-rose-300 ring-1 ring-rose-500/20"
+                      else "bg-slate-800/95 border-slate-600/30 text-slate-200"
                     end
                   %>
                   <div class="<%= base_classes %> <%= type_classes %>">
                     <div class="flex-shrink-0 mt-0.5">
                       <% if name.to_s == 'alert' || name.to_s == 'error' %>
-                        <svg class="h-5 w-5 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-5 w-5 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                         </svg>
                       <% else %>
-                         <svg class="h-5 w-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         <svg class="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                          </svg>
                       <% end %>
                     </div>
                     <div class="flex-1 text-sm font-medium"><%= msg %></div>
-                    <button onclick="this.parentElement.remove()" class="flex-shrink-0 ml-4 text-slate-400 hover:text-slate-600 transition-colors">
+                    <button onclick="this.parentElement.remove()" class="flex-shrink-0 ml-4 text-slate-500 hover:text-slate-300 transition-colors">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                   </div>
@@ -97,5 +87,25 @@
         </main>
       </div>
     </div>
+
+    <!-- Mobile Bottom Nav -->
+    <% if current_user && controller_path.start_with?('dashboard') %>
+      <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a0f1e]/98 border-t border-indigo-900/20 backdrop-blur-xl flex" style="padding-bottom: env(safe-area-inset-bottom)">
+        <%
+          mobile_tabs = [
+            { label: 'Branches', path: dashboard_branches_path, active: request.path.start_with?('/dashboard/branches') || request.path == dashboard_root_path, icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>' },
+            { label: 'Analytics', path: '#', active: false, icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>' },
+            { label: 'Doanh nghiệp', path: dashboard_business_path, active: request.path == dashboard_business_path, icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>' },
+            { label: 'Cài đặt', path: edit_dashboard_profile_path, active: request.path == edit_dashboard_profile_path, icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>' }
+          ]
+        %>
+        <% mobile_tabs.each do |tab| %>
+          <%= link_to tab[:path], class: "flex-1 flex flex-col items-center gap-1 py-2.5 px-1 text-[10px] font-medium transition-colors #{tab[:active] ? 'text-indigo-300' : 'text-slate-600 hover:text-slate-400'}" do %>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><%= tab[:icon].html_safe %></svg>
+            <%= tab[:label] %>
+          <% end %>
+        <% end %>
+      </nav>
+    <% end %>
   </body>
 </html>
