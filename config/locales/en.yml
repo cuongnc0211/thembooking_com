@@ -28,6 +28,10 @@
 #       enabled: "ON"
 
 en:
+  date:
+    formats:
+      long: "%B %d, %Y"
+
   common:
     errors_header: "Please fix the following errors:"
     actions:

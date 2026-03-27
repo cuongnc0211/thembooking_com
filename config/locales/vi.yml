@@ -1,4 +1,8 @@
 vi:
+  date:
+    formats:
+      long: "%d tháng %m, %Y"
+
   common:
     errors_header: "Vui lòng sửa các lỗi sau:"
     actions:
