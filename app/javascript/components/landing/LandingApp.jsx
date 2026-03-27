@@ -52,7 +52,7 @@ function BranchPickerModal({ branches, onClose }) {
           {branches.map(branch => (
             <a
               key={branch.id}
-              href={`/${branch.slug}`}
+              href={`/booking/${branch.slug}`}
               className="flex flex-col px-4 py-3 rounded-lg border border-gray-200 hover:border-indigo-400 hover:bg-indigo-50 transition-colors"
             >
               <div className="flex items-center justify-between gap-2">

@@ -47,7 +47,7 @@ export default function BookingApp({ branchSlug, business, services }) {
     selectedServices.forEach(id => params.append('service_ids[]', id))
 
     try {
-      const response = await fetch(`/${branchSlug}/availability?${params}`)
+      const response = await fetch(`/booking/${branchSlug}/availability?${params}`)
       const data = await response.json()
 
       setAvailableSlots(data.available_slots || [])

@@ -17,7 +17,7 @@ export default function LandingHero({ business, branches, onBookNow, themeColor 
 
   function handleBookNow() {
     if (branches.length === 1) {
-      window.location.href = `/${branches[0].slug}`
+      window.location.href = `/booking/${branches[0].slug}`
     } else {
       onBookNow()
     }

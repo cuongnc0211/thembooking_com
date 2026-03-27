@@ -63,7 +63,7 @@ export default function CustomerForm({
     try {
       const csrfToken = document.querySelector('[name="csrf-token"]')?.content
 
-      const response = await fetch(`/${branchSlug}/bookings`, {
+      const response = await fetch(`/booking/${branchSlug}/bookings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export default function CustomerForm({
       if (response.ok) {
         // Redirect to confirmation page
         const booking = await response.json()
-        window.location.href = `/${branchSlug}/bookings/${booking.id || ''}`
+        window.location.href = `/booking/${branchSlug}/bookings/${booking.id || ''}`
       } else if (response.redirected) {
         // Rails might redirect on successful POST
         window.location.href = response.url

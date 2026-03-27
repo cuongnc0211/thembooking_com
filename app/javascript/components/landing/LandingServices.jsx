@@ -38,7 +38,7 @@ function ServiceList({ services, branchSlug }) {
                   <span className="text-sm font-semibold text-gray-700">{svc.price_format}</span>
                   {branchSlug && (
                     <a
-                      href={`/${branchSlug}`}
+                      href={`/booking/${branchSlug}`}
                       className="text-xs px-3 py-1 rounded-full border border-current text-indigo-600 hover:bg-indigo-50 transition-colors"
                     >
                       Book

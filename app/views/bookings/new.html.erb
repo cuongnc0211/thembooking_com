@@ -42,7 +42,7 @@
     </div>
   </div>
 
-  <%= form_with url: "/#{@branch.slug}/bookings", method: :post, data: { controller: "booking-form", booking_form_business_slug_value: @branch.slug } do |form| %>
+  <%= form_with url: "/booking/#{@branch.slug}/bookings", method: :post, data: { controller: "booking-form", booking_form_business_slug_value: @branch.slug } do |form| %>
     <!-- Services Selection -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-6">
       <h2 class="text-lg font-semibold text-slate-900 mb-4">Select Services</h2>
