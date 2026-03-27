@@ -179,7 +179,7 @@ RSpec.describe GalleryPhoto, type: :model do
         photo2 = create(:gallery_photo, business: business, position: 2)
 
         ordered = business.gallery_photos.ordered
-        expect(ordered.pluck(:id)).to eq([photo1.id, photo2.id, photo3.id])
+        expect(ordered.pluck(:id)).to eq([ photo1.id, photo2.id, photo3.id ])
       end
 
       it "orders by created_at when positions are equal" do
@@ -187,7 +187,7 @@ RSpec.describe GalleryPhoto, type: :model do
         photo_b = create(:gallery_photo, business: business, position: 1, created_at: 1.hour.ago)
 
         ordered = business.gallery_photos.ordered
-        expect(ordered.pluck(:id)).to eq([photo_a.id, photo_b.id])
+        expect(ordered.pluck(:id)).to eq([ photo_a.id, photo_b.id ])
       end
 
       it "returns all photos in correct order with mixed positions" do
@@ -196,7 +196,7 @@ RSpec.describe GalleryPhoto, type: :model do
         pos2_second = create(:gallery_photo, business: business, position: 2, created_at: 1.hour.ago)
 
         ordered = business.gallery_photos.ordered
-        expect(ordered.pluck(:id)).to eq([pos1.id, pos2_first.id, pos2_second.id])
+        expect(ordered.pluck(:id)).to eq([ pos1.id, pos2_first.id, pos2_second.id ])
       end
     end
   end

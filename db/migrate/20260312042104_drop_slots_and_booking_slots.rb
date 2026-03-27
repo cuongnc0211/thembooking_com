@@ -16,8 +16,8 @@ class DropSlotsAndBookingSlots < ActiveRecord::Migration[8.1]
       t.integer :original_capacity, default: 0, null: false
       t.timestamps
     end
-    add_index :slots, [:business_id, :start_time], unique: true, name: 'index_slots_on_business_and_start_time'
-    add_index :slots, [:business_id, :date], name: 'index_slots_on_business_and_date'
+    add_index :slots, [ :business_id, :start_time ], unique: true, name: 'index_slots_on_business_and_start_time'
+    add_index :slots, [ :business_id, :date ], name: 'index_slots_on_business_and_date'
     add_index :slots, :date, name: 'index_slots_on_date'
 
     # Recreate booking_slots
@@ -26,6 +26,6 @@ class DropSlotsAndBookingSlots < ActiveRecord::Migration[8.1]
       t.references :slot, null: false, foreign_key: true
       t.timestamps
     end
-    add_index :booking_slots, [:booking_id, :slot_id], unique: true, name: 'index_booking_slots_on_booking_and_slot'
+    add_index :booking_slots, [ :booking_id, :slot_id ], unique: true, name: 'index_booking_slots_on_booking_and_slot'
   end
 end

@@ -26,7 +26,7 @@ module Bookings
         # pg_advisory_xact_lock is blocking: waits until the lock is available (short waits are OK
         # since each transaction is fast). Released automatically at transaction end.
         ActiveRecord::Base.connection.execute(
-          ActiveRecord::Base.sanitize_sql(["SELECT pg_advisory_xact_lock(?)", @branch.id.to_i])
+          ActiveRecord::Base.sanitize_sql([ "SELECT pg_advisory_xact_lock(?)", @branch.id.to_i ])
         )
 
         # Re-check availability inside lock

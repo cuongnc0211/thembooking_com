@@ -345,7 +345,6 @@ RSpec.describe "Dashboard::GalleryPhotos", type: :request do
       expect(response).to have_http_status(:not_found)
     end
   end
-
 end
 
 describe "Dashboard::GalleryPhotos (unauthenticated)" do

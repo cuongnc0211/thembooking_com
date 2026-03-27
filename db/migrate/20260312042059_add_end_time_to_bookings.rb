@@ -18,7 +18,7 @@ class AddEndTimeToBookings < ActiveRecord::Migration[8.1]
     execute "UPDATE bookings SET end_time = scheduled_at + INTERVAL '30 minutes' WHERE end_time IS NULL"
 
     change_column_null :bookings, :end_time, false
-    add_index :bookings, [:business_id, :scheduled_at, :end_time], name: 'idx_bookings_overlap_check'
+    add_index :bookings, [ :business_id, :scheduled_at, :end_time ], name: 'idx_bookings_overlap_check'
   end
 
   def down

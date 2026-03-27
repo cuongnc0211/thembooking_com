@@ -8,6 +8,6 @@ class CreateBusinessClosures < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :business_closures, [:business_id, :date], unique: true
+    add_index :business_closures, [ :business_id, :date ], unique: true
   end
 end
