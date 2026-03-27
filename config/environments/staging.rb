@@ -104,6 +104,7 @@ Rails.application.configure do
   # Allow the staging host and (optionally) direct IP access.
   app_host = ENV.fetch("APP_HOST", "staging.thembooking.com")
   config.hosts << app_host
+  config.x.host = app_host
 
   # If you access staging via IP (e.g., http://1.2.3.4), allow IP hosts:
   if ENV["ALLOW_IP_HOSTS"] == "true"

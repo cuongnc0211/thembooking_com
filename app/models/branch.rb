@@ -32,11 +32,8 @@ class Branch < ApplicationRecord
 
   # Public booking URL for this branch
   def booking_url
-    if Rails.env.development?
-      "localhost:3000/#{slug}"
-    else
-      "thembooking.com/#{slug}"
-    end
+    host = Rails.application.config.x.host
+    Rails.application.routes.url_helpers.booking_url(slug, host: host)
   end
 
   # Returns true if the branch is open on the given day name (e.g. "monday")
