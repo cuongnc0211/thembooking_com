@@ -1,8 +1,7 @@
-<div class="max-w-4xl mx-auto mt-8 px-4">
-  <h1 class="text-3xl font-bold mb-2"><%= t('views.dashboard.open_hours.edit.title') %></h1>
-  <p class="text-gray-600 mb-6"><%= t('views.dashboard.open_hours.edit.subtitle') %></p>
-
-  <div class="card p-6">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <div class="dashboard-card p-6">
+    <h1 class="text-xl font-bold text-white mb-1"><%= t('views.dashboard.open_hours.edit.title') %></h1>
+    <p class="text-sm text-slate-400 mb-6"><%= t('views.dashboard.open_hours.edit.subtitle') %></p>
     <%= render "form", branch: @branch %>
   </div>
 </div>

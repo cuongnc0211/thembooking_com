@@ -1,6 +1,6 @@
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
   <% if @branch.inherit_from_main? %>
-    <div class="dashboard-card p-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="dashboard-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <p class="text-sm text-slate-300">
         Services are inherited from
         <%= link_to "Main Branch", dashboard_branch_services_path(@branch.main_branch), class: "text-indigo-400 hover:text-indigo-300 underline" %>.
@@ -14,70 +14,72 @@
     </div>
   <% end %>
 
-  <div class="flex justify-between items-center mb-6">
-    <div>
-      <h1 class="text-3xl font-bold"><%= t('views.dashboard.services.index.title') %></h1>
-      <%= link_to "← Back to Branch", dashboard_branch_path(@branch), class: "text-sm text-slate-500 hover:text-slate-700" %>
+  <div class="dashboard-card p-6">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h1 class="text-xl font-bold text-white"><%= t('views.dashboard.services.index.title') %></h1>
+        <%= link_to "← Back to Branch", dashboard_branch_path(@branch), class: "text-xs text-slate-500 hover:text-slate-300 transition-colors" %>
+      </div>
+      <%= link_to t('views.dashboard.services.index.add_service'), new_dashboard_branch_service_path(@branch),
+            class: "px-3 py-1.5 text-xs font-semibold text-white rounded-lg cursor-pointer",
+            style: "background: linear-gradient(135deg, #4f46e5, #6366f1);" %>
     </div>
-    <%= link_to t('views.dashboard.services.index.add_service'), new_dashboard_branch_service_path(@branch), class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded" %>
-  </div>
 
-  <% if @services.any? %>
-    <div class="card overflow-hidden">
-      <table class="min-w-full divide-y divide-slate-200">
-        <thead class="bg-slate-50">
-          <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"><%= t('activerecord.attributes.service.name') %></th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"><%= t('activerecord.attributes.service.duration_minutes') %></th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"><%= t('activerecord.attributes.service.price') %></th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"><%= t('common.status.title') %></th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"><%= t('activerecord.attributes.service.position') %></th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"><%= t('common.order') %></th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"><%= t('common.actions_title') %></th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-slate-200">
-          <% @services.each do |service| %>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-slate-900"><%= service.name %></div>
-                <% if service.description.present? %>
-                  <div class="text-sm text-slate-500"><%= service.description %></div>
-                <% end %>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                <%= service.duration_minutes %> <%= t('views.dashboard.services.index.minutes') %>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
-                <%= humanized_money_with_symbol(service.price) %>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <% if service.active %>
-                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"><%= t('views.dashboard.services.index.active_badge') %></span>
-                <% else %>
-                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-slate-100 text-slate-800"><%= t('views.dashboard.services.index.inactive_badge') %></span>
-                <% end %>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-center">
-                <%= service.position %>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <%= button_to "↑", move_up_dashboard_branch_service_path(@branch, service), method: :post, class: "inline-flex items-center px-2 py-1 border border-slate-300 rounded text-slate-700 hover:bg-slate-50 cursor-pointer mb-1", disabled: service == @services.first %>
-                <%= button_to "↓", move_down_dashboard_branch_service_path(@branch, service), method: :post, class: "inline-flex items-center px-2 py-1 border border-slate-300 rounded text-slate-700 hover:bg-slate-50 cursor-pointer", disabled: service == @services.last %>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                <%= link_to t('common.actions.edit'), edit_dashboard_branch_service_path(@branch, service), class: "text-primary-600 hover:text-primary-900 cursor-pointer" %>
-                <%= button_to t('common.actions.delete'), dashboard_branch_service_path(@branch, service), method: :delete, data: { turbo_confirm: t('common.confirm_delete') }, class: "text-red-600 hover:text-red-900 cursor-pointer" %>
-              </td>
+    <% if @services.any? %>
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead>
+            <tr class="border-b border-white/6">
+              <th class="pb-3 text-left text-xs font-semibold uppercase tracking-widest text-slate-500"><%= t('activerecord.attributes.service.name') %></th>
+              <th class="pb-3 text-left text-xs font-semibold uppercase tracking-widest text-slate-500"><%= t('activerecord.attributes.service.duration_minutes') %></th>
+              <th class="pb-3 text-left text-xs font-semibold uppercase tracking-widest text-slate-500"><%= t('activerecord.attributes.service.price') %></th>
+              <th class="pb-3 text-left text-xs font-semibold uppercase tracking-widest text-slate-500"><%= t('common.status.title') %></th>
+              <th class="pb-3 text-left text-xs font-semibold uppercase tracking-widest text-slate-500"><%= t('common.order') %></th>
+              <th class="pb-3 text-left text-xs font-semibold uppercase tracking-widest text-slate-500"><%= t('common.actions_title') %></th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  <% else %>
-    <div class="card p-6 text-center">
-      <p class="text-slate-500 mb-4"><%= t('views.dashboard.services.index.no_services_message') %></p>
-      <%= link_to t('views.dashboard.services.index.add_service'), new_dashboard_branch_service_path(@branch), class: "btn-primary" %>
-    </div>
-  <% end %>
+          </thead>
+          <tbody class="divide-y divide-white/5">
+            <% @services.each do |service| %>
+              <tr>
+                <td class="py-3 pr-4">
+                  <div class="text-sm font-medium text-white"><%= service.name %></div>
+                  <% if service.description.present? %>
+                    <div class="text-xs text-slate-400 mt-0.5"><%= service.description %></div>
+                  <% end %>
+                </td>
+                <td class="py-3 pr-4 text-sm text-slate-300 whitespace-nowrap">
+                  <%= service.duration_minutes %> <%= t('views.dashboard.services.index.minutes') %>
+                </td>
+                <td class="py-3 pr-4 text-sm text-slate-300 whitespace-nowrap">
+                  <%= humanized_money_with_symbol(service.price) %>
+                </td>
+                <td class="py-3 pr-4 whitespace-nowrap">
+                  <% if service.active %>
+                    <span class="px-2 py-0.5 inline-flex text-xs font-semibold rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"><%= t('views.dashboard.services.index.active_badge') %></span>
+                  <% else %>
+                    <span class="px-2 py-0.5 inline-flex text-xs font-semibold rounded-full bg-slate-700/50 text-slate-400 border border-slate-600/30"><%= t('views.dashboard.services.index.inactive_badge') %></span>
+                  <% end %>
+                </td>
+                <td class="py-3 pr-4 whitespace-nowrap">
+                  <%= button_to "↑", move_up_dashboard_branch_service_path(@branch, service), method: :post, class: "inline-flex items-center px-2 py-1 rounded text-slate-400 hover:text-slate-200 border border-slate-600/40 hover:border-slate-500 cursor-pointer mb-1 transition-colors", disabled: service == @services.first %>
+                  <%= button_to "↓", move_down_dashboard_branch_service_path(@branch, service), method: :post, class: "inline-flex items-center px-2 py-1 rounded text-slate-400 hover:text-slate-200 border border-slate-600/40 hover:border-slate-500 cursor-pointer transition-colors", disabled: service == @services.last %>
+                </td>
+                <td class="py-3 whitespace-nowrap text-sm font-medium space-x-3">
+                  <%= link_to t('common.actions.edit'), edit_dashboard_branch_service_path(@branch, service), class: "text-indigo-400 hover:text-indigo-300 cursor-pointer transition-colors" %>
+                  <%= button_to t('common.actions.delete'), dashboard_branch_service_path(@branch, service), method: :delete, data: { turbo_confirm: t('common.confirm_delete') }, class: "text-red-400 hover:text-red-300 cursor-pointer transition-colors" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="py-8 text-center">
+        <p class="text-slate-400 mb-4"><%= t('views.dashboard.services.index.no_services_message') %></p>
+        <%= link_to t('views.dashboard.services.index.add_service'), new_dashboard_branch_service_path(@branch),
+              class: "px-4 py-2 text-sm font-semibold text-white rounded-lg cursor-pointer",
+              style: "background: linear-gradient(135deg, #4f46e5, #6366f1);" %>
+      </div>
+    <% end %>
+  </div>
 </div>

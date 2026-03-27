@@ -1,10 +1,6 @@
-<div class="max-w-4xl mx-auto mt-8 px-4">
-  <div class="mb-4">
-    <%= link_to "← Back to Branch", dashboard_branch_path(@branch), class: "text-sm text-slate-500 hover:text-slate-700" %>
-  </div>
-
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
   <% if @branch.inherit_from_main? %>
-    <div class="dashboard-card p-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="dashboard-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <p class="text-sm text-slate-300">
         Operating hours are inherited from
         <%= link_to "Main Branch", dashboard_branch_open_hour_path(@branch.main_branch), class: "text-indigo-400 hover:text-indigo-300 underline" %>.
@@ -18,40 +14,37 @@
     </div>
   <% end %>
 
-  <!-- Operating Hours -->
-  <div class="mt-8 card p-6">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-semibold"><%= t('views.dashboard.open_hours.show.operating_hours_title') %></h3>
-      <%= link_to t('views.dashboard.open_hours.show.edit_hours'), edit_dashboard_branch_open_hour_path(@branch), class: "text-sm text-primary-600 hover:text-primary-700" %>
+  <div class="dashboard-card p-6">
+    <div class="flex items-center justify-between mb-1">
+      <h3 class="text-xl font-bold text-white"><%= t('views.dashboard.open_hours.show.operating_hours_title') %></h3>
+      <%= link_to t('views.dashboard.open_hours.show.edit_hours'), edit_dashboard_branch_open_hour_path(@branch), class: "px-3 py-1.5 text-xs font-medium rounded-lg text-slate-300 border border-slate-600/40 hover:border-slate-500 transition-colors" %>
     </div>
+    <%= link_to "← Back to Branch", dashboard_branch_path(@branch), class: "text-xs text-slate-500 hover:text-slate-300 transition-colors block mb-4" %>
 
-    <div class="space-y-3">
+    <div class="border-t border-white/6 pt-4 space-y-1">
       <% Branch::WEEKDAYS.each do |day| %>
         <% day_hours = @branch.hours_for(day) %>
         <% if day_hours %>
-          <div class="flex items-start justify-between py-2 border-b border-slate-100 last:border-0">
-            <div class="flex-1">
-              <span class="font-medium text-slate-700 capitalize inline-block w-28"><%= t("time.day_names_short.#{day}") %></span>
-              <% if day_hours["closed"] %>
-                <span class="text-slate-400 italic"><%= t('views.dashboard.open_hours.show.closed') %></span>
-              <% else %>
-                <span class="text-slate-900">
-                  <%= day_hours["open"] %> - <%= day_hours["close"] %>
-                </span>
-
+          <div class="flex items-start py-2 border-b border-white/4 last:border-0">
+            <span class="font-medium text-slate-300 capitalize w-28 flex-shrink-0"><%= t("time.day_names_short.#{day}") %></span>
+            <% if day_hours["closed"] %>
+              <span class="text-slate-500 italic text-sm"><%= t('views.dashboard.open_hours.show.closed') %></span>
+            <% else %>
+              <div>
+                <span class="text-white text-sm"><%= day_hours["open"] %> – <%= day_hours["close"] %></span>
                 <% breaks = day_hours["breaks"] || [] %>
                 <% if breaks.any? %>
-                  <div class="ml-28 mt-1">
-                    <span class="text-xs text-slate-500 uppercase"><%= t('views.dashboard.open_hours.show.breaks_label') %></span>
+                  <div class="mt-1 flex flex-wrap gap-2 items-center">
+                    <span class="text-xs text-slate-500 uppercase tracking-wider"><%= t('views.dashboard.open_hours.show.breaks_label') %></span>
                     <% breaks.each do |break_period| %>
-                      <span class="text-sm text-slate-600 ml-2">
-                        <%= break_period["start"] %> - <%= break_period["end"] %>
+                      <span class="text-xs text-slate-400 px-2 py-0.5 rounded-full" style="background: rgba(255,255,255,0.05);">
+                        <%= break_period["start"] %> – <%= break_period["end"] %>
                       </span>
                     <% end %>
                   </div>
                 <% end %>
-              <% end %>
-            </div>
+              </div>
+            <% end %>
           </div>
         <% end %>
       <% end %>

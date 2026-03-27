@@ -1,30 +1,16 @@
-<div class="card p-6 hover:shadow-lg transition-shadow" id="booking_<%= booking.id %>">
+<div class="dashboard-card p-5" id="booking_<%= booking.id %>">
   <div class="flex justify-between items-start mb-4">
     <!-- Time and Customer Info -->
     <div class="flex-1">
       <div class="flex items-baseline gap-3 mb-2">
-        <span class="text-2xl font-bold text-slate-900">
-          <%= booking.scheduled_at.strftime("%H:%M") %>
-        </span>
-        <span class="text-sm text-slate-500">
-          (<%= booking.total_duration_minutes %> min)
-        </span>
+        <span class="text-2xl font-bold text-white"><%= booking.scheduled_at.strftime("%H:%M") %></span>
+        <span class="text-xs text-slate-400">(<%= booking.total_duration_minutes %> min)</span>
       </div>
-
-      <div class="text-lg font-semibold text-slate-900 mb-1">
-        <%= booking.customer_name %>
-      </div>
-
-      <div class="text-sm text-slate-600 space-y-1">
-        <div>
-          <span class="font-medium">Phone:</span>
-          <%= booking.customer_phone %>
-        </div>
+      <div class="text-base font-semibold text-white mb-1"><%= booking.customer_name %></div>
+      <div class="text-sm text-slate-400 space-y-0.5">
+        <div><span class="text-slate-500">Phone:</span> <%= booking.customer_phone %></div>
         <% if booking.customer_email.present? %>
-          <div>
-            <span class="font-medium">Email:</span>
-            <%= booking.customer_email %>
-          </div>
+          <div><span class="text-slate-500">Email:</span> <%= booking.customer_email %></div>
         <% end %>
       </div>
     </div>
@@ -33,87 +19,69 @@
     <div>
       <% case booking.status %>
       <% when "pending" %>
-        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-          Pending
-        </span>
+        <span class="px-2.5 py-1 inline-flex text-xs font-semibold rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">Pending</span>
       <% when "confirmed" %>
-        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-          Confirmed
-        </span>
+        <span class="px-2.5 py-1 inline-flex text-xs font-semibold rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">Confirmed</span>
       <% when "in_progress" %>
-        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-          In Progress
-        </span>
+        <span class="px-2.5 py-1 inline-flex text-xs font-semibold rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">In Progress</span>
       <% when "completed" %>
-        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-slate-100 text-slate-600">
-          Completed
-        </span>
+        <span class="px-2.5 py-1 inline-flex text-xs font-semibold rounded-full bg-slate-700/50 text-slate-400 border border-slate-600/30">Completed</span>
       <% when "cancelled" %>
-        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-          Cancelled
-        </span>
+        <span class="px-2.5 py-1 inline-flex text-xs font-semibold rounded-full bg-red-500/15 text-red-400 border border-red-500/30">Cancelled</span>
       <% when "no_show" %>
-        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
-          No Show
-        </span>
+        <span class="px-2.5 py-1 inline-flex text-xs font-semibold rounded-full bg-orange-500/15 text-orange-400 border border-orange-500/30">No Show</span>
       <% end %>
     </div>
   </div>
 
   <!-- Services -->
   <div class="mb-4">
-    <div class="text-sm font-medium text-slate-700 mb-1">Services:</div>
+    <div class="text-xs font-medium text-slate-500 uppercase tracking-widest mb-2">Services</div>
     <div class="flex flex-wrap gap-2">
       <% booking.services.each do |service| %>
-        <span class="px-2 py-1 bg-slate-100 text-slate-700 text-sm rounded">
+        <span class="px-2 py-0.5 text-xs text-slate-300 rounded-full" style="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.08);">
           <%= service.name %>
         </span>
       <% end %>
     </div>
   </div>
 
-  <!-- Notes (if any) -->
+  <!-- Notes -->
   <% if booking.notes.present? %>
-    <div class="mb-4 p-3 bg-slate-50 rounded">
-      <div class="text-sm font-medium text-slate-700 mb-1">Notes:</div>
-      <div class="text-sm text-slate-600">
-        <%= booking.notes %>
-      </div>
+    <div class="mb-4 p-3 rounded-lg" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);">
+      <div class="text-xs font-medium text-slate-500 uppercase tracking-widest mb-1">Notes</div>
+      <div class="text-sm text-slate-300"><%= booking.notes %></div>
     </div>
   <% end %>
 
   <!-- Source Badge -->
   <div class="mb-4">
     <% if booking.walk_in? %>
-      <span class="px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded font-medium">
-        Walk-in
-      </span>
+      <span class="px-2 py-0.5 text-xs rounded-full bg-purple-500/15 text-purple-400 border border-purple-500/30 font-medium">Walk-in</span>
     <% else %>
-      <span class="px-2 py-1 text-xs bg-slate-100 text-slate-600 rounded font-medium">
-        Online Booking
-      </span>
+      <span class="px-2 py-0.5 text-xs rounded-full text-slate-400 font-medium" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);">Online Booking</span>
     <% end %>
   </div>
 
   <!-- Action Buttons -->
-  <div class="flex gap-2 pt-4 border-t border-slate-200">
-    <%= link_to "View Details", dashboard_branch_booking_path(branch, booking), class: "text-sm text-primary-600 hover:text-primary-800 font-medium" %>
+  <div class="flex gap-2 pt-4 border-t border-white/6">
+    <%= link_to "View Details", dashboard_branch_booking_path(branch, booking), class: "text-sm text-indigo-400 hover:text-indigo-300 font-medium transition-colors" %>
 
     <% case booking.status %>
     <% when "pending" %>
-      <%= button_to "Confirm", confirm_dashboard_branch_booking_path(branch, booking), method: :patch, class: "text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded font-medium cursor-pointer" %>
+      <%= button_to "Confirm", confirm_dashboard_branch_booking_path(branch, booking), method: :patch, class: "text-xs px-3 py-1.5 rounded-lg font-semibold text-white cursor-pointer", style: "background: rgba(59,130,246,0.3); border: 1px solid rgba(59,130,246,0.4);" %>
     <% when "confirmed" %>
-      <%= button_to "Start Service", start_dashboard_branch_booking_path(branch, booking), method: :patch, class: "text-sm bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded font-medium cursor-pointer" %>
+      <%= button_to "Start Service", start_dashboard_branch_booking_path(branch, booking), method: :patch, class: "text-xs px-3 py-1.5 rounded-lg font-semibold text-white cursor-pointer", style: "background: rgba(16,185,129,0.3); border: 1px solid rgba(16,185,129,0.4);" %>
     <% when "in_progress" %>
-      <%= button_to "Complete", complete_dashboard_branch_booking_path(branch, booking), method: :patch, class: "text-sm bg-slate-600 hover:bg-slate-700 text-white px-3 py-1 rounded font-medium cursor-pointer" %>
+      <%= button_to "Complete", complete_dashboard_branch_booking_path(branch, booking), method: :patch, class: "text-xs px-3 py-1.5 rounded-lg font-semibold text-white cursor-pointer", style: "background: rgba(100,116,139,0.3); border: 1px solid rgba(100,116,139,0.4);" %>
     <% end %>
 
     <% if ["pending", "confirmed", "in_progress"].include?(booking.status) %>
-      <%= button_to "Cancel", cancel_dashboard_branch_booking_path(branch, booking), method: :patch, data: { turbo_confirm: "Are you sure you want to cancel this booking?" }, class: "text-sm text-red-600 hover:text-red-800 font-medium cursor-pointer ml-auto" %>
+      <%= button_to "Cancel", cancel_dashboard_branch_booking_path(branch, booking), method: :patch, data: { turbo_confirm: "Are you sure you want to cancel this booking?" }, class: "text-xs text-red-400 hover:text-red-300 font-medium cursor-pointer ml-auto transition-colors" %>
     <% end %>
 
     <% if ["confirmed", "in_progress"].include?(booking.status) %>
-      <%= button_to "No Show", no_show_dashboard_branch_booking_path(branch, booking), method: :patch, data: { turbo_confirm: "Mark this booking as no-show?" }, class: "text-sm text-orange-600 hover:text-orange-800 font-medium cursor-pointer" %>
+      <%= button_to "No Show", no_show_dashboard_branch_booking_path(branch, booking), method: :patch, data: { turbo_confirm: "Mark this booking as no-show?" }, class: "text-xs text-orange-400 hover:text-orange-300 font-medium cursor-pointer transition-colors" %>
     <% end %>
   </div>
 </div>

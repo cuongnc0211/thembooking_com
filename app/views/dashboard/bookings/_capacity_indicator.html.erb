@@ -1,23 +1,20 @@
-<div class="card mb-6 p-6">
+<div class="dashboard-card p-5">
   <div class="flex items-center justify-between">
     <div>
-      <div class="text-sm font-medium text-slate-600 mb-1">Current Capacity</div>
-      <div class="text-3xl font-bold <%= capacity_percentage < 70 ? 'text-green-600' : (capacity_percentage < 90 ? 'text-yellow-600' : 'text-red-600') %>">
+      <div class="text-xs font-medium text-slate-500 uppercase tracking-widest mb-1">Current Capacity</div>
+      <div class="text-2xl font-bold <%= capacity_percentage < 70 ? 'text-emerald-400' : (capacity_percentage < 90 ? 'text-amber-400' : 'text-red-400') %>">
         <%= current_capacity %> / <%= total_capacity %>
       </div>
-      <div class="text-sm text-slate-500 mt-1">
-        <%= capacity_percentage %>% occupied
-      </div>
+      <div class="text-xs text-slate-400 mt-1"><%= capacity_percentage %>% occupied</div>
     </div>
 
     <div class="flex-1 max-w-md ml-8">
-      <!-- Progress Bar -->
-      <div class="w-full bg-slate-200 rounded-full h-4 overflow-hidden">
-        <div class="h-full <%= capacity_percentage < 70 ? 'bg-green-500' : (capacity_percentage < 90 ? 'bg-yellow-500' : 'bg-red-500') %> transition-all duration-300"
+      <div class="w-full rounded-full h-3 overflow-hidden" style="background: rgba(255,255,255,0.06);">
+        <div class="h-full <%= capacity_percentage < 70 ? 'bg-emerald-500' : (capacity_percentage < 90 ? 'bg-amber-500' : 'bg-red-500') %> transition-all duration-300"
              style="width: <%= [capacity_percentage, 100].min %>%">
         </div>
       </div>
-      <div class="text-xs text-slate-500 mt-1 text-center">
+      <div class="text-xs text-slate-500 mt-1.5 text-center">
         <% if capacity_percentage == 0 %>
           All capacity available
         <% elsif capacity_percentage < 70 %>
