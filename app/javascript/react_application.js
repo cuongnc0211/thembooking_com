@@ -4,12 +4,12 @@ import BookingApp from './components/BookingApp'
 import LandingApp from './components/landing/LandingApp'
 
 function mountBookingApp(container) {
-  const { branchSlug, business, services } = container.dataset
+  const { businessSlug, business, branches } = container.dataset
   createRoot(container).render(
     <BookingApp
-      branchSlug={branchSlug}
+      businessSlug={businessSlug}
       business={JSON.parse(business)}
-      services={JSON.parse(services)}
+      branches={JSON.parse(branches)}
     />
   )
 }

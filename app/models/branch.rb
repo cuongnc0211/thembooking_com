@@ -13,11 +13,6 @@ class Branch < ApplicationRecord
 
   # Validations
   validates :name, presence: true
-  validates :slug, presence: true,
-                   uniqueness: { case_sensitive: false },
-                   format: { with: /\A[a-z0-9\-]+\z/, message: "only allows lowercase letters, numbers, and hyphens" },
-                   length: { minimum: 3, maximum: 50 },
-                   slug_uniqueness: true
   validates :capacity, presence: true,
                        numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 50 }
   validates :phone, format: { with: /\A[0-9\s\-\+\(\)]+\z/, message: "only allows numbers and basic formatting" },
@@ -29,12 +24,6 @@ class Branch < ApplicationRecord
 
   # Normalize slug before validation
   normalizes :slug, with: ->(slug) { slug.strip.downcase }
-
-  # Public booking URL for this branch
-  def booking_url
-    host = Rails.application.config.x.host
-    Rails.application.routes.url_helpers.booking_url(slug, host: host)
-  end
 
   # Returns true if the branch is open on the given day name (e.g. "monday")
   def open_on?(day_name)

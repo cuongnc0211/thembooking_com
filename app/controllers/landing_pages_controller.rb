@@ -1,5 +1,6 @@
 class LandingPagesController < ApplicationController
   allow_unauthenticated_access
+  layout "booking"
 
   def show
     @business = Business.find_by!(slug: params[:slug])

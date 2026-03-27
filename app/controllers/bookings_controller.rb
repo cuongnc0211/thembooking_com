@@ -1,23 +1,20 @@
 class BookingsController < ApplicationController
   allow_unauthenticated_access # Public endpoint
-
-  def new
-    @branch = Branch.includes(:business).find_by!(slug: params[:branch_slug])
-    verify_branch_active!
-    @business = @branch.business
-    @services = @branch.services.active.order(:position)
-  end
+  layout "booking"
 
   def react_new
-    @branch = Branch.includes(:business).find_by!(slug: params[:branch_slug])
-    verify_branch_active!
-    @business = @branch.business
-    @services = @branch.services.active.includes(:service_category).order(:position)
+    @business = Business.find_by!(slug: params[:business_slug])
+    @branches = @business.branches
+                         .where(active: true)
+                         .includes(services: :service_category)
+                         .order(:position)
   end
 
   def availability
-    @branch = Branch.find_by!(slug: params[:branch_slug])
-    verify_branch_active!
+    @business = Business.find_by!(slug: params[:business_slug])
+    @branch = @business.branches.find_by!(slug: params[:branch_slug])
+    raise ActiveRecord::RecordNotFound unless @branch.active?
+
     service_ids = params[:service_ids] || []
     date = params[:date] ? Date.parse(params[:date]) : Date.current
 
@@ -38,15 +35,14 @@ class BookingsController < ApplicationController
   end
 
   def create
-    @branch = Branch.find_by!(slug: params[:branch_slug])
-    verify_branch_active!
-    @business = @branch.business
-    @services = @branch.services.active.order(:position)
+    @business = Business.find_by!(slug: params[:business_slug])
+    @branch = @business.branches.find_by!(slug: params[:branch_slug])
+    raise ActiveRecord::RecordNotFound unless @branch.active?
 
     start_time = if params[:start_time].present?
       Time.zone.parse(params[:start_time])
     elsif params[:scheduled_at].present?
-      params[:scheduled_at] # Support old parameter name
+      params[:scheduled_at]
     end
 
     result = Bookings::CreateBooking.new(
@@ -57,24 +53,23 @@ class BookingsController < ApplicationController
     ).call
 
     if result[:success]
-      redirect_to booking_confirmation_path(@branch.slug, result[:booking])
+      redirect_to booking_confirmation_path(@business.slug, result[:booking])
     else
+      @branches = @business.branches.where(active: true).includes(services: :service_category).order(:position)
       @error = result[:error]
       render :react_new, status: :unprocessable_entity
     end
   end
 
   def show
-    @branch = Branch.includes(:business).find_by!(slug: params[:branch_slug])
-    @business = @branch.business
-    @booking = @branch.bookings.find(params[:id])
+    @business = Business.find_by!(slug: params[:business_slug])
+    @booking = Booking.joins(:branch)
+                      .where(branches: { business_id: @business.id })
+                      .find(params[:id])
+    @branch = @booking.branch
   end
 
   private
-
-  def verify_branch_active!
-    raise ActiveRecord::RecordNotFound unless @branch.active?
-  end
 
   def booking_params
     params.require(:booking).permit(:customer_name, :customer_phone, :customer_email, :notes)

@@ -30,6 +30,26 @@
     </div>
   </div>
 
+  <!-- Public URLs -->
+  <div class="mt-6 dashboard-card p-6">
+    <p class="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">Public URLs</p>
+
+    <p class="text-xs text-slate-400 mb-1">Booking page</p>
+    <div class="flex items-center gap-3 mb-4">
+      <code class="flex-1 px-3 py-2.5 rounded-xl text-sm font-mono truncate text-slate-400" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06);"><%= @business.booking_url %></code>
+      <button class="px-4 py-2.5 text-sm font-semibold text-white rounded-xl flex-shrink-0" style="background: linear-gradient(135deg, #4f46e5, #6366f1);"
+        onclick="navigator.clipboard.writeText('<%= @business.booking_url %>');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',2000)">Copy</button>
+    </div>
+
+    <p class="text-xs text-slate-400 mb-1">Landing page</p>
+    <div class="flex items-center gap-3 mb-1">
+      <code class="flex-1 px-3 py-2.5 rounded-xl text-sm font-mono truncate text-slate-400" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06);"><%= @business.landing_page_url %></code>
+      <button class="px-4 py-2.5 text-sm font-semibold text-white rounded-xl flex-shrink-0" style="background: linear-gradient(135deg, #4f46e5, #6366f1);"
+        onclick="navigator.clipboard.writeText('<%= @business.landing_page_url %>');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',2000)">Copy</button>
+    </div>
+    <p class="text-xs text-slate-500 mt-2">Share these URLs with customers.</p>
+  </div>
+
   <!-- Branches link -->
   <div class="mt-6 card p-6">
     <div class="flex justify-between items-center">

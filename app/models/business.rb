@@ -30,6 +30,18 @@ class Business < ApplicationRecord
   validate :logo_format
   validate :cover_photo_format
 
+  # Public booking URL for this business (business-level, not branch-level)
+  def booking_url
+    host = Rails.application.config.x.host
+    Rails.application.routes.url_helpers.booking_url(slug, host: host)
+  end
+
+  # Public landing page URL for this business
+  def landing_page_url
+    host = Rails.application.config.x.host
+    Rails.application.routes.url_helpers.landing_page_url(slug, host: host)
+  end
+
   private
 
   # Auto-generates a slug from name, appending a counter suffix to resolve collisions.

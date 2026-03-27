@@ -89,11 +89,11 @@ Rails.application.routes.draw do
   get "/:slug", to: "landing_pages#show", as: :landing_page,
       constraints: ->(req) { Business.exists?(slug: req.params[:slug]) }
 
-  # Branch booking routes
-  get "/booking/:branch_slug", to: "bookings#react_new", as: :booking, constraints: { branch_slug: /[a-z0-9\-]+/ }
-  get "/booking/:branch_slug/availability", to: "bookings#availability"
-  post "/booking/:branch_slug/bookings", to: "bookings#create"
-  get "/booking/:branch_slug/bookings/:id", to: "bookings#show", as: :booking_confirmation
+  # Business-level booking routes
+  get "/booking/:business_slug", to: "bookings#react_new", as: :booking, constraints: { business_slug: /[a-z0-9\-]+/ }
+  get "/booking/:business_slug/availability", to: "bookings#availability"
+  post "/booking/:business_slug/bookings", to: "bookings#create"
+  get "/booking/:business_slug/bookings/:id", to: "bookings#show", as: :booking_confirmation
 
   # Defines the root path route ("/")
   root "home#index"

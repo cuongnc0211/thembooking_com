@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "ThemBooking" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ThemBooking">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag 'application', "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+
+    <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body class="<%= content_for?(:body_class) ? yield(:body_class) : 'bg-surface-50 text-slate-800' %> font-sans antialiased min-h-screen">
+    <!-- Flash Messages (Toast Style) -->
+    <% if flash.any? %>
+      <div class="fixed top-4 right-4 z-50 flex flex-col gap-2 w-full max-w-sm pointer-events-none">
+        <% flash.each do |name, msg| %>
+          <div role="<%= name.to_sym == :notice ? 'status' : 'alert' %>" data-flash-type="<%= name %>" class="pointer-events-auto transform transition-all duration-300 hover:scale-105 <%= flash_class(name) %> bg-white border border-slate-100 shadow-lg rounded-xl p-4 flex items-start gap-3 animate-in slide-in-from-right-5 fade-in">
+            <div class="flex-1 text-sm font-medium text-slate-700"><%= msg %></div>
+            <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= yield %>
+  </body>
+</html>

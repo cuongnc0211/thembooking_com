@@ -6,25 +6,27 @@
 
 <div
   id="react-booking-root"
-  data-branch-slug="<%= @branch.slug %>"
-  data-business="<%= {
-    id: @branch.id,
-    name: @business.name,
-    description: @business.description,
-    address: @branch.address,
-    phone: @branch.phone
-  }.to_json %>"
-  data-services="<%= @services.map { |s|
+  data-business-slug="<%= @business.slug %>"
+  data-business="<%= { name: @business.name, description: @business.description }.to_json %>"
+  data-branches="<%= @branches.map { |b|
     {
-      id: s.id,
-      name: s.name,
-      description: s.description,
-      duration_minutes: s.duration_minutes,
-      price_cents: s.price.to_i,
-      price_format: s.price.format,
-      service_category_id: s.service_category_id,
-      service_category_name: s.service_category&.name,
-      service_category_position: s.service_category&.position
+      slug: b.slug,
+      name: b.name,
+      address: b.address,
+      phone: b.phone,
+      services: b.services.map { |s|
+        {
+          id: s.id,
+          name: s.name,
+          description: s.description,
+          duration_minutes: s.duration_minutes,
+          price_cents: s.price.to_i,
+          price_format: s.price.format,
+          service_category_id: s.service_category_id,
+          service_category_name: s.service_category&.name,
+          service_category_position: s.service_category&.position
+        }
+      }
     }
   }.to_json %>"
   data-turbo="false"
