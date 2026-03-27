@@ -23,7 +23,7 @@
             </button>
             <div data-dropdown-target="menu" class="hidden absolute left-0 top-full mt-2 w-56 bg-slate-900 border border-slate-700/50 rounded-xl shadow-xl py-2 z-50">
               <div class="px-3 py-2 text-xs text-slate-500 uppercase tracking-wider font-semibold">Chuyển chi nhánh</div>
-              <% current_user.business&.branches&.each do |branch| %>
+              <% current_user.business&.branches&.where(active: true)&.each do |branch| %>
                 <%= link_to dashboard_branch_path(branch), class: "flex items-center gap-3 px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-slate-100 transition-colors mx-1 rounded-lg #{branch.id == @branch.id ? 'bg-indigo-500/10 text-indigo-300' : ''}" do %>
                   <span class="w-2 h-2 rounded-full <%= branch.active? ? 'bg-emerald-400' : 'bg-slate-600' %> flex-shrink-0"></span>
                   <%= branch.name %>
