@@ -57,6 +57,13 @@
     <%= form.text_field :address, class: "form-input", placeholder: "123 Nguyen Hue, Q1, TP.HCM", required: true %>
   </div>
 
+  <!-- First Branch Name -->
+  <div>
+    <label class="form-label" for="business_branch_name">First Branch Name</label>
+    <%= text_field_tag "business[branch_name]", params.dig(:business, :branch_name) || "Main Branch", id: "business_branch_name", class: "form-input", placeholder: "e.g. Main Branch, Downtown, ..." %>
+    <p class="mt-1 text-sm text-slate-500">You can add more branches later from the dashboard.</p>
+  </div>
+
   <!-- Description (Optional) -->
   <div>
     <%= form.label :description, "Description (Optional)", class: "form-label" %>

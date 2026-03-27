@@ -42,6 +42,9 @@ Rails.application.routes.draw do
       resource :landing_page, only: [ :edit, :update ], controller: "landing_page"
     end
     resources :branches do
+      member do
+        post :enable_independence
+      end
       resource :open_hour, only: [ :show, :edit, :update ]
       resources :service_categories, only: [ :index, :new, :create, :edit, :update, :destroy ]
       resources :services do

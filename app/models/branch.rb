@@ -25,6 +25,29 @@ class Branch < ApplicationRecord
   # Normalize slug before validation
   normalizes :slug, with: ->(slug) { slug.strip.downcase }
 
+  # Prevent deletion of the main branch — it anchors inheritance for all sub-branches
+  before_destroy :prevent_main_branch_deletion
+
+  # Scopes
+  scope :main, -> { where(is_main: true) }
+  scope :sub, -> { where(is_main: false) }
+
+  # Returns the main branch for this business
+  def main_branch
+    business.branches.find_by!(is_main: true)
+  end
+
+  # Services to use for booking — falls back to main branch when inheriting
+  def effective_services
+    return services.active.includes(:service_category).order(:position) unless inherit_from_main?
+    main_branch.services.active.includes(:service_category).order(:position)
+  end
+
+  # Operating hours to use — falls back to main branch when inheriting
+  def effective_operating_hours
+    inherit_from_main? ? main_branch.operating_hours : operating_hours
+  end
+
   # Returns true if the branch is open on the given day name (e.g. "monday")
   def open_on?(day_name)
     hours = operating_hours&.dig(day_name.to_s.downcase)
@@ -84,6 +107,13 @@ class Branch < ApplicationRecord
   end
 
   private
+
+  def prevent_main_branch_deletion
+    if is_main?
+      errors.add(:base, "Cannot delete the main branch")
+      throw :abort
+    end
+  end
 
   def need_init_operating_hours
     operating_hours.blank?

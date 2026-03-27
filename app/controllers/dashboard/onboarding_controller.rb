@@ -98,11 +98,13 @@ module Dashboard
         # Create default branch with location data if none exists
         unless business.branches.exists?
           branch_attrs = {
-            name: "Main Branch",
+            name: params.dig(:business, :branch_name).presence || "Main Branch",
             slug: params.dig(:business, :slug),
             phone: params.dig(:business, :phone),
             address: params.dig(:business, :address),
-            capacity: params.dig(:business, :capacity).presence || 1
+            capacity: params.dig(:business, :capacity).presence || 1,
+            is_main: true,
+            inherit_from_main: false
           }.compact
           business.branches.create!(branch_attrs)
         end

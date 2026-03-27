@@ -1,4 +1,19 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <% if @branch.inherit_from_main? %>
+    <div class="dashboard-card p-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <p class="text-sm text-slate-300">
+        Services are inherited from
+        <%= link_to "Main Branch", dashboard_branch_services_path(@branch.main_branch), class: "text-indigo-400 hover:text-indigo-300 underline" %>.
+        Changes there apply here automatically.
+      </p>
+      <%= button_to "Enable Independent Services", enable_independence_dashboard_branch_path(@branch),
+            method: :post,
+            class: "px-4 py-2 text-sm font-semibold text-white rounded-xl flex-shrink-0 cursor-pointer",
+            style: "background: linear-gradient(135deg, #4f46e5, #6366f1);",
+            data: { turbo_confirm: "After this, updates to Main Branch services won't apply here. A copy of current services will be created for this branch. Continue?" } %>
+    </div>
+  <% end %>
+
   <div class="flex justify-between items-center mb-6">
     <div>
       <h1 class="text-3xl font-bold"><%= t('views.dashboard.services.index.title') %></h1>

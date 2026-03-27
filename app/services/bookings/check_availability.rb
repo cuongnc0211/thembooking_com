@@ -31,7 +31,7 @@ module Bookings
 
     def operating_hours_for_date
       day_name = @date.strftime("%A").downcase
-      @branch.operating_hours&.dig(day_name)
+      @branch.effective_operating_hours&.dig(day_name)
     end
 
     def calculate_total_duration

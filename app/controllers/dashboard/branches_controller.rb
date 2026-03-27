@@ -1,7 +1,7 @@
 module Dashboard
   class BranchesController < BaseController
     before_action :set_business
-    before_action :set_branch, only: [ :show, :edit, :update, :destroy ]
+    before_action :set_branch, only: [ :show, :edit, :update, :destroy, :enable_independence ]
 
     def index
       @branches = @business.branches.order(:position, :name)
@@ -15,6 +15,8 @@ module Dashboard
 
     def create
       @branch = @business.branches.build(branch_params)
+      @branch.is_main = false
+      @branch.inherit_from_main = true
       if @branch.save
         redirect_to dashboard_branch_path(@branch), notice: "Branch created successfully."
       else
@@ -29,6 +31,17 @@ module Dashboard
         redirect_to dashboard_branch_path(@branch), notice: "Branch updated successfully."
       else
         render :edit, status: :unprocessable_entity
+      end
+    end
+
+    def enable_independence
+      result = Branches::EnableIndependence.new(@branch).call
+      if result
+        redirect_to dashboard_branch_services_path(@branch),
+          notice: "This branch now manages its own services and operating hours."
+      else
+        redirect_to dashboard_branch_services_path(@branch),
+          alert: "Could not enable independence. Please try again."
       end
     end
 

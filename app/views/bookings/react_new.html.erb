@@ -14,7 +14,7 @@
       name: b.name,
       address: b.address,
       phone: b.phone,
-      services: b.services.map { |s|
+      services: b.effective_services.map { |s|
         {
           id: s.id,
           name: s.name,
