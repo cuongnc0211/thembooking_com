@@ -1,0 +1,298 @@
+<% content_for :title, "Bảng giá — ThemBooking" %>
+<% content_for :meta_description, "Phần mềm đặt lịch barber shop giá tốt nhất Việt Nam. Miễn phí 30 ngày, không cần thẻ tín dụng." %>
+<% content_for :body_class, "bg-[#0A0A0A] text-slate-100" %>
+<% content_for :nav_class, "bg-white/5 backdrop-blur-md" %>
+
+<% content_for :footer_override do %>
+<footer class="bg-[#0A0A0A] border-t border-white/10 mt-auto">
+  <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+      <span class="text-xl font-display font-bold text-white">ThemBooking</span>
+      <p class="text-xs text-slate-600">&copy; <%= Time.current.year %> ThemBooking. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+<% end %>
+
+<div data-controller="pricing">
+
+  <%# ── Aurora background (reused from home) ── %>
+  <div class="fixed inset-0 aurora-bg z-0 pointer-events-none opacity-60"></div>
+  <div class="fixed inset-0 z-0 pointer-events-none opacity-10" style="background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px); background-size: 32px 32px;"></div>
+
+  <div class="relative z-10 pt-24 pb-0">
+
+    <%# ══════════════════════════════════════════════════ %>
+    <%# 1. HERO %>
+    <%# ══════════════════════════════════════════════════ %>
+    <section class="py-16 text-center px-4">
+      <%# Early Bird Badge — animated pulse %>
+      <div class="badge-pill bg-red-500/15 border-red-500/30 text-red-300 mb-8 mx-auto w-fit animate-pulse">
+        <span class="flex h-2 w-2 rounded-full bg-red-400"></span>
+        🔴 Early Bird — Còn 36 suất ưu đãi
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6 text-white">
+        Giá minh bạch,<br>
+        <span class="text-gradient italic">không bất ngờ</span>
+      </h1>
+
+      <p class="text-lg sm:text-xl text-slate-400 max-w-xl mx-auto">
+        Phần mềm đặt lịch dành riêng cho barber shop Việt Nam.<br>
+        Bắt đầu miễn phí, nâng cấp khi cần.
+      </p>
+    </section>
+
+    <%# ══════════════════════════════════════════════════ %>
+    <%# 2. BILLING TOGGLE %>
+    <%# ══════════════════════════════════════════════════ %>
+    <section class="flex justify-center mb-6 px-4">
+      <div class="inline-flex items-center gap-1 p-1 rounded-full" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);">
+        <button
+          data-billing-monthly
+          data-action="click->pricing#setMonthly"
+          class="px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 bg-white text-slate-900 shadow-sm">
+          Hàng tháng
+        </button>
+        <button
+          data-billing-yearly
+          data-action="click->pricing#setYearly"
+          class="px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 text-slate-400 flex items-center gap-2">
+          Hàng năm
+          <span class="px-1.5 py-0.5 text-xs font-bold rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">-10%</span>
+        </button>
+      </div>
+    </section>
+
+    <%# ══════════════════════════════════════════════════ %>
+    <%# 3. EARLY BIRD COUNTER %>
+    <%# ══════════════════════════════════════════════════ %>
+    <section class="max-w-2xl mx-auto px-4 mb-12">
+      <div class="block-card-dark p-5 flex flex-col sm:flex-row items-center gap-5">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-xl">🔥</span>
+            <span class="text-base font-bold text-white">Early Bird — Pro chỉ 99k/tháng</span>
+          </div>
+          <p class="text-sm text-slate-400 mb-3">Giá gốc 199k · Trọn đời, không tăng giá</p>
+          <div class="w-full rounded-full h-2 overflow-hidden" style="background: rgba(255,255,255,0.06);">
+            <div data-pricing-target="slotsBar" class="h-full bg-gradient-to-r from-primary-500 to-primary-400 transition-all duration-700 rounded-full" style="width: 28%;"></div>
+          </div>
+          <p class="text-xs text-slate-500 mt-1.5">14 / 50 suất đã được nhận</p>
+        </div>
+        <div class="text-center flex-shrink-0">
+          <div class="text-5xl font-display font-bold text-white leading-none" data-pricing-target="slots">36</div>
+          <div class="text-xs text-slate-400 mt-1">suất còn lại</div>
+        </div>
+      </div>
+    </section>
+
+    <%# ══════════════════════════════════════════════════ %>
+    <%# 4. PRICING CARDS GRID %>
+    <%# ══════════════════════════════════════════════════ %>
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+
+        <%# ─── FREE ─── %>
+        <div class="block-card-dark p-6 animate-fade-in-up" style="animation-delay: 0s;">
+          <div class="mb-4">
+            <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Free</span>
+            <div class="mt-3 flex items-baseline gap-1">
+              <span class="text-4xl font-display font-bold text-white">0đ</span>
+              <span class="text-slate-500 text-sm">/ tháng</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 mb-5 leading-relaxed">Dùng thử không giới hạn 30 ngày đầu. Sau đó 50 booking/tháng.</p>
+          <ul class="space-y-2.5 mb-6 text-sm">
+            <% [
+              [true,  "Đặt lịch online & calendar"],
+              [true,  "Chọn thợ khi đặt lịch"],
+              [true,  "Walk-in management"],
+              [true,  "Lưu thông tin khách"],
+              [true,  "Báo cáo doanh thu cơ bản"],
+              [false, "Nhắc lịch tự động"],
+              [false, "Hoa hồng thợ"],
+              [false, "Widget nhúng"],
+            ].each do |included, label| %>
+              <li class="flex items-start gap-2">
+                <% if included %>
+                  <svg class="w-4 h-4 text-primary-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                  <span class="text-slate-400"><%= label %></span>
+                <% else %>
+                  <svg class="w-4 h-4 text-slate-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                  <span class="text-slate-600"><%= label %></span>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+          <%= link_to "Bắt đầu miễn phí", new_registration_path,
+                class: "w-full text-center inline-block px-5 py-2.5 rounded-xl border border-white/20 text-slate-300 hover:bg-white/5 transition-all duration-300 font-medium text-sm cursor-pointer" %>
+        </div>
+
+        <%# ─── PRO (Featured) ─── %>
+        <div class="relative rounded-2xl p-px bg-gradient-to-b from-primary-500/60 to-primary-500/10 animate-fade-in-up" style="animation-delay: 0.1s;">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+            <span class="px-4 py-1.5 bg-gradient-to-r from-primary-500 to-primary-600 text-white text-xs font-bold rounded-full shadow-lg shadow-primary-500/30">⚡ Phổ biến nhất</span>
+          </div>
+          <div class="bg-[#0f172a] rounded-2xl p-6 h-full">
+            <div class="mb-4">
+              <span class="text-xs font-bold uppercase tracking-widest text-primary-400">Pro</span>
+              <div class="mt-3 flex items-baseline gap-2 flex-wrap">
+                <span class="text-2xl text-slate-500 line-through font-display font-bold">199k</span>
+                <span class="px-2 py-0.5 text-xs font-bold rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/30">Early Bird</span>
+              </div>
+              <div class="flex items-baseline gap-1 mt-1">
+                <span class="text-4xl font-display font-bold text-white" data-pricing-target="price" data-monthly="99k" data-yearly="89k">99k</span>
+                <span class="text-slate-500 text-sm">/ tháng</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 mb-5 leading-relaxed">Đầy đủ cho shop đơn lẻ đang tăng trưởng. 1 chi nhánh, không giới hạn.</p>
+            <ul class="space-y-2.5 mb-6 text-sm">
+              <% [
+                [true,  "Tất cả tính năng Free"],
+                [true,  "Booking không giới hạn"],
+                [true,  "Nhắc lịch Zalo / SMS"],
+                [true,  "Lịch sử & ghi chú khách"],
+                [true,  "Tính hoa hồng thợ"],
+                [true,  "Báo cáo theo thợ/dịch vụ"],
+                [true,  "Widget nhúng website/Zalo"],
+                [false, "Multi-branch"],
+              ].each do |included, label| %>
+                <li class="flex items-start gap-2">
+                  <% if included %>
+                    <svg class="w-4 h-4 text-primary-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                    <span class="text-slate-300"><%= label %></span>
+                  <% else %>
+                    <svg class="w-4 h-4 text-slate-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <span class="text-slate-600"><%= label %></span>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+            <%= link_to "Nhận Early Bird ngay", new_registration_path(plan: "pro"),
+                  class: "btn-primary w-full justify-center py-2.5 cursor-pointer text-sm" %>
+          </div>
+        </div>
+
+        <%# ─── BUSINESS ─── %>
+        <div class="block-card-dark p-6 animate-fade-in-up" style="animation-delay: 0.2s;">
+          <div class="mb-4">
+            <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Business</span>
+            <div class="mt-3 flex items-baseline gap-1">
+              <span class="text-4xl font-display font-bold text-white" data-pricing-target="price" data-monthly="299k" data-yearly="269k">299k</span>
+              <span class="text-slate-500 text-sm">/ tháng</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 mb-5 leading-relaxed">Dành cho chuỗi nhỏ. Tối đa 3 chi nhánh, đầy đủ công cụ quản lý.</p>
+          <ul class="space-y-2.5 mb-6 text-sm">
+            <% [
+              "Tất cả tính năng Pro",
+              "Lên đến 3 chi nhánh",
+              "Chuyển lịch giữa branch",
+              "Chấm công nhân viên",
+              "Loyalty / tích điểm",
+              "Bỏ branding ThemBooking",
+              "Báo cáo toàn chuỗi",
+              "Custom domain",
+            ].each do |label| %>
+              <li class="flex items-start gap-2">
+                <svg class="w-4 h-4 text-primary-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span class="text-slate-400"><%= label %></span>
+              </li>
+            <% end %>
+          </ul>
+          <%= link_to "Bắt đầu dùng thử", new_registration_path(plan: "business"),
+                class: "w-full text-center inline-block px-5 py-2.5 rounded-xl border border-white/20 text-slate-300 hover:bg-white/5 transition-all duration-300 font-medium text-sm cursor-pointer" %>
+        </div>
+
+        <%# ─── ENTERPRISE ─── %>
+        <div class="block-card-dark p-6 animate-fade-in-up" style="animation-delay: 0.3s;">
+          <div class="mb-4">
+            <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Enterprise</span>
+            <div class="mt-3 flex items-baseline gap-1">
+              <span class="text-4xl font-display font-bold text-white">299k</span>
+              <span class="text-slate-500 text-sm">/ tháng</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 mb-5 leading-relaxed">Từ chi nhánh thứ 4: +149k/branch. Cho chuỗi lớn không giới hạn.</p>
+          <ul class="space-y-2.5 mb-6 text-sm">
+            <% [
+              "Tất cả tính năng Business",
+              "4+ chi nhánh không giới hạn",
+              "+149k mỗi branch thêm",
+              "API access",
+              "Onboarding hỗ trợ tận nơi",
+              "Dedicated support",
+              "Custom features theo yêu cầu",
+              "SLA cam kết uptime",
+            ].each do |label| %>
+              <li class="flex items-start gap-2">
+                <svg class="w-4 h-4 text-primary-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span class="text-slate-400"><%= label %></span>
+              </li>
+            <% end %>
+          </ul>
+          <div class="space-y-2">
+            <a href="mailto:support@thembooking.vn"
+               class="w-full text-center inline-block px-5 py-2.5 rounded-xl border border-white/20 text-slate-300 hover:bg-white/5 transition-all duration-300 font-medium text-sm cursor-pointer">
+              Liên hệ tư vấn
+            </a>
+            <p class="text-xs text-slate-600 text-center">Ví dụ: 5 branch = 299k + 149k×2 = 597k/tháng</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <%# ══════════════════════════════════════════════════ %>
+    <%# 5. FAQ ACCORDION %>
+    <%# ══════════════════════════════════════════════════ %>
+    <section class="max-w-2xl mx-auto px-4 sm:px-6 mb-20">
+      <h2 class="text-2xl font-display font-bold text-white text-center mb-8">Câu hỏi thường gặp</h2>
+
+      <div class="space-y-2">
+        <% [
+          ["Early Bird có thực sự không tăng giá không?",
+           "Đúng vậy. 50 shops đầu tiên đăng ký Pro Early Bird sẽ trả 99k/tháng mãi mãi — kể cả khi giá thị trường tăng sau này. Đây là cam kết bằng văn bản trong điều khoản dịch vụ."],
+          ["30 ngày dùng thử có cần thẻ tín dụng không?",
+           "Không. Bạn đăng ký bằng số điện thoại hoặc email, dùng thử toàn bộ tính năng trong 30 ngày đầu hoàn toàn miễn phí. Chỉ cần thông tin thanh toán khi bạn chọn nâng cấp."],
+          ["Thanh toán qua kênh nào?",
+           "Hỗ trợ chuyển khoản ngân hàng, MoMo, VNPay. Xuất hóa đơn VAT theo yêu cầu."],
+          ["Tôi có thể hủy bất cứ lúc nào không?",
+           "Có. Không có hợp đồng ràng buộc. Hủy bất cứ lúc nào, dữ liệu của bạn được giữ lại 90 ngày sau khi hủy."],
+          ["Nhắc lịch Zalo hoạt động thế nào?",
+           "ThemBooking gửi tin nhắc tự động qua Zalo OA của shop trước 24h và 1h trước giờ hẹn. Khách có thể confirm hoặc hủy ngay trong tin nhắn, lịch tự động cập nhật."],
+        ].each_with_index do |(question, answer), idx| %>
+          <div data-faq-item data-open="<%= idx == 0 ? 'true' : 'false' %>"
+               class="block-card-dark overflow-hidden">
+            <button data-action="click->pricing#toggleFaq"
+                    class="w-full flex items-center justify-between p-4 text-left gap-4 cursor-pointer">
+              <span class="text-sm font-medium text-white"><%= question %></span>
+              <span data-faq-icon class="text-xl leading-none font-light text-slate-400 flex-shrink-0 w-5 text-center"><%= idx == 0 ? "×" : "+" %></span>
+            </button>
+            <div data-faq-answer
+                 style="max-height: <%= idx == 0 ? '200px' : '0' %>; overflow: hidden; transition: max-height 0.3s ease;">
+              <p class="px-4 pb-4 text-sm text-slate-400 leading-relaxed"><%= answer %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </section>
+
+    <%# ══════════════════════════════════════════════════ %>
+    <%# 6. FOOTER CTA %>
+    <%# ══════════════════════════════════════════════════ %>
+    <section class="py-20 text-center px-4">
+      <h2 class="text-3xl sm:text-4xl font-display font-bold text-white mb-4">Bắt đầu miễn phí hôm nay</h2>
+      <p class="text-slate-400 mb-8">Không cần thẻ tín dụng. Setup trong 5 phút.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <%= link_to "Dùng thử miễn phí →", new_registration_path,
+              class: "btn-primary text-base px-8 py-4 shadow-xl shadow-primary-500/30 hover:shadow-primary-500/50 cursor-pointer" %>
+        <a href="#" class="inline-flex items-center justify-center px-8 py-4 rounded-xl border border-white/20 text-slate-300 hover:bg-white/5 hover:border-white/40 transition-all duration-300 font-medium cursor-pointer">
+          Hoặc xem demo
+        </a>
+      </div>
+    </section>
+
+  </div>
+</div>
