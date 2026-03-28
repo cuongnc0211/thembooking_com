@@ -72,6 +72,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # Marketing pages
+  get "/pricing", to: "pages#pricing", as: :pricing
+
   # Home
   get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

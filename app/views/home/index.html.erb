@@ -362,9 +362,10 @@
       <h2 class="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-5">
         <%= t('views.home.index.pricing_title') %>
       </h2>
-      <p class="text-lg text-slate-400 max-w-2xl mx-auto">
+      <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-6">
         <%= t('views.home.index.pricing_subtitle') %>
       </p>
+      <%= link_to "Xem bảng giá chi tiết →", pricing_path, class: "text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium" %>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto items-center">
@@ -396,6 +397,10 @@
         <div class="bg-[#0f172a] rounded-2xl p-7 h-full">
           <h3 class="text-xl font-display font-bold text-white mb-2"><%= t('views.home.index.plan_pro_name') %></h3>
           <div class="mb-7">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xl text-slate-500 line-through font-display font-bold">199k</span>
+              <span class="px-2 py-0.5 text-xs font-bold rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/30">Early Bird</span>
+            </div>
             <span class="text-4xl font-display font-bold text-white"><%= t('views.home.index.plan_pro_price') %></span>
             <span class="text-slate-500 text-sm">/<%= t('views.home.index.per_month') %></span>
           </div>
@@ -434,6 +439,11 @@
               class: "w-full text-center inline-block px-6 py-3 rounded-xl border border-white/20 text-slate-300 hover:bg-white/5 transition-all duration-300 font-medium cursor-pointer text-sm" %>
         <% end %>
       </div>
+    </div>
+
+    <div class="text-center mt-10">
+      <%= link_to "Xem chi tiết tất cả tính năng →", pricing_path,
+            class: "inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/20 text-slate-300 hover:bg-white/5 hover:border-white/40 transition-all duration-300 font-medium text-sm cursor-pointer" %>
     </div>
   </div>
 </section>
