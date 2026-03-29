@@ -5,6 +5,17 @@ All notable changes to ThemBooking project are documented here.
 ## [Unreleased]
 
 ### Added
+- **[2026-03-29] Admin Promotion Codes CRUD (Complete)** — Full admin interface for managing promotional discount codes
+  - **New Model**: `PromotionCode` with discount_type enum (percentage/fixed_amount), discount_value, usage_limit, used_count, validity dates (valid_from/valid_until), active status toggle
+  - **Database Schema**: Migration with unique code index, case-insensitive validation, decimal precision for discount values
+  - **Admin Controller**: `Admin::PromotionCodesController` with full CRUD + toggle action (`PATCH /admin/promotion_codes/:id/toggle`)
+  - **Admin Views**: index with search/pagination, show detail page, create/edit forms with field validation
+  - **Sidebar Navigation**: Added "Promotion Codes" nav link to admin sidebar
+  - **Access Control**: Super-admin role required (matches staffs CRUD pattern)
+  - **Scopes**: `currently_valid` scope filters by active status + expiry dates
+  - **Class Methods**: `redeem!` for future booking integration (increments used_count, validates limits & expiry)
+  - **Test Coverage**: 28 new tests for model validations, controller actions, authorization, and business logic
+
 - **[2026-03-24] Public Booking Page Service Category Grouping (Complete)** — Services grouped by category on public booking page with backward-compatible flat grid fallback
   - **Backend**: Added `.includes(:service_category)` to `BookingsController#react_new` and `create` for eager loading
   - **Serialization**: `react_new.html.erb` now includes `service_category_id`, `service_category_name`, `service_category_position` in JSON

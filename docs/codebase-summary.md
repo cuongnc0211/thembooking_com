@@ -49,19 +49,24 @@ thembooking_com/
 - **Files**:
   - `app/controllers/admin/base_controller.rb` (auth enforcement)
   - `app/controllers/admin/staffs_controller.rb` (staff CRUD, super_admin only)
+  - `app/controllers/admin/promotion_codes_controller.rb` (promotion codes CRUD, super_admin only)
   - `app/controllers/admin/users_controller.rb` (user management)
   - `app/controllers/admin/businesses_controller.rb` (business management)
   - `app/models/staff.rb` (admin staff model)
+  - `app/models/promotion_code.rb` (promotion code model with enums & validation)
 
 - **Features**:
   - Staff CRUD operations with full validation
+  - Promotion Codes CRUD (code, discount_type, discount_value, usage_limit, validity dates)
   - Super-admin access control (super_admin role required)
   - Staff account management (name, email, role, active status)
+  - Promotion code activation/deactivation toggle via PATCH /admin/promotion_codes/:id/toggle
   - Password management with bcrypt
-  - Search/filter functionality by name or email
+  - Search/filter functionality by name or email (staffs) and by code (promotion codes)
   - Pagination (25 records per page)
-  - Protection against self-deletion
-  - Routes: `resources :staffs` under admin namespace
+  - Protection against self-deletion (staffs)
+  - Routes: `resources :staffs` and `resources :promotion_codes` with `toggle` member route under admin namespace
+  - `redeem!` class method for future booking integration (increments used_count, validates expiry & limits)
 
 #### 3. Onboarding System (✅ Phase 4 Complete)
 - **Files**:
@@ -85,6 +90,7 @@ thembooking_com/
   - `Service`: Service offerings with pricing and duration. Belongs_to branch and optionally service_category
   - `Booking`: Appointment records with `scheduled_at` and `end_time`. Belongs_to branch
   - `BusinessClosure`: Holiday/closure date records. Belongs_to branch
+  - `PromotionCode`: Admin-managed promotion codes with discount_type (enum: percentage/fixed_amount), discount_value, usage_limit, used_count, validity dates, and active toggle. Standalone model (no associations yet per YAGNI)
   - `Session`: Authentication sessions
   - `Staff`: Admin staff accounts with role and authentication
 
@@ -235,8 +241,9 @@ Hosting: Self-hosted
    - Email verification and password reset
    - Rate limiting and security measures
 
-2. **Admin Panel & Staff Management**
+2. **Admin Panel & Management System**
    - Staff CRUD operations (super_admin only)
+   - Promotion Codes CRUD with activation/deactivation toggle (super_admin only)
    - Admin users management
    - Admin businesses management
    - Secure role-based access control
@@ -646,8 +653,8 @@ Key strengths:
 The codebase is well-positioned for continued development and scaling, with clear patterns and standards that will facilitate future feature additions and maintenance.
 
 *Generated*: December 7, 2025
-*Last Updated*: March 25, 2026
-*Version*: v0.3.0 (Business Landing Page Complete + Branch Picker Modal + Dashboard Editor)
-*Code Size*: 8,700+ lines of Ruby code
-*Test Count*: 348+ tests (all passing)
+*Last Updated*: March 29, 2026
+*Version*: v0.4.0 (Admin Promotion Codes + Business Landing Page Complete + Branch Picker Modal + Dashboard Editor)
+*Code Size*: 8,900+ lines of Ruby code
+*Test Count*: 365+ tests (all passing)
 *Development Methodology*: Test-Driven Development (TDD)
