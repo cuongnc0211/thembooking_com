@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_27_102859) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_28_131600) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -133,6 +133,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_27_102859) do
     t.datetime "updated_at", null: false
     t.index ["business_id", "position"], name: "index_gallery_photos_on_business_id_and_position"
     t.index ["business_id"], name: "index_gallery_photos_on_business_id"
+  end
+
+  create_table "promotion_codes", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.string "code", null: false
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.integer "discount_type", default: 0, null: false
+    t.decimal "discount_value", precision: 10, scale: 2, null: false
+    t.datetime "updated_at", null: false
+    t.integer "usage_limit"
+    t.integer "used_count", default: 0, null: false
+    t.datetime "valid_from"
+    t.datetime "valid_until"
+    t.index ["active"], name: "index_promotion_codes_on_active"
+    t.index ["code"], name: "index_promotion_codes_on_code", unique: true
   end
 
   create_table "service_categories", force: :cascade do |t|

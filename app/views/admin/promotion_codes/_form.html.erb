@@ -1,0 +1,81 @@
+<% if promotion_code.errors.any? %>
+  <div class="mb-6 rounded-lg bg-red-50 border border-red-200 p-4">
+    <h3 class="text-sm font-medium text-red-800 mb-2">
+      <%= pluralize(promotion_code.errors.count, "error") %> prevented this promotion code from being saved:
+    </h3>
+    <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+      <% promotion_code.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: promotion_code,
+    url: promotion_code.persisted? ? admin_promotion_code_path(promotion_code) : admin_promotion_codes_path,
+    method: promotion_code.persisted? ? :patch : :post, local: true, class: "space-y-5" do |f| %>
+
+  <div>
+    <%= f.label :code, class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_field :code, placeholder: "e.g. SUMMER2026",
+        class: "block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+  </div>
+
+  <div>
+    <%= f.label :discount_type, class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.select :discount_type,
+        [ [ "Percentage (%)", "percentage" ], [ "Fixed Amount ($)", "fixed_amount" ] ],
+        {},
+        class: "block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+  </div>
+
+  <div>
+    <%= f.label :discount_value, class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.number_field :discount_value, step: 0.01, min: 0,
+        class: "block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    <p class="mt-1 text-xs text-gray-400">Enter percentage (e.g. 10 for 10%) or fixed dollar amount.</p>
+  </div>
+
+  <div>
+    <%= f.label :usage_limit, class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.number_field :usage_limit, placeholder: "Leave blank for unlimited", min: 1,
+        class: "block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <%= f.label :valid_from, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.datetime_local_field :valid_from,
+          value: promotion_code.valid_from&.strftime("%Y-%m-%dT%H:%M"),
+          class: "block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    </div>
+    <div>
+      <%= f.label :valid_until, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.datetime_local_field :valid_until,
+          value: promotion_code.valid_until&.strftime("%Y-%m-%dT%H:%M"),
+          class: "block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    </div>
+  </div>
+
+  <div>
+    <%= f.label :description, class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_area :description, rows: 3,
+        class: "block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <%= f.check_box :active, class: "h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" %>
+    <%= f.label :active, "Active", class: "text-sm font-medium text-gray-700" %>
+  </div>
+
+  <div class="flex items-center gap-3 pt-2">
+    <%= f.submit promotion_code.persisted? ? "Save Changes" : "Create Promotion Code",
+        class: "px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg cursor-pointer" %>
+    <% if promotion_code.persisted? %>
+      <%= link_to "Cancel", admin_promotion_code_path(promotion_code), class: "px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg" %>
+    <% else %>
+      <%= link_to "Cancel", admin_promotion_codes_path, class: "px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg" %>
+    <% end %>
+  </div>
+
+<% end %>

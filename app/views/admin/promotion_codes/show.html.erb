@@ -1,0 +1,97 @@
+<% admin_breadcrumbs(link_to("Promotion Codes", admin_promotion_codes_path), @promotion_code.code) %>
+
+<div class="mb-6 flex items-center justify-between">
+  <h1 class="text-2xl font-bold text-gray-900 font-mono"><%= @promotion_code.code %></h1>
+  <div class="flex gap-2">
+    <%= link_to "Edit", edit_admin_promotion_code_path(@promotion_code),
+        class: "px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg" %>
+    <%= link_to @promotion_code.active? ? "Deactivate" : "Activate",
+        toggle_admin_promotion_code_path(@promotion_code),
+        data: { turbo_method: :patch, turbo_confirm: "#{@promotion_code.active? ? 'Deactivate' : 'Activate'} this promotion code?" },
+        class: @promotion_code.active? ? "px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg" : "px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg" %>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+  <%# Details card %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Details</h2>
+    <dl class="space-y-3 text-sm">
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Code</dt>
+        <dd class="text-gray-900 font-medium font-mono"><%= @promotion_code.code %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Discount Type</dt>
+        <dd class="text-gray-900"><%= @promotion_code.discount_type.humanize %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Discount Value</dt>
+        <dd class="text-gray-900 font-medium">
+          <% if @promotion_code.percentage? %>
+            <%= "#{number_with_precision(@promotion_code.discount_value, precision: 2, strip_insignificant_zeros: true)}%" %>
+          <% else %>
+            <%= number_to_currency(@promotion_code.discount_value) %>
+          <% end %>
+        </dd>
+      </div>
+      <% if @promotion_code.description.present? %>
+        <div class="flex justify-between">
+          <dt class="text-gray-500">Description</dt>
+          <dd class="text-gray-900 text-right max-w-xs"><%= @promotion_code.description %></dd>
+        </div>
+      <% end %>
+    </dl>
+  </div>
+
+  <%# Usage & Validity card %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Usage &amp; Validity</h2>
+    <dl class="space-y-3 text-sm">
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Status</dt>
+        <dd>
+          <% if @promotion_code.expired? %>
+            <span class="bg-yellow-100 text-yellow-800 rounded-full px-2 py-0.5 text-xs font-medium">Expired</span>
+          <% elsif @promotion_code.active? %>
+            <span class="bg-green-100 text-green-800 rounded-full px-2 py-0.5 text-xs font-medium">Active</span>
+          <% else %>
+            <span class="bg-red-100 text-red-800 rounded-full px-2 py-0.5 text-xs font-medium">Inactive</span>
+          <% end %>
+        </dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Times Used</dt>
+        <dd class="text-gray-900 font-medium"><%= @promotion_code.used_count %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Usage Limit</dt>
+        <dd class="text-gray-900"><%= @promotion_code.usage_limit || "Unlimited" %></dd>
+      </div>
+      <% if @promotion_code.usage_remaining %>
+        <div class="flex justify-between">
+          <dt class="text-gray-500">Remaining Uses</dt>
+          <dd class="text-gray-900"><%= @promotion_code.usage_remaining %></dd>
+        </div>
+      <% end %>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Valid From</dt>
+        <dd class="text-gray-900"><%= @promotion_code.valid_from&.strftime("%b %d, %Y %H:%M") || "—" %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Valid Until</dt>
+        <dd class="text-gray-900"><%= @promotion_code.valid_until&.strftime("%b %d, %Y %H:%M") || "No expiry" %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Created</dt>
+        <dd class="text-gray-900"><%= @promotion_code.created_at.strftime("%b %d, %Y %H:%M") %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Updated</dt>
+        <dd class="text-gray-900"><%= @promotion_code.updated_at.strftime("%b %d, %Y %H:%M") %></dd>
+      </div>
+    </dl>
+  </div>
+
+</div>

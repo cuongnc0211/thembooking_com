@@ -49,6 +49,17 @@
     <% end %>
 
     <% if current_staff&.super_admin? %>
+      <%= link_to admin_promotion_codes_path,
+          class: "flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors
+                 #{request.path.start_with?(admin_promotion_codes_path) ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}" do %>
+        <svg class="mr-3 h-5 w-5 flex-shrink-0 <%= request.path.start_with?(admin_promotion_codes_path) ? 'text-indigo-600' : 'text-gray-400' %>"
+             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/>
+        </svg>
+        Promotions
+      <% end %>
+
       <%= link_to admin_staffs_path,
           class: "flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors
                  #{request.path.start_with?(admin_staffs_path) ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}" do %>

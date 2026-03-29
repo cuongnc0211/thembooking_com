@@ -58,8 +58,5 @@ module Admin
       params.require(:staff).permit(:name, :email_address, :role, :active, :password, :password_confirmation)
     end
 
-    def require_super_admin!
-      redirect_to admin_root_path, alert: "Access denied." unless current_staff&.super_admin?
-    end
   end
 end
